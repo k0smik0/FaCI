@@ -1,0 +1,6 @@
+messaggi sulla bacheca:
+fbcmd fql "select post_id, actor_id, created_time, like_info, comments, message, message_tags, target_id, tagged_ids, type, via_id, with_location from stream where source_id = [flist]" "=me"
+fbcmd fql "select post_id, actor_id, created_time, like_info, comment_info, comments, message, message_tags, target_id, tagged_ids, type, via_id, with_location from stream where source_id = [flist]" "=me"
+
+lista amici con informazioni profilo:
+fbcmd FQL "SELECT id, name, pic, type, url, username FROM profile WHERE id IN (SELECT uid2 FROM friend WHERE uid1=me())"
