@@ -1,0 +1,15 @@
+#!/bin/bash
+
+mkdir $PWD/facri
+
+for i in $(fbcmd friends | awk '{print $1}'); do 
+   echo "doing $i"; 
+   
+   TARGET_DIR=$PWD/facri/$i;
+   [ -d $TARGET_DIR ] || mkdir $TARGET_DIR
+   
+   cd /usr/local/lib/fbcmd/support
+   php my_fbcmd.php FLSTREAM $i 150
+   
+   ls -1 *json && mv -vi *json $TARGET_DIR 
+done

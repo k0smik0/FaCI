@@ -1,0 +1,34 @@
+messaggi sulla bacheca:
+- fbcmd fql "select post_id, actor_id, created_time, like_info, comments, message, message_tags, target_id, tagged_ids, type, via_id, with_location from stream where source_id = [flist]" "=me"
+- fbcmd fql "select post_id, actor_id, created_time, like_info, comment_info, comments, message, message_tags, target_id, tagged_ids, type, via_id, with_location from stream where source_id = [flist]" "=me"
+- fbcmd fql "SELECT post_id, actor_id, like_info, comment_info, comments, target_id, tagged_ids FROM stream WHERE source_id IN (1613591485) LIMIT 1,150"
+- campi: post_id, actor_id, 
+
+campi da STREAM
+actor_id = chi ha messo il post
+post_id = 
+comment_info = informazioni sui commenti, di cui, importanti : 
+   comment_count = numero di commenti
+created_time = timestamp (unix) del post
+is_popular = percentuale di azioni su quel post, che ne determina la "popolaritá"
+likes = informazioni sui like (deprecato, achtung!), di cui:
+   count = numero di like
+   sample = array di ids di persone che appiaciono (non amici)
+   friends = array di ids di amici che appiaciono
+   user_likes = true/false se l'utente autore ha appiaciuto
+permalink = url del post
+privacy = la privacy per quel post
+share_count = numero di (re)sharing per quel post
+source_id = id della bacheca (persona,pagina,gruppo) ove risiede il post
+tagged_ids = array di id(s) taggati nel messaggio del post (proprio nel testo)
+type = tipo di post, tra cui: 46 (status), 56 (post di un altro utente), 80 (link), 128 (video), 247 (foto), 285 (checkin)
+updated_time = timestamp (unix) dell'ultimo aggiornamento, che cambia se qualcuno ha commentato
+with_tags = array di ids taggati nel post ("con chi eri?")
+
+campi da LIKE
+post_id = l'id del post sul quale esistono dei like (é una foreign key per STREAM)
+user_id = id della persona che ha messo il like
+
+
+lista amici con informazioni profilo:
+fbcmd FQL "SELECT id, name, pic, type, url, username FROM profile WHERE id IN (SELECT uid2 FROM friend WHERE uid1=me())"
