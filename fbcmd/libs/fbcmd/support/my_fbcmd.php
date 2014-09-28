@@ -93,7 +93,7 @@
       $count = $fbcmdParams[2];
     }
     $fql = "SELECT actor_id,post_id,comment_info,created_time,is_popular,likes,permalink,privacy,share_count,source_id,tagged_ids,type,updated_time,with_tags FROM stream WHERE source_id IN ({$fbcmdParams[1]}) LIMIT 1,{$count}";
-     print $fql."\n";
+//     print $fql."\n";
      try {
         $fbReturn = $fbObject->api_client->fql_query($fql);
         TraceReturn($fbReturn);
@@ -113,7 +113,7 @@
         $fileName = $year."-".$month."-".$day."_".$hour.":".$minutes.":".$seconds.".json";
 
        file_put_contents($fileName, "//QUERY: ".$fql."\n\n".json_encode( $fbReturn)."\n" );
-        print $fileName."\n";
+       print "(writing on $fileName)";
     } else {
       print "error for {$fbUser}";
     }
