@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ROOT=$PWD
-FACRI=$ROOT/facri
+FACRI=$ROOT/facri_output
 [ -d $FACRI ] || mkdir $FACRI
 
 FBCMD=$ROOT/libs/fbcmd/fbcmd.php
@@ -11,6 +11,8 @@ friends_id=$(php $FBCMD friends | awk '{print $1}' | grep -v ID)
 echo $friends_id > $FACRI/friends_ids.txt
 
 me_id=$(php $FBCMD whoami | awk '{print $1}')
+
+start=$(date +%s.%3N)
 
 for u in $friends_id $me_id; do 
    echo -n "doing user $u ... "; 
@@ -27,3 +29,15 @@ for u in $friends_id $me_id; do
 
    echo " ok"
 done
+
+end=$(date +%s.%3N)
+r=$(echo $end - $start | bc)
+
+
+#echo -e "\n\ndone in $((end-start)).\n"
+
+mkdir $FACRI/friends
+mv $FACRI/* $FACRI/friends/
+
+mkdir $FACRI/me
+mv $FACRI/friends/$me_id $FACRI/me/
