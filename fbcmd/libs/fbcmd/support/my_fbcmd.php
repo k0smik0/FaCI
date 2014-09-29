@@ -110,9 +110,12 @@
         $hour = $date['hours'];
         $minutes = $date['minutes'];
         $seconds = $date['seconds'];
-        $fileName = $year."-".$month."-".$day."_".$hour.":".$minutes.":".$seconds.".json";
+        $date_now = $year."-".$month."-".$day."_".$hour.":".$minutes.":".$seconds;
+        $fileName = "output.json";
 
-       file_put_contents($fileName, "//QUERY: ".$fql."\n\n".json_encode( $fbReturn)."\n" );
+//        file_put_contents($fileName, "//QUERY: ".$fql."\n\n".json_encode( $fbReturn)."\n" );
+        file_put_contents($fileName, '{"posts":'.json_encode( $fbReturn )."}\n" );
+        file_put_contents("query.fql", '{"query":{"date":"'.$date_now.'","fql":"'.$fql.'"}}');
        print "(writing on $fileName)";
     } else {
       print "error for {$fbUser}";
