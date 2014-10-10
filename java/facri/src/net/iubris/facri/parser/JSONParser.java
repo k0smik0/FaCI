@@ -1,12 +1,13 @@
 package net.iubris.facri.parser;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileReader;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
+import net.iubris.facri.config.Config;
 import net.iubris.facri.model.Post;
 import net.iubris.facri.model.Posts;
 import de.odysseus.staxon.json.jaxb.JsonXMLMapper;
@@ -24,6 +25,14 @@ public class JSONParser {
 	}
 	
 	public static void main(String[] args) {
+		
+		String dataRootDir;
+		if (!args[1].isEmpty())
+			dataRootDir = args[1];
+		else
+			dataRootDir = Config.DATA_ROOT_DIR;
+		
+		
 		
 		String FILE_PATH = "../../fbcmd/facri_output/me/836460098/output.json";
 		JSONParser jp = new JSONParser();
