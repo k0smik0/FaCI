@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../etc/facri-env
+source etc/facri.conf
 
 OUT_FILE=$FACRI_OUTPUT/friends_ids.txt
 

@@ -7,7 +7,7 @@
 #FBCMD=$ROOT/libs/fbcmd/fbcmd.php
 #EXEC_DIR=$ROOT/libs/fbcmd/support/
 
-source ../etc/facri-env
+source etc/facri.conf
 
 #"friends_id=$(php $FBCMD friends | awk '{print $1}' | grep -v ID)
 #friends_ids_file=$FACRI/../friends_ids.txt

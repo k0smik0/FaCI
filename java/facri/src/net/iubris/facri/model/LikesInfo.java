@@ -12,11 +12,11 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class LikesInfo {
 
-
-	@XmlElement(name="likes")
+	@XmlElement(name="href")
 	@XmlJavaTypeAdapter(URLAdapter.class)
-	private URL likingFriendsPage;
+	private URL likedPostUrl;
 
+	@XmlElement(name="count")
 	private int count;
 	
 	@XmlElementWrapper(name="sample")
@@ -27,15 +27,15 @@ public class LikesInfo {
 //	@XmlElement(name="friends")
 	private Set<String> friendsUserIDs;
 	
-	@XmlElement(name="user_likes")
-	private boolean userLikes;
+//	@XmlElement(name="user_likes")
+//	private boolean userLikes;
 
-	public URL getLikingFriendsPage() {
-		return likingFriendsPage;
+	public URL getLikedPostUrl() {
+		return likedPostUrl;
 	}
 
-	public void setLikingFriendsPage(URL likingFriendsPage) {
-		this.likingFriendsPage = likingFriendsPage;
+	public void setLikedPostUrl(URL likedPostUrl) {
+		this.likedPostUrl = likedPostUrl;
 	}
 
 	public int getCount() {
@@ -62,13 +62,10 @@ public class LikesInfo {
 		this.friendsUserIDs = friendsUserIDs;
 	}
 
-	public boolean isUserLikes() {
-		return userLikes;
-	}
-
-	public void setUserLikes(boolean userLikes) {
-		this.userLikes = userLikes;
-	}
+//	public boolean isUserLikes() {
+//		return userLikes;
+//	}
+	
 
 	
 

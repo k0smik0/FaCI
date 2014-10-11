@@ -35,7 +35,7 @@ public class Post {
 	@XmlElement(name="is_popular")
 	private boolean isPopular;
 	
-	@XmlElement(name="likes")		
+	@XmlElement(name="likes")
 	private LikesInfo likesInfo;
 
 	
@@ -75,6 +75,9 @@ public class Post {
 //	@XmlElement(name="with_tags")
 	private Set<String> withTaggedFriendsIDs;
 
+	/**
+	 * @return the post author id
+	 */
 	public String getActorId() {
 		return actorId;
 	}
@@ -83,6 +86,9 @@ public class Post {
 		this.actorId = actorId;
 	}
 
+	/**
+	 * @return the post id
+	 */
 	public String getPostId() {
 		return postId;
 	}
@@ -91,6 +97,9 @@ public class Post {
 		this.postId = postId;
 	}
 
+	/**
+	 * @return a {@link net.iubris.facri.model.CommentInfo} instance
+	 */
 	public CommentInfo getCommentInfo() {
 		return commentInfo;
 	}

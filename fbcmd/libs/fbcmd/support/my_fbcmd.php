@@ -84,7 +84,7 @@
   }
 
   if ($fbcmdCommand == 'FLSTREAM' ) {
-     ValidateParamCount(1,2);
+    ValidateParamCount(1,2);
     SetDefaultParam(1,$fbcmdPrefs['default_finfo_flist']);
 //    SetDefaultParam(2,$fbcmdPrefs['default_finfo_count']);
     GetFlistIds($fbcmdParams[1],true);
@@ -122,6 +122,44 @@
     }
   }
 
-////////////////////////////////////////////////////////////////////////////////
+  if ($fbcmdCommand == 'FLIKES' ) {
+    ValidateParamCount(1,2);
+    SetDefaultParam(1,$fbcmdPrefs['default_finfo_flist']);
+//    SetDefaultParam(2,$fbcmdPrefs['default_finfo_count']);
+    GetFlistIds($fbcmdParams[1],true);
+    $count = 1;
+    if ( $fbcmdParams[2] != null ) {
+      $count = $fbcmdParams[2];
+    }
+    $fql = "select name, page_id from page where page_id in ( SELECT page_id FROM page_fan WHERE uid IN ( {$fbcmdParams[1]} ) ) LIMIT 1,{$count}";
+       
+    try {
+      $fbReturn = $fbObject->api_client->fql_query($fql);
+      TraceReturn($fbReturn);
+    } catch(Exception $e) {
+      FbcmdException($e);
+    }
+    if (!empty($fbReturn)) {
+      // k0z
+      $date = getdate();
+      $year = $date['year'];
+      $month = $date['month'];
+      $day = $date['mday'];
+      $hour = $date['hours'];
+      $minutes = $date['minutes'];
+      $seconds = $date['seconds'];
+      $date_now = $year."-".$month."-".$day."_".$hour.":".$minutes.":".$seconds;
+
+      $fileName = "output.json";
+
+      file_put_contents($fileName, '{"likes":'.json_encode( $fbReturn )."}\n" );
+      file_put_contents("query.fql", '{"query":{"date":"'.$date_now.'","fql":"'.$fql.'"}}');
+      print "(writing on $fileName)";
+    } else {
+      print "error for {$fbUser}";
+    }
+  }
+  
+  ////////////////////////////////////////////////////////////////////////////////
 
 ?>
