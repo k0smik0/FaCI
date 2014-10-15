@@ -6,7 +6,7 @@ FEEDS_OUTPUT=$FACRI_OUTPUT/feeds/friends
 
 friends_ids=$($FACRI_ROOT/bin/facri-friends.sh)
 
-me_id=$(php $FBCMD whoami | awk '{print $1}')
+me_id=$($FBCMD whoami | awk '{print $1}')
 
 start=$(date +%s)
 
