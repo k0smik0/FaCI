@@ -15,6 +15,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
 import net.iubris.facri.model.CommentInfo;
+import net.iubris.facri.model.Comments;
 import net.iubris.facri.model.Post;
 import net.iubris.facri.model.Posts;
 import net.iubris.facri.model.User;
@@ -27,6 +28,24 @@ public class JSONParser {
 	private String feedsMeDataDir;
 	private String friendsIds;
 	private String friendsLikesDir;
+	
+	private FilenameFilter postsFileFilenameFilter = new FilenameFilter() {
+		@Override
+		public boolean accept(File dir, String name) {
+			if (name.equals("posts.json"))
+				return true;
+			return false;
+		}
+	};
+	
+	private FilenameFilter commentsFileFilenameFilter = new FilenameFilter() {
+		@Override
+		public boolean accept(File dir, String name) {
+			if (name.equals("comments.json"))
+				return true;
+			return false;
+		}
+	};
 
 	public JSONParser(String dataRootDir) {
 		
@@ -50,7 +69,7 @@ System.out.println(friendsDataDir);
 		
 		Map<String,User> usersMap = new ConcurrentHashMap<>();
 		
-		sequentialWay(friendsDirs, mapper);
+//		sequentialWay(friendsDirs, mapper);
 		parallelWay(friendsDirs, usersMap, mapper);
 		
 	}
@@ -60,22 +79,33 @@ System.out.println(friendsDataDir);
 		friendsDirs.parallelStream().forEach( new Consumer<File>() {
 			@Override
 			public void accept(File userDir) {
+				// userId is sourceId, that is the wall containing the post
 				String userId = userDir.getName();
 				File[] files = userDir.listFiles();
+				
 				if (files.length==0)
 					return;
-				File userFeedsJsonFile = userDir.listFiles()[0];
+				File userFeedsJsonFile = userDir.listFiles(postsFileFilenameFilter)[0];
+				File commentsJsonFile = userDir.listFiles(commentsFileFilenameFilter)[0];
 //				System.out.println(userFeedsJsonFile.getName());
 				try {
 					Posts posts = mapper.readObject( new FileReader(userFeedsJsonFile) );
+					Comments comments = mapper.readObject( new FileReader(commentsJsonFile));
 					for (Post post: posts.getPosts()) {
 //						System.out.print(post.getPostId()+" ");
-						if (map.containsKey(userId)) {
-							User user = map.get(userId);							
+						// the actorId is the post author id
+						String actorPostId = post.getActorId();
+						
+						// we use actorId because a wall contains both posts 
+						// from owner (actorId = userDir) or other users (actorId != userDir) 
+						User user = null;
+						if (map.containsKey(actorPostId)) {
+							user = map.get(actorPostId);
 						} else {
-							User user = new User();
-							map.put(userId, user);
+							user = new User();
+							map.put(actorPostId, user);
 						}
+						buildUser(user, post, actorPostId, userId);
 					}
 //					System.out.println("\n");
 				} catch (FileNotFoundException | JAXBException | XMLStreamException e) {
@@ -109,36 +139,46 @@ System.out.println(friendsDataDir);
 		System.out.println( "sequenzial way in: "+finish+"s" );
 	}
 	
-	private void buildUser(User user, Post post) {
-		String postActorId = post.getActorId();
+	
+	private void buildUser(User user, Post post, String actorId, String sourceId) {
+		// here we have a builded user with userId = [post]ActorId
+//		String userId = user.getId();
+		/* PSEUDO_CODE
+		
+		 	if (actorId == userId)
+		 		user.getOwnPost.add(post)
+		 	else
+		 		user.getElsewherepost.add(post)
+			
+		*/
 		// if the user is post author...
-		if (user.getId().equals( postActorId ) ) {			 
+//		if (userId.equals( postActorId ) ) {			 
 			
 			// associate the post to user/author
 			String sourceID = post.getSourceID(); // where the post is
 			// if the postActorId is the same of sourceId, 
 			// the post exists in the own author wall,
 			// elsewhere is on his friend wall
-			if (sourceID == postActorId) {
+			if (sourceID == actorId) {
 				user.getOwnPosts().add(post);
 			} else {
-				user.getElsewherePosts().add(post);
+				user.getElsewhereToPosts().add(post);
 			}
-			//post.getActorId()
+							
 			
-			// in degree			
-			post.getCommentInfo().getCommentCount()		
+			// in degree	
+			post.getCommentInfo().getCommentCount()
+			post.getShareCount()
 			post.getLikesInfo().getFriendsUserIDs()
 			post.getLikesInfo().getSamplesUserIDs()
+
+//			post.getPermalink()
 			
-			post.getPermalink()
-			post.getShareCount()
-			
+
 			// out degree
-			post.getTaggedIDs()
-			post.getWithTaggedFriendsIDs()
+			user.getPostInteractions().getTargetedTo().add( post.getTaggedIDs() );
+			user.getPostInteractions().getTargetedTo().add( post.getWithTaggedFriendsIDs() );
 			
-		}
 		CommentInfo commentInfo = post.getCommentInfo();
 	}
 	

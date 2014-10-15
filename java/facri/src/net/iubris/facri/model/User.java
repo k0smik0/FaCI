@@ -17,9 +17,17 @@ public class User {
 	public List<Post> getOwnPosts() {
 		return ownPosts ;
 	}
+	
+	public int howOwnPosts() {
+		return ownPosts.size();
+	}
 
-	public List<Post> getElsewherePosts() {
+	public List<Post> getElsewhereToPosts() {
 		return elsewherePosts;
+	}
+	
+	public int howElsewhereToPosts() {
+		return elsewherePosts.size();
 	}
 
 

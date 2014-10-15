@@ -52,11 +52,13 @@
   FbcmdIncludeAddCommand('MYNOTES','Display all of your notes');
   FbcmdIncludeAddCommand('SINGLE','Display all of your single friends');
   FbcmdIncludeAddCommand('FLSTREAM','flist~Get last 150 post from your friend wallpaper');
+  FbcmdIncludeAddCommand('PCOMMENTS','postid~Get last 150 comments from specified postid');
 
 ////////////////////////////////////////////////////////////////////////////////
 // Step Five: Include (run) FBCMD
 
-  require '../fbcmd.php';
+  require dirname(__FILE__).'/../fbcmd.php';
+  
 
 ////////////////////////////////////////////////////////////////////////////////
 // Step Six: Add your own commands:
@@ -83,6 +85,7 @@
     }
   }
 
+  // use: fbcmd FLSTREAM a_user_id
   if ($fbcmdCommand == 'FLSTREAM' ) {
     ValidateParamCount(1,2);
     SetDefaultParam(1,$fbcmdPrefs['default_finfo_flist']);
@@ -101,32 +104,62 @@
         FbcmdException($e);
      }
      if (!empty($fbReturn)) {
-       // k0z
-        $date = getdate();
-//       var_dump( $date );
-        $year = $date['year'];
-        $month = $date['month'];
-        $day = $date['mday'];
-        $hour = $date['hours'];
-        $minutes = $date['minutes'];
-        $seconds = $date['seconds'];
-        $date_now = $year."-".$month."-".$day."_".$hour.":".$minutes.":".$seconds;
-        $fileName = "output.json";
+       $date_now = getDateNow();
+       $fileNamePrefix = "posts_-_".$date_now;
 
 //        file_put_contents($fileName, "//QUERY: ".$fql."\n\n".json_encode( $fbReturn)."\n" );
-        file_put_contents($fileName, '{"posts":'.json_encode( $fbReturn )."}\n" );
-        file_put_contents("query.fql", '{"query":{"date":"'.$date_now.'","fql":"'.$fql.'"}}');
-       print "(writing on $fileName)";
+       file_put_contents($fileNamePrefix.".json", '{"posts":'.json_encode( $fbReturn )."}\n" );
+       file_put_contents($fileNamePrefix.".fql", '{"query":{"date":"'.$date_now.'","fql":"'.$fql.'"}}');
+       print " done.\n";
     } else {
       print "error for {$fbUser}";
     }
   }
+  
+  if ($fbcmdCommand == 'PCOMMENTS') {
+     ValidateParamCount(1,2);
+     #     SetDefaultParam(1,$fbReturn
+     
+     /*
+     $url = "https://www.facebook.com//Tanzen80/posts/10152505358313440";
+     $fqlComments1 = "select post_fbid, fromid, object_id, text, time from comment where object_id in (select comments_fbid from link_stat where url ='{$url}')";
+     $fqlComments2 = 'select post_fbid, fromid, object_id, text, time from comment where object_id in (select post_fbid from #fqlComments1)';
+     $fqlProfile = 'select name, id, url, pic_square from profile where id in (select fromid from #fqlComments1) or id in (select fromid from #fqlComments2)';
+     
+     MultiFQL(array('Comments1','Comments2','Profile'));
+     if (!empty($dataStream)) {
+        PrintPostHeader();
+        PrintPostObject($url,$dataStream[0],$dataComments);
+      }
+     */
+     
+     $post_id = $fbcmdParams[1];
+//      print "post_id ".$post_id;
+//      $fql = 'SELECT fromid,likes,post_id,text_tags FROM comment WHERE post_id IN ("'.$post_id.'") LIMIT 1,150';
+     $fql = 'SELECT fromid,text,time FROM comment WHERE object_id='.$post_id.' and parent_id=0';
+//      print $fql;
+     try {
+	$fbReturn = $fbObject->api_client->fql_query($fql);
+        TraceReturn($fbReturn);
+     } catch(Exception $e) {
+        FbcmdException($e);
+     }
+     if (!empty($fbReturn)) {
+       $date_now = getDateNow();
+       $fileNamePrefix = $post_id."_comments";
+       
+       file_put_contents($fileNamePrefix.'.json', '{"comments":{"post_id":"'.$post_id.'","comment_data":"'.json_encode( $fbReturn ).'"}}' );
+       file_put_contents($fileNamePrefix.'.fql', '{"query":{"date":"'.$date_now.'","fql":"'.$fql.'"}}');
+       print $post_id." ";
+     } else {
+//        print "error for {$post_id}";
+         exit(1);
+     }
+  }
 
+  // to improve with mutual likes
   if ($fbcmdCommand == 'FLIKES' ) {
     ValidateParamCount(1,2);
-    SetDefaultParam(1,$fbcmdPrefs['default_finfo_flist']);
-//    SetDefaultParam(2,$fbcmdPrefs['default_finfo_count']);
-    GetFlistIds($fbcmdParams[1],true);
     $count = 1;
     if ( $fbcmdParams[2] != null ) {
       $count = $fbcmdParams[2];
@@ -140,15 +173,7 @@
       FbcmdException($e);
     }
     if (!empty($fbReturn)) {
-      // k0z
-      $date = getdate();
-      $year = $date['year'];
-      $month = $date['month'];
-      $day = $date['mday'];
-      $hour = $date['hours'];
-      $minutes = $date['minutes'];
-      $seconds = $date['seconds'];
-      $date_now = $year."-".$month."-".$day."_".$hour.":".$minutes.":".$seconds;
+       $date_now = getDateNow();
 
       $fileName = "output.json";
 
@@ -159,7 +184,21 @@
       print "error for {$fbUser}";
     }
   }
+
+  function getDateNow() {
+      $date = getdate();
+      $year = $date['year'];
+      $month = $date['mon'];
+      $day = $date['mday'];
+      $hour = $date['hours'];
+      $minutes = $date['minutes'];
+      $seconds = $date['seconds'];
+      $date_now = $year."-".$month."-".$day."_".$hour.":".$minutes.":".$seconds;
+      
+      return $date_now;
+  }
   
   ////////////////////////////////////////////////////////////////////////////////
 
+  exit(0);
 ?>
