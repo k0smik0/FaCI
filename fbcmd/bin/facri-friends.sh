@@ -8,7 +8,7 @@ if [ -f ${OUT_FILE} ]
 then
    friends_ids=$(cat ${OUT_FILE}) 
 else
-   friends_ids=$($FBCMD friends | awk '{print $1}' | grep -v ID)
+   friends_ids=$($FBCMD friends | awk '{print $1}' | grep -v ID | sort -n)
    echo $friends_ids > ${OUT_FILE}
 fi
 

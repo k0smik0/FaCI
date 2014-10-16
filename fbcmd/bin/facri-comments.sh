@@ -14,10 +14,11 @@ start=$(date +%s)
 cd $FEEDS_OUTPUT
 total_users=$(echo $friends_ids | wc -w)
 echo "$total_users users"
-declare user_counter=1
+declare user_counter=0
 for u in $friends_ids; do
    TARGET=$FEEDS_OUTPUT/$u
-   [ ! -d $TARGET ] && echo "user $u not existing: go further" && continue
+   user_counter=$((user_counter+1))
+   [ ! -d $TARGET ] && echo "user $u [$user_counter/$total_users] not existant: go further." && continue
 
    echo -n "user $u [$user_counter/$total_users]: "
    cd $TARGET
@@ -32,11 +33,11 @@ for u in $friends_ids; do
    for c in ${posts_ids}; do
       c_id=$(echo $c | cut -d"_" -f2 | sed 's/"//g')
       echo -n -e "\t$c_id: "
+      [ -f "${c_id}_comments.json" ] && echo "existant, skip." && continue
       s=$($FBCMD PCOMMENTS $c_id 150) 
-      [ $s ] && echo "." || echo "_"
+      [ $s ] && echo "ok." || echo "empty."
    done
-   echo -e "\n"
-   user_counter=$((user_counter+1))
+   echo ""
 done
 
 end=$(date +%s)
