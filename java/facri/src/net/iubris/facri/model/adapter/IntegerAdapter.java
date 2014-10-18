@@ -1,4 +1,4 @@
-package net.iubris.facri.model;
+package net.iubris.facri.model.adapter;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 

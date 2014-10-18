@@ -12,7 +12,6 @@ import de.odysseus.staxon.json.jaxb.JsonXML;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Posts {
-
 	
 	private List<Post> posts;
 
@@ -22,5 +21,5 @@ public class Posts {
 
 	public void setPosts(List<Post> posts) {
 		this.posts = posts;
-	}	
+	}
 }

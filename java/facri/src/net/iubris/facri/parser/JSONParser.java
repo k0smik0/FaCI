@@ -8,13 +8,18 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
-import net.iubris.facri.model.CommentInfo;
+import net.iubris.facri._di.annotation.filenamefilter.CommentFilenameFilter;
+import net.iubris.facri._di.annotation.filenamefilter.PostFilenameFilter;
+import net.iubris.facri.model.Comment;
 import net.iubris.facri.model.Comments;
 import net.iubris.facri.model.Post;
 import net.iubris.facri.model.Posts;
@@ -26,97 +31,238 @@ public class JSONParser {
 	private String feedsDataDir;
 	private String feedsFriendsDataDir;
 	private String feedsMeDataDir;
-	private String friendsIds;
-	private String friendsLikesDir;
+//	private String friendsIds;
+//	private String friendsLikesDir;
+//	
+	private JsonXMLMapper<Posts> postsMapper;
+	private JsonXMLMapper<Comments> commentsMapper;
 	
-	private FilenameFilter postsFileFilenameFilter = new FilenameFilter() {
-		@Override
-		public boolean accept(File dir, String name) {
-			if (name.equals("posts.json"))
-				return true;
-			return false;
-		}
-	};
+	private FilenameFilter postFilesFilenameFilter;
 	
-	private FilenameFilter commentsFileFilenameFilter = new FilenameFilter() {
-		@Override
-		public boolean accept(File dir, String name) {
-			if (name.equals("comments.json"))
-				return true;
-			return false;
-		}
-	};
+	private FilenameFilter commentFilesFilenameFilter;
 
-	public JSONParser(String dataRootDir) {
+	private Map<String, User> useridToUserMap;
+
+	@Inject
+	public JSONParser(
+			@Named("data_root_dir_path") String dataRootDirPath,
+			@Named("feeds_dir_relative_path") String feedsDirRelativePath,
+			@Named("feeds_me_dir_relative_path") String feedsMeDirRelativePath,
+			@Named("feeds_friends_dir_relative_path") String feedsFriendsDirRelativePath,
+			@Named("friends_ids_file") String friendsIdsFileRelativePath,
+			@Named("friends_like_dir_relative_path") String friendsLikesDirRelativePath,
+			
+//			@Named("post_file_regex") String postFileRegex,
+//			@Named("comment_file_regex") String commentFileRegex,
+			
+			@PostFilenameFilter FilenameFilter postFilenameFilter,
+			@CommentFilenameFilter FilenameFilter commentFilenameFilter,
+			
+			JsonXMLMapper<Posts> postsMapper,
+			JsonXMLMapper<Comments> commentsMapper) {
+
+		this.feedsDataDir = dataRootDirPath+File.separatorChar+feedsDirRelativePath;		
+		this.feedsMeDataDir = feedsDirRelativePath+File.separatorChar+feedsMeDirRelativePath;		
+		this.feedsFriendsDataDir = feedsDataDir+File.separatorChar+feedsFriendsDirRelativePath;		
+//		this.friendsIds = dataRootDirPath+File.separatorChar+friendsIdsFileRelativePath;		
+//		this.friendsLikesDir = dataRootDirPath+File.separatorChar+friendsLikesDirRelativePath;
 		
-		this.feedsDataDir = dataRootDir+File.separatorChar+"feeds";
-		this.feedsMeDataDir = feedsDataDir+File.separatorChar+"me";
-		this.feedsFriendsDataDir = feedsDataDir+File.separatorChar+"friends";
+		this.postFilesFilenameFilter = postFilenameFilter;
+		this.commentFilesFilenameFilter = commentFilenameFilter;
+
+		this.postsMapper = postsMapper;
+		this.commentsMapper = commentsMapper;
 		
-		this.friendsIds = dataRootDir+File.separatorChar+"friends_ids.txt";
-		
-		this.friendsLikesDir = dataRootDir+File.separatorChar+"likes";
+		useridToUserMap = new ConcurrentHashMap<>();
 	}
 
 	public void parseFeed() throws JAXBException, FileNotFoundException, XMLStreamException {
 		
-		JsonXMLMapper<Posts> mapper = new JsonXMLMapper<Posts>(Posts.class);
-		
-		File friendsDataDir = new File(feedsFriendsDataDir);
-System.out.println(friendsDataDir);
-		List<File> friendsDirs = Arrays.asList( new File(feedsFriendsDataDir).listFiles() );
-		
-		
-		Map<String,User> usersMap = new ConcurrentHashMap<>();
+//		Map<String,User> usersMap = new ConcurrentHashMap<>();
 		
 //		sequentialWay(friendsDirs, mapper);
-		parallelWay(friendsDirs, usersMap, mapper);
-		
+		parallelWay( getDirectories(feedsFriendsDataDir));
+		parallelWay( getDirectories(feedsMeDataDir) );
 	}
 	
-	protected void parallelWay(List<File> friendsDirs, Map<String,User> map, JsonXMLMapper<Posts> mapper) {
+	private List<File> getDirectories(String dirName) {
+		List<File> dataDirs = Arrays.asList( new File(dirName).listFiles() );
+		return dataDirs;
+	}
+	
+	protected void parallelWay(List<File> friendsDirs) {
 		Date start = new Date();
 		friendsDirs.parallelStream().forEach( new Consumer<File>() {
 			@Override
 			public void accept(File userDir) {
-				// userId is sourceId, that is the wall containing the post
-				String userId = userDir.getName();
+				// userId is Post.sourceId, that is the id of user which wall contains the post
+				String owningWallUserId = userDir.getName();
 				File[] files = userDir.listFiles();
 				
 				if (files.length==0)
 					return;
-				File userFeedsJsonFile = userDir.listFiles(postsFileFilenameFilter)[0];
-				File commentsJsonFile = userDir.listFiles(commentsFileFilenameFilter)[0];
+				File userFeedsJsonFile = userDir.listFiles(postFilesFilenameFilter)[0];
+				
 //				System.out.println(userFeedsJsonFile.getName());
 				try {
-					Posts posts = mapper.readObject( new FileReader(userFeedsJsonFile) );
-					Comments comments = mapper.readObject( new FileReader(commentsJsonFile));
+					Posts posts = postsMapper.readObject( new FileReader(userFeedsJsonFile) );					
 					for (Post post: posts.getPosts()) {
 //						System.out.print(post.getPostId()+" ");
 						// the actorId is the post author id
 						String actorPostId = post.getActorId();
-						
+
 						// we use actorId because a wall contains both posts 
-						// from owner (actorId = userDir) or other users (actorId != userDir) 
-						User user = null;
-						if (map.containsKey(actorPostId)) {
-							user = map.get(actorPostId);
-						} else {
-							user = new User();
-							map.put(actorPostId, user);
+						// from owner (actorId == userDir) or other users (actorId != userDir) 
+						User user = isExistentUserOrCreateEmpty(actorPostId);
+						user.addOwnPost(post); // always add post to its author
+						
+						if (actorPostId==owningWallUserId) { // post author is the wall owner 
+							handleActorUser(user, post);
+						} else if (actorPostId!=owningWallUserId ) {
+							handleTargetUser(user, post, owningWallUserId);
 						}
-						buildUser(user, post, actorPostId, userId);
+
+						handleTags(post, user, post.getTaggedIDs());
+						handleTags(post, user, post.getWithTaggedFriendsIDs() );
+						
+						handleLikes(post.getLikesInfo().getFriendsUserIDs(), user, owningWallUserId);
+						handleLikes(post.getLikesInfo().getSamplesUserIDs(), user, owningWallUserId);
+						
+						
+						if (post.getCommentInfo().getCommentCount() >0) {
+							File commentsJsonFile = userDir.listFiles(commentFilesFilenameFilter)[0];
+							Comments comments = commentsMapper.readObject( new FileReader(commentsJsonFile));
+							parseComments(comments,owningWallUserId);
+						}						
+						
 					}
 //					System.out.println("\n");
 				} catch (FileNotFoundException | JAXBException | XMLStreamException e) {
 					e.printStackTrace();
 				}
-				
 			}
 		});
 		Date end = new Date();
 		double finish = (end.getTime()-start.getTime())/1000f;
 		System.out.println( "parallel way in: "+finish+"s" );
+	}
+		
+	private void handleActorUser(User user, Post post) {
+		int shareCount = post.getShareCount();
+		if (shareCount >0)
+			user.incrementOwnPostResharing(shareCount);
+	}
+	
+	private void handleTargetUser(User user, Post post, String targetUserId) {
+//		user.addToSomeoneElsePost(targetUserId, post);
+		user.getOtherUserMapInteractions(targetUserId).addPost(post);
+	}
+	
+	private void buildUser(User user, Post post, String actorId, String sourceId, Map<String, User> useridToUserMap) {
+
+//		// associate the post to user/author
+//		String sourceID = post.getSourceID(); // where the post is
+//		// if the postActorId is the same of sourceId, 
+//		// the post exists in the own author wall,
+//		// elsewhere is on his friend wall
+//		if (sourceID == actorId) {
+//			user.addOwnPost(post);
+//		} else {
+//			// maintain a reference to target user
+//			User targetUser = isExistentUserOrCreateEmpty(useridToUserMap, userId);  
+//			user.addToSomeoneElsePost(sourceId, post);
+//		}
+		
+		// in degree
+
+//		if (post.getCommentInfo().getCommentCount() >0) {
+//			File commentsJsonFile = userDir.listFiles(commentFilesFilenameFilter)[0];
+//			Comments comments = commentsMapper.readObject( new FileReader(commentsJsonFile));
+//			parseComments(user,comments);
+//		}
+		
+//		int shareCount = post.getShareCount();
+//		if (shareCount >0)
+//			user.incrementOwnPostResharing(shareCount);
+		
+		
+//		post.getPermalink()
+			
+
+		// out degree
+//		user.getPostInteractions().getTargetedTo().add( post.getTaggedIDs() );
+//		user.getPostInteractions().getTargetedTo().add( post.getWithTaggedFriendsIDs() );
+			
+//		CommentInfo commentInfo = post.getCommentInfo();
+//		commentInfo.getCommentCount();
+//		Comments comments; 
+//		List<CommentData> commentData = comments.getCommentData();
+//		for (CommentData comment : commentData) {
+//			comment.getFromId();
+//		}
+
+	}
+	
+	private void handleTags(Post post, User user, Set<String> taggedIds) {
+		for (String taggedId : post.getTaggedIDs()) {
+			/*
+			Map<String, Interactions> otherUsersMapInteractions = user.getOtherUsersMapInteractions();
+			Interactions interactions = null;
+			if (!otherUsersMapInteractions.containsKey(taggedId)) {
+				interactions = new Interactions();
+				otherUsersMapInteractions.put(taggedId, interactions);
+			} else {
+				interactions = otherUsersMapInteractions.get(taggedId);
+			}
+			interactions.incrementTags();
+			*/
+			user.getOtherUserMapInteractions(taggedId).incrementTags();
+			
+		}
+	}
+	
+	/**
+	 * here we handle the post likes: maintain a counter for interacting user, that is:
+	 * "if a user like a post, then he interacts with an other user (friends or not) which wall 
+	 * is containing the post; in addition, a counter for liked post is incremented, in actor user instance   
+	 * @param likingUsersIds
+	 * @param wallOwnerId
+	 */
+	private void handleLikes(Set<String> likingUsersIds, User actorUser, String wallOwnerId) {
+		// interactingUsersIds are owning wall user's friends or not - it depends on wall privacy		
+		int howLikes = likingUsersIds.size();
+		if (howLikes >0) {
+			for (String interactingUserId : likingUsersIds) {
+				User interactingUser = isExistentUserOrCreateEmpty(interactingUserId);
+				useridToUserMap.put(interactingUserId, interactingUser);
+				
+				// create user if it doesn't exist
+				if (!useridToUserMap.containsKey(wallOwnerId))
+					useridToUserMap.put(wallOwnerId, isExistentUserOrCreateEmpty(wallOwnerId));
+				
+				interactingUser.getOtherUserMapInteractions(wallOwnerId).incrementLikes();
+			}
+			actorUser.incrementOwnPostsLiking(howLikes);
+		}
+	}
+	
+	private void parseComments(Comments comments, String owningWallUserId) {
+		for (Comment comment: comments.getComments()) {
+			String commentingUserId = comment.getFromId();
+			User commentingUser = isExistentUserOrCreateEmpty(commentingUserId);
+			commentingUser.getOtherUserMapInteractions(owningWallUserId).incrementComments();
+		}
+	}
+	
+	private User isExistentUserOrCreateEmpty(String userId) {
+		User user = null;
+		if (useridToUserMap.containsKey(userId)) {
+			user = useridToUserMap.get(userId);
+		} else {
+			user = new User();
+			useridToUserMap.put(userId, user);
+		}
+		return user;
 	}
 	
 	protected void sequentialWay (List<File> friendsDirs, JsonXMLMapper<Posts> mapper) throws FileNotFoundException, JAXBException, XMLStreamException {
@@ -129,9 +275,9 @@ System.out.println(friendsDataDir);
 			File userFeedsJsonFile = userDir.listFiles()[0];
 			
 			Posts posts = mapper.readObject( new FileReader(userFeedsJsonFile) );
-			for (Post post: posts.getPosts()) {
-//				System.out.print(post.getPostId()+" ");
-			}
+//			for (Post post: posts.getPosts()) {
+////				System.out.print(post.getPostId()+" ");
+//			}
 //			System.out.println("\n");
 		}
 		Date end = new Date();
@@ -139,61 +285,4 @@ System.out.println(friendsDataDir);
 		System.out.println( "sequenzial way in: "+finish+"s" );
 	}
 	
-	
-	private void buildUser(User user, Post post, String actorId, String sourceId) {
-		// here we have a builded user with userId = [post]ActorId
-//		String userId = user.getId();
-		/* PSEUDO_CODE
-		
-		 	if (actorId == userId)
-		 		user.getOwnPost.add(post)
-		 	else
-		 		user.getElsewherepost.add(post)
-			
-		*/
-		// if the user is post author...
-//		if (userId.equals( postActorId ) ) {			 
-			
-			// associate the post to user/author
-			String sourceID = post.getSourceID(); // where the post is
-			// if the postActorId is the same of sourceId, 
-			// the post exists in the own author wall,
-			// elsewhere is on his friend wall
-			if (sourceID == actorId) {
-				user.getOwnPosts().add(post);
-			} else {
-				user.getElsewhereToPosts().add(post);
-			}
-							
-			
-			// in degree	
-			post.getCommentInfo().getCommentCount()
-			post.getShareCount()
-			post.getLikesInfo().getFriendsUserIDs()
-			post.getLikesInfo().getSamplesUserIDs()
-
-//			post.getPermalink()
-			
-
-			// out degree
-			user.getPostInteractions().getTargetedTo().add( post.getTaggedIDs() );
-			user.getPostInteractions().getTargetedTo().add( post.getWithTaggedFriendsIDs() );
-			
-		CommentInfo commentInfo = post.getCommentInfo();
-	}
-	
-	/*public static void main(String[] args) {
-				
-		String FILE_PATH = "../../fbcmd/facri_output/me/836460098/output.json";
-		JSONParser jp = new JSONParser();
-		try {
-			jp.parse(new File(FILE_PATH));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		} catch (XMLStreamException e) {
-			e.printStackTrace();
-		}
-	}*/
 }

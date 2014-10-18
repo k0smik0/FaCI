@@ -1,6 +1,8 @@
-package net.iubris.facri.model;
+package net.iubris.facri.model.adapter;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+
+import net.iubris.facri.model.Type;
 
 public class TypeAdapter extends XmlAdapter<String, Type> {
 

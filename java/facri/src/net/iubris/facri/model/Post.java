@@ -9,6 +9,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import net.iubris.facri.model.adapter.DateAdapter;
+import net.iubris.facri.model.adapter.TypeAdapter;
+import net.iubris.facri.model.adapter.URLAdapter;
 /**
  * 
  * @author Massimiliano Leone - maximilianus@gmail.com - http://plus.google.com/+MassimilianoLeone

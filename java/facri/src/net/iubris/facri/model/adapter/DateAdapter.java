@@ -1,4 +1,4 @@
-package net.iubris.facri.model;
+package net.iubris.facri.model.adapter;
 
 import java.text.ParseException;
 import java.util.Date;
