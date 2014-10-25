@@ -136,7 +136,7 @@
      $post_id = $fbcmdParams[1];
 //      print "post_id ".$post_id;
 //      $fql = 'SELECT fromid,likes,post_id,text_tags FROM comment WHERE post_id IN ("'.$post_id.'") LIMIT 1,150';
-     $fql = 'SELECT fromid,text,time FROM comment WHERE object_id='.$post_id.' and parent_id=0';
+     $fql = 'SELECT fromid,time FROM comment WHERE object_id='.$post_id.' and parent_id=0';
 //      print $fql;
      try {
 	$fbReturn = $fbObject->api_client->fql_query($fql);
@@ -148,7 +148,7 @@
        $date_now = getDateNow();
        $fileNamePrefix = $post_id."_comments";
        
-       file_put_contents($fileNamePrefix.'.json', '{"comments":{"post_id":"'.$post_id.'","comment_data":"'.json_encode( $fbReturn ).'"}}' );
+       file_put_contents($fileNamePrefix.'.json', '{"comments":{"post_id":"'.$post_id.'","comment_data":'.json_encode( $fbReturn ).'}}' );
        file_put_contents($fileNamePrefix.'.fql', '{"query":{"date":"'.$date_now.'","fql":"'.$fql.'"}}');
        print $post_id." ";
      } else {

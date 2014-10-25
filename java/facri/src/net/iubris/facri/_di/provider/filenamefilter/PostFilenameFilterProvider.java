@@ -16,8 +16,13 @@ public class PostFilenameFilterProvider implements Provider<FilenameFilter> {
 	 this.filter = new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
-				if (name.matches(postFileRegex))
+				if (name.startsWith("posts") && name.endsWith(".json")) {
+//				if (name.matches(postFileRegex)) {
+//					System.out.print("\t["+dir.getName()+" "+name+" "+postFileRegex+": ");
+//					System.out.println(true+"]");
 					return true;
+				}
+//				System.out.println("]");
 				return false;
 			}
 		};

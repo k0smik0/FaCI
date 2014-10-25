@@ -2,6 +2,7 @@ package net.iubris.facri.model;
 
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -78,6 +79,8 @@ public class Post {
 	@XmlElementWrapper(name="with_tags")
 //	@XmlElement(name="with_tags")
 	private Set<String> withTaggedFriendsIDs;
+
+	private List<Comment> comments;
 
 	/**
 	 * @return the post author id
@@ -190,6 +193,13 @@ public class Post {
 
 	public void setWithTaggedFriendsIDs(Set<String> withTaggedFriendsIDs) {
 		this.withTaggedFriendsIDs = withTaggedFriendsIDs;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;		
+	}
+	public List<Comment> getComments() {
+		return comments;
 	}
 	
 }

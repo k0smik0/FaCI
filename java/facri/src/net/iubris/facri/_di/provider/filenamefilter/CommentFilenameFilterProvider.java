@@ -16,8 +16,11 @@ public class CommentFilenameFilterProvider implements Provider<FilenameFilter> {
 	 this.filter = new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
-				if (name.matches(postFileRegex))
+				if (name.endsWith("comments.json")) {
+//				if (name.matches(postFileRegex)) {
+//					System.out.println(name);
 					return true;
+				}
 				return false;
 			}
 		};

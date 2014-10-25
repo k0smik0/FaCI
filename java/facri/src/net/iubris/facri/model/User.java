@@ -1,18 +1,18 @@
 package net.iubris.facri.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class User {
 
 	private String id;
 //	private int postCounter;
-	private Map<String,List<Post>> toSomeoneElsePosts = new HashMap<>();
+//	private Map<String,List<Post>> toSomeoneElsePosts = new HashMap<>();
 	private List<Post> ownPosts = new ArrayList<>();
 	private int ownPostsResharingCount;
-	private Map<String,Interactions> interactionsMap;
+	private Map<String,Interactions> interactionsMap = new ConcurrentHashMap<>();
 	private int ownPostsLiking;
 
 	public String getId() {
@@ -41,9 +41,9 @@ public class User {
 	public Map<String, List<Post>> getToSomeoneElsePosts() {
 		return toSomeoneElsePosts;
 	}*/	
-	public int howToSomeoneElsePosts(String targetUserId) {
-		return toSomeoneElsePosts.get(targetUserId).size();
-	}
+//	public int howToSomeoneElsePosts(String targetUserId) {
+//		return toSomeoneElsePosts.get(targetUserId).size();
+//	}
 
 	public void incrementOwnPostResharing(int shareCount) {
 		this.ownPostsResharingCount += shareCount;		
@@ -65,6 +65,10 @@ public class User {
 		return interactionsMap.get(targetUserId);
 	}
 
+	public int howUserInteracted() {
+		return interactionsMap.size();
+	}
+	
 	public void incrementOwnPostsLiking(int likesCount) {
 		this.ownPostsLiking += likesCount;
 	}

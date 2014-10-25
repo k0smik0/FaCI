@@ -19,7 +19,7 @@ public class DateAdapter extends XmlAdapter<String, Date> {
 	@Override
 	public Date unmarshal(String string) throws ParseException {
 //		return new Date.parse(string);
-		return new Date(string);
+		return new Date( Long.parseLong(string)*1000 );
 //		return dateFormat.parse(string);
 	}
 

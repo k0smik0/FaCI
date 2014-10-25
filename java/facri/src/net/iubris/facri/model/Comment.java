@@ -2,45 +2,34 @@ package net.iubris.facri.model;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import net.iubris.facri.model.adapter.DateAdapter;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Comment {
 
-	@XmlElement(name="from_id")
-	private String fromId;
-	
-	@XmlElement(name="text")
-	private String text;
-	
-	@XmlElement(name="time")
-	@XmlJavaTypeAdapter(DateAdapter.class)
-	private Date time;
+	@XmlElement(name="fromid")
+   private String fromId;
 
-	public final String getFromId() {
-		return fromId;
-	}
+   @XmlJavaTypeAdapter(DateAdapter.class)
+   @XmlElement(name="time")
+   private Date time;
 
-	public final void setFromId(String fromId) {
-		this.fromId = fromId;
-	}
+   public final String getFromId() {
+           return fromId;
+   }
 
-	public final String getText() {
-		return text;
-	}
+   public final Date getTime() {
+           return time;
+   }
 
-	public final void setText(String text) {
-		this.text = text;
-	}
-
-	public final Date getTime() {
-		return time;
-	}
-
-	public final void setTime(Date time) {
-		this.time = time;
-	}
+   @Override
+   public String toString() {
+           return "fromId: "+fromId+", time: "+time;
+   }
 	
 }

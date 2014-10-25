@@ -18,12 +18,12 @@ for u in $friends_ids $me_id; do
    
 #   cd $EXEC_DIR
    cd $TARGET_DIR
-   php my_fbcmd.php FLSTREAM $u 150
+   $FBCMD FLSTREAM $u 150
 #   comments_ids=$(cat posts*.json | jq ".posts"  |grep post_id | cut -d":" -f2 | sed 's/ "//g' | sed 's/",//g')
    comments_ids=$(cat posts*.json | jq '.posts[] | select((.comment_info | .comment_count != "0") or (.likes | .count !="0") or (.share_count!="0")) | .post_id')
    for c in ${comments_ids}; do
       c_id=$(echo $c | cut -d"_" -f2 | sed 's/"//g')
-      php my_fbcmd.php PCOMMENTS $c_id 150
+      echo $FBCMD PCOMMENTS $c_id 150
    done
    
 #   ls -1 *json >/dev/null && mv -i *json $TARGET_DIR 

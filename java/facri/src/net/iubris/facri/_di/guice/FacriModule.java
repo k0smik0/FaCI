@@ -9,9 +9,9 @@ import net.iubris.facri._di.annotation.filenamefilter.CommentFilenameFilter;
 import net.iubris.facri._di.annotation.filenamefilter.PostFilenameFilter;
 import net.iubris.facri._di.provider.filenamefilter.CommentFilenameFilterProvider;
 import net.iubris.facri._di.provider.filenamefilter.PostFilenameFilterProvider;
-import net.iubris.facri._di.provider.mapper.CommentsMapperProvider;
+import net.iubris.facri._di.provider.mapper.CommentsHolderMapperProvider;
 import net.iubris.facri._di.provider.mapper.PostsMapperProvider;
-import net.iubris.facri.model.Comments;
+import net.iubris.facri.model.CommentsHolder;
 import net.iubris.facri.model.Posts;
 
 import com.google.inject.AbstractModule;
@@ -37,7 +37,7 @@ public class FacriModule extends AbstractModule {
 		bind(FilenameFilter.class).annotatedWith(CommentFilenameFilter.class).toProvider(CommentFilenameFilterProvider.class);
 		
 		bind( new TypeLiteral<JsonXMLMapper<Posts>>(){}).toProvider(PostsMapperProvider.class);
-		bind( new TypeLiteral<JsonXMLMapper<Comments>>(){}).toProvider(CommentsMapperProvider.class);
+		bind( new TypeLiteral<JsonXMLMapper<CommentsHolder>>(){}).toProvider(CommentsHolderMapperProvider.class);
 
 	}
 

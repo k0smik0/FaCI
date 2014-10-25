@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="libs/guava/guava-18.0.jar"/>
 	<classpathentry kind="lib" path="libs/guice/guice-3.0.jar"/>
 	<classpathentry kind="lib" path="libs/guice/javax.inject.jar"/>
+	<classpathentry kind="lib" path="libs/guice/aopalliance.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

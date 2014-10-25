@@ -5,26 +5,23 @@ import java.io.FileNotFoundException;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
-import net.iubris.facri.config.Config;
-import net.iubris.facri.parser.JSONParser;
+import net.iubris.facri._di.guice.FacriModule;
+import net.iubris.facri.parser.PostsParser;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 
 public class Main {
 
 	public static void main(String[] args) {
 		
-		String dataRootDir;
-		if (args.length > 0 && !args[1].isEmpty())
-			dataRootDir = args[1];
-		else
-			dataRootDir = Config.DATA_ROOT_DIR;
+		Injector injector = Guice.createInjector( new FacriModule() );
 		
-		JSONParser jsonParser = new JSONParser(dataRootDir);
-		
+		PostsParser jsonParser = injector.getInstance(PostsParser.class);
 		try {
 			jsonParser.parseFeed();
 		} catch (FileNotFoundException | JAXBException | XMLStreamException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
