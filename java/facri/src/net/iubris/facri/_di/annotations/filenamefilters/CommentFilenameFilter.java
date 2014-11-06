@@ -1,4 +1,4 @@
-package net.iubris.facri._di.annotation.filenamefilter;
+package net.iubris.facri._di.annotations.filenamefilters;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,4 +11,4 @@ import javax.inject.Qualifier;
 @Qualifier
 @Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD }) 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PostFilenameFilter {}
+public @interface CommentFilenameFilter {}

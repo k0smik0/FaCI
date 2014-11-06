@@ -1,4 +1,4 @@
-package net.iubris.facri._di.provider.filenamefilter;
+package net.iubris.facri._di.providers.filenamefilters;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -7,22 +7,20 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
 
-public class PostFilenameFilterProvider implements Provider<FilenameFilter> {
+public class CommentFilenameFilterProvider implements Provider<FilenameFilter> {
 
 	private FilenameFilter filter;
 	
 	@Inject
-	public PostFilenameFilterProvider(@Named("post_file_regex") String postFileRegex) {
+	public CommentFilenameFilterProvider(@Named("comment_file_regex") String postFileRegex) {
 	 this.filter = new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
-				if (name.startsWith("posts") && name.endsWith(".json")) {
+				if (name.endsWith("comments.json")) {
 //				if (name.matches(postFileRegex)) {
-//					System.out.print("\t["+dir.getName()+" "+name+" "+postFileRegex+": ");
-//					System.out.println(true+"]");
+//					System.out.println(name);
 					return true;
 				}
-//				System.out.println("]");
 				return false;
 			}
 		};

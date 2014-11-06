@@ -5,12 +5,12 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Properties;
 
-import net.iubris.facri._di.annotation.filenamefilter.CommentFilenameFilter;
-import net.iubris.facri._di.annotation.filenamefilter.PostFilenameFilter;
-import net.iubris.facri._di.provider.filenamefilter.CommentFilenameFilterProvider;
-import net.iubris.facri._di.provider.filenamefilter.PostFilenameFilterProvider;
-import net.iubris.facri._di.provider.mapper.CommentsHolderMapperProvider;
-import net.iubris.facri._di.provider.mapper.PostsMapperProvider;
+import net.iubris.facri._di.annotations.filenamefilters.CommentFilenameFilter;
+import net.iubris.facri._di.annotations.filenamefilters.PostFilenameFilter;
+import net.iubris.facri._di.providers.filenamefilters.CommentFilenameFilterProvider;
+import net.iubris.facri._di.providers.filenamefilters.PostFilenameFilterProvider;
+import net.iubris.facri._di.providers.mappers.CommentsHolderMapperProvider;
+import net.iubris.facri._di.providers.mappers.PostsMapperProvider;
 import net.iubris.facri.model.CommentsHolder;
 import net.iubris.facri.model.Posts;
 

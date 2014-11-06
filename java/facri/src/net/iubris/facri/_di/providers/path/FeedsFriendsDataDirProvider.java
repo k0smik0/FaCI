@@ -1,4 +1,4 @@
-package net.iubris.facri._di.provider.path;
+package net.iubris.facri._di.providers.path;
 
 import javax.inject.Provider;
 

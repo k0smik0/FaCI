@@ -1,4 +1,4 @@
-package net.iubris.facri.model.adapter;
+package net.iubris.facri.model.adapters;
 
 import java.net.URL;
 

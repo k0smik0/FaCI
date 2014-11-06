@@ -1,4 +1,4 @@
-package net.iubris.facri._di.provider.mapper;
+package net.iubris.facri._di.providers.mappers;
 
 import javax.inject.Provider;
 import javax.xml.bind.JAXBException;

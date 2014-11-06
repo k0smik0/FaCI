@@ -1,13 +1,27 @@
 #!/bin/bash
 
-source etc/facri.conf
+[ -f etc/facri.conf ] && source etc/facri.conf
 
-friends_ids=$($FACRI_ROOT/bin/facri-friends.sh)
+source bin/facri-friends.sh
 
-OUTPUT=$FACRI_OUTPUT/mutual/
+# friends_ids=$($FACRI_ROOT/bin/facri-friends.sh)
 
-for i in ${friends_ids};
-do
-   TARGET=$OUTPUT/${i}_-_mutual_friends
-   $FBCMD mutual $i > $TARGET
-done
+friends_ids=$(getFriends)
+
+function getMutualFriends() {
+
+  local OUTPUT=$FACRI_OUTPUT/mutual_friends
+
+  [ -d $OUTPUT ] || mkdir $OUTPUT
+
+  for i in ${friends_ids};
+  do
+      echo -n "acting on ${i}: "
+      local TARGET=$OUTPUT/${i}_-_mutual_friends
+      $FBCMD mutual $i > $TARGET
+      [ $(ls -s $TARGET | cut -d" " -f1) -gt 0 ] && echo "ok" || echo "error"
+  done
+
+}
+
+[ $1 == "mf" ] && getMutualFriends
