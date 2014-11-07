@@ -1,0 +1,4 @@
+function getMe() {
+  me_id=$($FBCMD whoami | awk '{print $1}')
+  echo $me_id
+}

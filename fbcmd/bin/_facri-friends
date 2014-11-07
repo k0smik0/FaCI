@@ -1,20 +1,16 @@
-#!/bin/bash
-
 [ -f etc/facri.conf ] && source etc/facri.conf
 
 function getFriends() {
-  OUT_FILE=$FACRI_OUTPUT/friends_ids.txt
+  local out_file=${FACRI_OUTPUT}/friends_ids.txt
 
-  if [ -f ${OUT_FILE} ]
+  local friends_ids
+  if [ -f ${out_file} ]
   then
-    friends_ids=$(cat ${OUT_FILE}) 
+    friends_ids=$(cat ${out_file}) 
   else
     friends_ids=$($FBCMD friends | awk '{print $1}' | grep -v ID | sort -n)
-    echo $friends_ids > ${OUT_FILE}
+    echo $friends_ids > ${out_file}
   fi
 
   echo ${friends_ids}
 }
-
-[ $# == "get" ] && getFriends
-

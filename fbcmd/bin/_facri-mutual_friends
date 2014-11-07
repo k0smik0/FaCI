@@ -1,0 +1,13 @@
+[ -f etc/facri.conf ] && source etc/facri.conf
+
+source bin/_facri-friends.sh
+
+function getMutualFriends() {
+  local user=$1
+  target_dir=${FACRI_OUTPUT}/friends/${user}
+  [ -d $target_dir ] || mkdir $target_dir
+  echo -n -e "\t${i}'s mutual friends: "
+  local target=$target_dir/mutual_friends
+  $FBCMD mutual $user > $target
+  [ $(ls -s $target | cut -d" " -f1) -gt 0 ] && echo "ok" || echo "empty"
+}

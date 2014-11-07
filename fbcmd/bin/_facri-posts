@@ -1,0 +1,9 @@
+function getPosts() {
+  local $user=$1
+  local target_dir=${FACRI_OUTPUT}/friends/$user/feeds
+  [ -d ${target_dir} ] || mkdir -p ${target_dir}
+  cd $target_dir
+  echo -n -e "\t${i}'s posts: "
+  $FBCMD FLSTREAM $user 150
+  [ $(find . -type f -iname "posts*.json" | wc -l) -gt 0 ] && echo "ok" || echo "error"
+}

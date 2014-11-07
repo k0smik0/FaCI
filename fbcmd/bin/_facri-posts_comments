@@ -1,0 +1,17 @@
+
+function getCommentsCore() {
+  local target_dir=$1
+  cd $target_dir
+  # posts_ids with non-zero comments
+  local posts_ids=$(cat posts*.json | jq '.posts[] | select((.comment_info | .comment_count != "0") or (.likes | .count !="0") or (.share_count!="0")) | .post_id')
+  #   echo posts_ids $posts_ids
+  local tot_post_ids=$(echo $posts_ids | wc -w)
+#   echo $tot_post_ids posts
+  for post_id in ${posts_ids}; do
+    local post_id=$(echo $post_id | cut -d"_" -f2 | sed 's/"//g')
+    echo -n -e "\t\t\t$post_id: "
+    [ -f "${post_id}_comments.json" ] && echo "existant, skip." && continue
+    local s=$($FBCMD PCOMMENTS $post_id 150) 
+    [ $s ] && echo "ok." || echo "empty."
+  done
+}
