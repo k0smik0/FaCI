@@ -1,0 +1,30 @@
+NAME          FRIEND_NAME                      FRIEND_UID
+PaPino Fazio  Sara Manfredi                    603716019
+              Domna Soisseubuda                659780554
+              Circe Cagliostro                 751502974
+              Rocco Spagnoletta                1003742112
+              Fabio Malvestiti                 1075460773
+              Vag Spazio Libero Autogestito    1190114289
+              Planimetrie Culturali            1340266499
+              Marco Prati                      1353053028
+              Luigi Fazio                      1475837888
+              Mariangela Perone                1478113265
+              Leggere Strutture Profilo Pieno  1493432158
+              Luigi Ritacco                    1520038290
+              Paola Paoletta Nigro             1544416648
+              Mimmo Albano                     1550065701
+              Nikò Vitiello                   1556264029
+              Oscar Serio                      1577119215
+              Carlito's Mossuto                1578647222
+              Red Ip                           1579172220
+              Mrnomoney Bluesband              1643448655
+              Bologna Undrgrnd Mvmnt           1784412457
+              Zeduardo Martins                 100000274192255
+              Il Barattolo                     100000437562594
+              Massimo Marga                    100000460797181
+              Libreria Ubik Irnerio            100000642204643
+              Universo Interculturale          100001079463242
+              Antonino Barresi                 100001291308549
+              Viola Violet                     100001693022196
+              Mille Novecento Ottanta Quattro  100003142745920
+              Rosticciamo Palermo Bologna      100003676567468

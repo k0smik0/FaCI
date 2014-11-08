@@ -1,0 +1,2 @@
+NAME            FRIEND_NAME         FRIEND_UID
+UT Uno Tempore  Giuseppe Salvatore  100000121438746

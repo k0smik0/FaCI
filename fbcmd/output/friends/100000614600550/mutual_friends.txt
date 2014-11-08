@@ -1,0 +1,28 @@
+NAME     FRIEND_NAME                       FRIEND_UID
+Is Bran  Domna Soisseubuda                 659780554
+         Stefano Baffetti                  752049186
+         Rocco Spagnoletta                 1003742112
+         Consuelo Marchionni               1054171618
+         Yzu Selly                         1150567451
+         Elisa Milano                      1164788058
+         Laura Amori                       1265922058
+         Marco Prati                       1353053028
+         Chiara Dionigi                    1377861809
+         Luigi Fazio                       1475837888
+         Mariangela Perone                 1478113265
+         Luca Riviello                     1512397688
+         Paola Paoletta Nigro              1544416648
+         Mimmo Albano                      1550065701
+         Nikò Vitiello                    1556264029
+         Carlito's Mossuto                 1578647222
+         Gianluca Martino                  1583767010
+         Marco Ziglioli                    1592342186
+         Teresa VIgnola                    1645624410
+         Anna Maria Arcobaleno Arcobaleno  1651050691
+         Massimo Marga                     100000460797181
+         Antonino Barresi                  100001291308549
+         Honkytonk Lardrockcafè           100001638152391
+         Viola Violet                      100001693022196
+         Federica Riviello                 100002768706225
+         Mille Novecento Ottanta Quattro   100003142745920
+         Rebecca Di Santo                  100006680409617

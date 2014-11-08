@@ -11,7 +11,7 @@ public class ParsingUtils {
 		if (useridToUserMap.containsKey(userId)) {
 			user = useridToUserMap.get(userId);
 		} else {
-			user = new User();
+			user = new User(userId);
 			useridToUserMap.put(userId, user);
 		}
 		return user;

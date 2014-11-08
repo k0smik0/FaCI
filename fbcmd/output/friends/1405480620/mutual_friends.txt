@@ -1,0 +1,6 @@
+NAME   FRIEND_NAME          FRIEND_UID
+Va Le  Lima Nera            1256518516
+       Antonio Siddiolo     1547402711
+       Giuseppe Altamura    1558260213
+       Ilaria Dragmetohell  1745385892
+       Marco IU Toscano     100000914628671

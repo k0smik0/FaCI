@@ -1,0 +1,3 @@
+NAME                    FRIEND_NAME    FRIEND_UID
+Szymon Tomasz Stefanek  Luca Rimondi   699749567
+                        Elvio Basello  1581378866

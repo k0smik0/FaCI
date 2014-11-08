@@ -1,0 +1,7 @@
+NAME               FRIEND_NAME            FRIEND_UID
+Giuseppe Altamura  Monica Settembrini     1347703224
+                   Va Le                  1405480620
+                   Laura Palomba          1564129646
+                   Ilaria Dragmetohell    1745385892
+                   De La Tourette Gilles  100004427701083
+                   Ester Grossi           100004559771088

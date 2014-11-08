@@ -1,0 +1,6 @@
+NAME                FRIEND_NAME       FRIEND_UID
+Erika Weeda Sticca  Tarippo Filozzi   1048221446
+                    Daddà Daddareia  1148213848
+                    Sara Colonnello   1575157543
+                    Federica Riggi    100001652030919
+                    Daniela Pulciosa  100001892187077

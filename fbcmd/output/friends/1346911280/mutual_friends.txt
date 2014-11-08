@@ -1,0 +1,4 @@
+NAME            FRIEND_NAME     FRIEND_UID
+Temper Tantrum  Laura Wong      100000642576173
+                Federica Riggi  100001652030919
+                La Novakova     100001952146734

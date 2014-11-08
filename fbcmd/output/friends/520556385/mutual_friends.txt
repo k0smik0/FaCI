@@ -1,0 +1,7 @@
+NAME              FRIEND_NAME            FRIEND_UID
+Srđan Šrepfler  Silvia Cereda          572102924
+                  Roberto Michelini      572171136
+                  Davide Bellettini      1187093618
+                  Planimetrie Culturali  1340266499
+                  Giuseppe Salvatore     100000121438746
+                  Covo Bologna           100000740247424

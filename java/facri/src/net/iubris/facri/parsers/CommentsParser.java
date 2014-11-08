@@ -11,8 +11,8 @@ import javax.inject.Inject;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
-import net.iubris.facri._di.annotations.filenamefilters.CommentFilenameFilter;
-import net.iubris.facri._di.guice.FacriModule;
+import net.iubris.facri._di.annotations.filenamefilters.CommentsFilenameFilter;
+import net.iubris.facri._di.guice.module.FacriModule;
 import net.iubris.facri._di.providers.mappers.CommentsHolderMapperProvider;
 import net.iubris.facri.model.Comment;
 import net.iubris.facri.model.CommentsHolder;
@@ -30,7 +30,7 @@ public class CommentsParser {
 	private final FilenameFilter commentFilesFilenameFilter;
 
 	@Inject
-	public CommentsParser(JsonXMLMapper<CommentsHolder> commentsMapper, @CommentFilenameFilter FilenameFilter commentFilesFilenameFilter) {
+	public CommentsParser(JsonXMLMapper<CommentsHolder> commentsMapper, @CommentsFilenameFilter FilenameFilter commentFilesFilenameFilter) {
 		this.commentsMapper = commentsMapper;
 		this.commentFilesFilenameFilter = commentFilesFilenameFilter;
 	}

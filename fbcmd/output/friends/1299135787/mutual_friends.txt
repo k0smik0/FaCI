@@ -1,0 +1,5 @@
+NAME               FRIEND_NAME             FRIEND_UID
+Benedetta Parenza  Marco Prati             1353053028
+                   Manuela Iezzi           1465267665
+                   Benedetta De Benedetto  1768059667
+                   Giuseppe Salvatore      100000121438746

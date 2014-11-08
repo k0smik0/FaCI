@@ -1,0 +1,24 @@
+NAME               FRIEND_NAME               FRIEND_UID
+Davide Bellettini  Srđan Šrepfler          520556385
+                   Domenico Loparco          564772809
+                   Silvia Cereda             572102924
+                   Francesco Di Cintio       590651024
+                   Cristian Iannuzzi         669584808
+                   Antonio Marotta           677317169
+                   Federico Stanzani         701600541
+                   Emanuele Zullo            733285873
+                   Vincenzo Caminiti         1095862165
+                   Andrea Faratro            1206710771
+                   Carlo Maiorano            1264640018
+                   Fabio Bombi               1267867050
+                   Alessio Ridolfi           1393294075
+                   Marcelo Baumann Gonzales  1461082972
+                   Matteo Fazi               1462203855
+                   Andrea Candini            1489906719
+                   Nicola Ticca              1500995833
+                   Sabe Bauhaus Spiga        1557964253
+                   Fabio Bob's Burger        1569649317
+                   Francesco Apollonio       1802162943
+                   Giuseppe Salvatore        100000121438746
+                   Lab Sedici                100000487715596
+                   Christian Quintili        100001005424972

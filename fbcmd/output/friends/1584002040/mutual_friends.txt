@@ -1,0 +1,5 @@
+NAME      FRIEND_NAME            FRIEND_UID
+Tommi Se  Martina Romanelli      692951915
+          Giorgio Leone          1311855495
+          Andrea Leonzi          1321023144
+          Benedetta Dal Signore  100001677596972

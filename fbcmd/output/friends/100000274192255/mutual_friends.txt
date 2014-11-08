@@ -1,0 +1,32 @@
+NAME              FRIEND_NAME                      FRIEND_UID
+Zeduardo Martins  Domna Soisseubuda                659780554
+                  Circe Cagliostro                 751502974
+                  TakeFive Bologna                 1007709317
+                  Consuelo Marchionni              1054171618
+                  Yzu Selly                        1150567451
+                  Vag Spazio Libero Autogestito    1190114289
+                  PaPino Fazio                     1246760058
+                  Giardini Sonori                  1337746570
+                  Luigi Fazio                      1475837888
+                  Leggere Strutture Profilo Pieno  1493432158
+                  Davide Garattoni                 1527332539
+                  Officina della Musica            1536653620
+                  Paola Paoletta Nigro             1544416648
+                  Nikò Vitiello                   1556264029
+                  Oscar Serio                      1577119215
+                  Carlito's Mossuto                1578647222
+                  Cinzia Ganesh                    1590354310
+                  Fienile Fluò                    1628360351
+                  Massimo Di Stefano               1629302317
+                  Mrnomoney Bluesband              1643448655
+                  Lab Sedici                       100000487715596
+                  Cortilecafe Contatti             100000509863756
+                  Museo Musica Bologna             100000949851672
+                  Universo Interculturale          100001079463242
+                  Ca de Mandorlibis                100001263757955
+                  Antonino Barresi                 100001291308549
+                  Honkytonk Lardrockcafè          100001638152391
+                  Chattanooga Bologna              100002630417624
+                  Meryxm Fioravanti                100002815756523
+                  Mille Novecento Ottanta Quattro  100003142745920
+                  Sob Prod                         100003829702779

@@ -1,0 +1,5 @@
+NAME               FRIEND_NAME         FRIEND_UID
+Laura Ma Anche No  Rosita Baiamonte    1072707489
+                   Aurora Vitellaro    1438698037
+                   Federica Attinelli  100000829985107
+                   Pollon dell'Olimpo  100000835554129

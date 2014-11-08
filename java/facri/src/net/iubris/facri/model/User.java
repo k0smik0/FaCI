@@ -1,8 +1,10 @@
 package net.iubris.facri.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class User {
@@ -10,10 +12,16 @@ public class User {
 	private String id;
 //	private int postCounter;
 //	private Map<String,List<Post>> toSomeoneElsePosts = new HashMap<>();
-	private List<Post> ownPosts = new ArrayList<>();
+	final private List<Post> ownPosts = new ArrayList<>();
 	private int ownPostsResharingCount;
-	private Map<String,Interactions> interactionsMap = new ConcurrentHashMap<>();
+	final private Map<String,Interactions> interactionsMap = new ConcurrentHashMap<>();
 	private int ownPostsLiking;
+	final private Set<String> mutualFriends = new HashSet<>();
+	
+	
+	public User(String userId) {
+		this.id = userId;
+	}
 
 	public String getId() {
 		return id;
@@ -76,4 +84,10 @@ public class User {
 		return ownPostsLiking;
 	}
 
+	public void addMutualFriend(String friendId) {
+		mutualFriends.add(friendId);		
+	}
+	public Set<String> getMutualFriends(){
+		return mutualFriends;
+	}
 }

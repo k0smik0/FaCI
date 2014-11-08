@@ -1,0 +1,2 @@
+NAME              FRIEND_NAME      FRIEND_UID
+Rodolfo Barbieri  Laura Camellini  100003532354877

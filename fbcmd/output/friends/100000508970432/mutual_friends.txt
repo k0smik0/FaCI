@@ -1,0 +1,12 @@
+NAME            FRIEND_NAME             FRIEND_UID
+Bologna WhyNot  Yzu Selly               1150567451
+                D.j. Dylan Drogs        1559337535
+                Bologna Undrgrnd Mvmnt  1784412457
+                Clementina Garulli      1825677330
+                Sette Archi Bologna     100000179415374
+                Lab Sedici              100000487715596
+                Cortilecafe Contatti    100000509863756
+                Ristorante-Gran Sasso   100000599363299
+                La Tua Piadina          100002294510758
+                Osteria Broccaindosso   100002361611588
+                Chattanooga Bologna     100002630417624

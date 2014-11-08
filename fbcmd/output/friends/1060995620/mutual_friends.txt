@@ -1,0 +1,12 @@
+NAME              FRIEND_NAME                       FRIEND_UID
+Mariella Vignola  Rocco Spagnoletta                 1003742112
+                  Yzu Selly                         1150567451
+                  Marco Prati                       1353053028
+                  Mariangela Perone                 1478113265
+                  Luca Riviello                     1512397688
+                  Mimmo Albano                      1550065701
+                  Teresa VIgnola                    1645624410
+                  Anna Maria Arcobaleno Arcobaleno  1651050691
+                  Massimo Marga                     100000460797181
+                  Federica Riviello                 100002768706225
+                  Ludovica Gallucci                 100003332784039

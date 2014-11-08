@@ -1,0 +1,35 @@
+NAME                 FRIEND_NAME                      FRIEND_UID
+Sette Archi Bologna  Diamante Gallina                 567278625
+                     Zerocinquantuno Bar              1306021650
+                     Giardini Sonori                  1337746570
+                     Planimetrie Culturali            1340266499
+                     Marco Prati                      1353053028
+                     Retrobottega Bologna             1476666278
+                     Leggere Strutture Profilo Pieno  1493432158
+                     Memento Eventi                   1516178922
+                     Davide Garattoni                 1527332539
+                     Officina della Musica            1536653620
+                     Circoloquace Bologna             1540724040
+                     RockcityNight Bologna            1552176403
+                     Red Ip                           1579172220
+                     Cinzia Ganesh                    1590354310
+                     Fienile Fluò                    1628360351
+                     Massimo Di Stefano               1629302317
+                     Mrnomoney Bluesband              1643448655
+                     Clementina Garulli               1825677330
+                     Lab Sedici                       100000487715596
+                     Bologna WhyNot                   100000508970432
+                     Cortilecafe Contatti             100000509863756
+                     Libreria Ubik Irnerio            100000642204643
+                     Covo Bologna                     100000740247424
+                     Christian Quintili               100001005424972
+                     Universo Interculturale          100001079463242
+                     Ca de Mandorlibis                100001263757955
+                     Vitruvio Bologna                 100001822266982
+                     La Tua Piadina                   100002294510758
+                     Osteria Broccaindosso            100002361611588
+                     Villa Mazzacorati                100002451954229
+                     Chattanooga Bologna              100002630417624
+                     Bologna Magica Mutus Liber       100002748805974
+                     Meryxm Fioravanti                100002815756523
+                     Mille Novecento Ottanta Quattro  100003142745920

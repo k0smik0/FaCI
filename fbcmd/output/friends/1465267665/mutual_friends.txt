@@ -1,0 +1,11 @@
+NAME           FRIEND_NAME             FRIEND_UID
+Manuela Iezzi  Francesco Di Cintio     590651024
+               Laura Pasquini          862830703
+               Francesca Api           1249174445
+               Benedetta Parenza       1299135787
+               Antonio Passarelli      1386767517
+               Matteo Fazi             1462203855
+               Viviana Di Pietro       1474636824
+               Benedetta De Benedetto  1768059667
+               Giuseppe Salvatore      100000121438746
+               Viola Violet            100001693022196

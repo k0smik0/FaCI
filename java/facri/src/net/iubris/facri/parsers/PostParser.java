@@ -64,8 +64,9 @@ public class PostParser {
 				useridToUserMap.put(interactingUserId, interactingUser);
 				
 				// create user if it doesn't exist
-				if (!useridToUserMap.containsKey(wallOwnerId))
-					useridToUserMap.put(wallOwnerId, ParsingUtils.isExistentUserOrCreateEmpty(wallOwnerId, useridToUserMap));
+//				if (!useridToUserMap.containsKey(wallOwnerId))
+//					useridToUserMap.put(wallOwnerId, ParsingUtils.isExistentUserOrCreateEmpty(wallOwnerId, useridToUserMap));
+				ParsingUtils.isExistentUserOrCreateEmpty(wallOwnerId, useridToUserMap);
 				
 				interactingUser.getOtherUserMapInteractions(wallOwnerId).incrementLikes();
 			}

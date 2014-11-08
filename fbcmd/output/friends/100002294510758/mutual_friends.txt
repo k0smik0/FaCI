@@ -1,0 +1,20 @@
+NAME            FRIEND_NAME                      FRIEND_UID
+La Tua Piadina  Emanuela Pergolizzi              800226939
+                Consuelo Marchionni              1054171618
+                Zerocinquantuno Bar              1306021650
+                Retrobottega Bologna             1476666278
+                Leggere Strutture Profilo Pieno  1493432158
+                Red Ip                           1579172220
+                Cinzia Ganesh                    1590354310
+                Massimo Di Stefano               1629302317
+                Sette Archi Bologna              100000179415374
+                Il Barattolo                     100000437562594
+                Lab Sedici                       100000487715596
+                Bologna WhyNot                   100000508970432
+                Ristorante-Gran Sasso            100000599363299
+                Libreria Ubik Irnerio            100000642204643
+                Universo Interculturale          100001079463242
+                Rete Boart                       100001368420968
+                Villa Mazzacorati                100002451954229
+                Chattanooga Bologna              100002630417624
+                Mille Novecento Ottanta Quattro  100003142745920

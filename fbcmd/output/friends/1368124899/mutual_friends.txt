@@ -1,0 +1,9 @@
+NAME          FRIEND_NAME                    FRIEND_UID
+Nancy Pelusi  Robertina Wednesday            695477887
+              Francesca Api                  1249174445
+              Giorgio Leone                  1311855495
+              Veronica ScemadiGuerra Crispi  1463894316
+              Sonia Antigone Zavatta         1586461351
+              Giuseppe Salvatore             100000121438746
+              Andrea Di Luzio                100000375983558
+              Christian Zizzi                100002744942683

@@ -1,0 +1,5 @@
+NAME                FRIEND_NAME          FRIEND_UID
+Osteria BoccaBuona  Zerocinquantuno Bar  1306021650
+                    Oscar Serio          1577119215
+                    Il Barattolo         100000437562594
+                    Viola Violet         100001693022196

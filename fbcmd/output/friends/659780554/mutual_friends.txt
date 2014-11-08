@@ -1,0 +1,28 @@
+NAME               FRIEND_NAME                      FRIEND_UID
+Domna Soisseubuda  Alessandro Drugo Scali           640367065
+                   Circe Cagliostro                 751502974
+                   Stefano Baffetti                 752049186
+                   Consuelo Marchionni              1054171618
+                   Yzu Selly                        1150567451
+                   PaPino Fazio                     1246760058
+                   Laura Amori                      1265922058
+                   Marco Prati                      1353053028
+                   Chiara Dionigi                   1377861809
+                   Francesco Capponi                1422401843
+                   Luigi Fazio                      1475837888
+                   Mariangela Perone                1478113265
+                   Leggere Strutture Profilo Pieno  1493432158
+                   Luca Riviello                    1512397688
+                   Paola Paoletta Nigro             1544416648
+                   Mimmo Albano                     1550065701
+                   Nikò Vitiello                   1556264029
+                   Gianluca Martino                 1583767010
+                   Marco Ziglioli                   1592342186
+                   Massimo Di Stefano               1629302317
+                   Zeduardo Martins                 100000274192255
+                   Massimo Marga                    100000460797181
+                   Is Bran                          100000614600550
+                   Antonino Barresi                 100001291308549
+                   Honkytonk Lardrockcafè          100001638152391
+                   Viola Violet                     100001693022196
+                   Federica Riviello                100002768706225

@@ -1,0 +1,4 @@
+NAME               FRIEND_NAME            FRIEND_UID
+Francesca Magurno  Luna Incantata         1204836539
+                   Roberto Di Letizia     1557106720
+                   Angela Maria Esposito  1626905945

@@ -1,0 +1,6 @@
+NAME             FRIEND_NAME             FRIEND_UID
+Risata Sguaiata  Ele Na                  678699723
+                 Riccardo Giannitrapani  741463054
+                 Antonio Siddiolo        1547402711
+                 Nikò Vitiello          1556264029
+                 Viola Violet            100001693022196

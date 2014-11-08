@@ -1,0 +1,10 @@
+NAME              FRIEND_NAME                 FRIEND_UID
+Antonio Siddiolo  Ele Na                      678699723
+                  Angi Farrah Fowler          1375975315
+                  Va Le                       1405480620
+                  Teresa Claudia Gallo Wolli  1449108101
+                  Flavia P'Chan               1747910245
+                  Anna Giordano               100000029835920
+                  Laura Wong                  100000642576173
+                  Marco IU Toscano            100000914628671
+                  Risata Sguaiata             100002956984769

@@ -1,0 +1,4 @@
+NAME                   FRIEND_NAME       FRIEND_UID
+BolognaCinema Bologna  Domenico Loparco  564772809
+                       Carlo Maiorano    1264640018
+                       Gianluca Iselli   1286239002

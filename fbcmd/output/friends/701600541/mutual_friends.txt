@@ -1,0 +1,5 @@
+NAME               FRIEND_NAME               FRIEND_UID
+Federico Stanzani  Davide Bellettini         1187093618
+                   Marcelo Baumann Gonzales  1461082972
+                   Memento Eventi            1516178922
+                   Sabe Bauhaus Spiga        1557964253

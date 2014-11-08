@@ -1,0 +1,2 @@
+NAME              FRIEND_NAME  FRIEND_UID
+Pasquale Cautela  Rò Sario    1504360075

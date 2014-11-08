@@ -1,0 +1,4 @@
+NAME              FRIEND_NAME                       FRIEND_UID
+Rebecca Di Santo  Mimmo Albano                      1550065701
+                  Anna Maria Arcobaleno Arcobaleno  1651050691
+                  Is Bran                           100000614600550

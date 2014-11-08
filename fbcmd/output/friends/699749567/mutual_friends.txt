@@ -1,0 +1,5 @@
+NAME          FRIEND_NAME             FRIEND_UID
+Luca Rimondi  Szymon Tomasz Stefanek  603549226
+              Alessandra Nontelodico  778033165
+              Lucia LuCe Centolani    1577440545
+              Scilla Limoli           100004467066436

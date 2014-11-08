@@ -1,0 +1,27 @@
+NAME                             FRIEND_NAME                      FRIEND_UID
+Leggere Strutture Profilo Pieno  Sara Manfredi                    603716019
+                                 Domna Soisseubuda                659780554
+                                 Emanuela Pergolizzi              800226939
+                                 Consuelo Marchionni              1054171618
+                                 Yzu Selly                        1150567451
+                                 PaPino Fazio                     1246760058
+                                 Dario Marino                     1331116607
+                                 Immoralia Nomade                 1463362965
+                                 Paola Paoletta Nigro             1544416648
+                                 Marco Ziglioli                   1592342186
+                                 Sesto Senso                      1613226624
+                                 Fienile Fluò                    1628360351
+                                 Massimo Di Stefano               1629302317
+                                 Mrnomoney Bluesband              1643448655
+                                 Bologna Undrgrnd Mvmnt           1784412457
+                                 Sette Archi Bologna              100000179415374
+                                 Zeduardo Martins                 100000274192255
+                                 Il Barattolo                     100000437562594
+                                 Universo Interculturale          100001079463242
+                                 Antonino Barresi                 100001291308549
+                                 Honkytonk Lardrockcafè          100001638152391
+                                 La Tua Piadina                   100002294510758
+                                 Villa Mazzacorati                100002451954229
+                                 Meryxm Fioravanti                100002815756523
+                                 Time Out                         100002967732289
+                                 Mille Novecento Ottanta Quattro  100003142745920

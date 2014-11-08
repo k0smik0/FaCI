@@ -1,0 +1,9 @@
+NAME      FRIEND_NAME                 FRIEND_UID
+Fra Poco  Marianna De Maio            544919127
+          Monica Settembrini          1347703224
+          Teresa Claudia Gallo Wolli  1449108101
+          Carmen Alfieri              1477755458
+          Carlo Paolino               1565629094
+          Floriana Flo                1633788209
+          Ilaria Dragmetohell         1745385892
+          Fiamm Etta                  100002888949752

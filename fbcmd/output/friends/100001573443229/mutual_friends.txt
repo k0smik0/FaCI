@@ -1,0 +1,8 @@
+NAME             FRIEND_NAME                    FRIEND_UID
+Janis J. Winter  Diamante Gallina               567278625
+                 TakeFive Bologna               1007709317
+                 Veronica ScemadiGuerra Crispi  1463894316
+                 Stefano Petraccia              1628266188
+                 Mrnomoney Bluesband            1643448655
+                 Christian Zizzi                100002744942683
+                 Sob Prod                       100003829702779

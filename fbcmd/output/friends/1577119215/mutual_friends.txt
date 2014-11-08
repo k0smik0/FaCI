@@ -1,0 +1,9 @@
+NAME         FRIEND_NAME           FRIEND_UID
+Oscar Serio  Diamante Gallina      567278625
+             Circe Cagliostro      751502974
+             PaPino Fazio          1246760058
+             Davide Garattoni      1527332539
+             Paola Paoletta Nigro  1544416648
+             Sesto Senso           1613226624
+             Zeduardo Martins      100000274192255
+             Osteria BoccaBuona    100001798566146

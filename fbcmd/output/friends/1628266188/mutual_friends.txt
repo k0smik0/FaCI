@@ -1,0 +1,8 @@
+NAME               FRIEND_NAME                    FRIEND_UID
+Stefano Petraccia  Robertina Wednesday            695477887
+                   Eva Verdecchia                 1182370220
+                   Giorgio Leone                  1311855495
+                   Veronica ScemadiGuerra Crispi  1463894316
+                   Giuseppe Salvatore             100000121438746
+                   Janis J. Winter                100001573443229
+                   Christian Zizzi                100002744942683

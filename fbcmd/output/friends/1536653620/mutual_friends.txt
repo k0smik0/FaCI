@@ -1,0 +1,28 @@
+NAME                   FRIEND_NAME             FRIEND_UID
+Officina della Musica  Domenico Loparco        564772809
+                       Diamante Gallina        567278625
+                       Sara Manfredi           603716019
+                       Fil Palmer              680659726
+                       Yzu Selly               1150567451
+                       Azzardo SRock           1248077592
+                       Lima Nera               1256518516
+                       Zerocinquantuno Bar     1306021650
+                       Giardini Sonori         1337746570
+                       Planimetrie Culturali   1340266499
+                       Sophie Du Monde         1396771412
+                       Davide Garattoni        1527332539
+                       Circoloquace Bologna    1540724040
+                       Cinzia Ganesh           1590354310
+                       Massimo Di Stefano      1629302317
+                       Mrnomoney Bluesband     1643448655
+                       Gart Custom Guitars     1692139995
+                       Bologna Undrgrnd Mvmnt  1784412457
+                       Sette Archi Bologna     100000179415374
+                       Zeduardo Martins        100000274192255
+                       Cortilecafe Contatti    100000509863756
+                       Covo Bologna            100000740247424
+                       MusicItaly Ritorna      100000743270013
+                       Museo Musica Bologna    100000949851672
+                       Antonino Barresi        100001291308549
+                       Rete Boart              100001368420968
+                       Meryxm Fioravanti       100002815756523

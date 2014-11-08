@@ -1,0 +1,2 @@
+NAME            FRIEND_NAME     FRIEND_UID
+Marco Spinelli  Andrea Faratro  1206710771

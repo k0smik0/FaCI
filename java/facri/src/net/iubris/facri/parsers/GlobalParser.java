@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -19,38 +20,46 @@ import net.iubris.ishtaran.gui._di.annotations.ProgressBarGlobalSize;
 
 public class GlobalParser {
 
-	private final String feedsDataDir;
+//	private final String feedsDataDir;
 	private final String feedsFriendsDataDir;
 	private final String feedsMeDataDir;
 
 	private final Map<String, User> useridToUserMap;
 	
+	private final MutualFriendsParser mutualFriendsParser;
 	private final PostsParser postsParser;
 	
 	private int userCounter;
 	
 	@ProgressBarGlobalSize
 	private int usersTotal;
+	private String meIdFileRelativePath;
+	private String feedsDirRelativePath;
+	
 
 	@Inject
 	public GlobalParser(
-			@Named("data_root_dir_path") String dataRootDirPath,
-			@Named("feeds_dir_relative_path") String feedsDirRelativePath,
+			@Named("data_root_dir_path") String dataRootDirPath, // "output"
+			@Named("feeds_dir_relative_path") String feedsDirRelativePath, // "feeds"
 			
-			@Named("feeds_me_dir_relative_path") String feedsMeDirRelativePath,
-			@Named("feeds_friends_dir_relative_path") String feedsFriendsDirRelativePath,
+			@Named("feeds_me_dir_relative_path") String feedsMeDirRelativePath, // "me"
+			@Named("feeds_friends_dir_relative_path") String feedsFriendsDirRelativePath, // "friends"
 //			
-			@Named("friends_ids_file") String friendsIdsFileRelativePath,
+			@Named("me_id_file") String meIdFileRelativePath, // me_id.txt
+			@Named("friends_ids_file") String friendsIdsFileRelativePath, // friends_ids.txt
 //			@Named("friends_like_dir_relative_path") String friendsLikesDirRelativePath,
 			
-			PostsParser postsParser
+			PostsParser postsParser,
+			MutualFriendsParser mutualFriendsParser
 			) {
 		
+		this.feedsDirRelativePath = feedsDirRelativePath;
+		this.meIdFileRelativePath = meIdFileRelativePath;
+		//		this.feedsDataDir = dataRootDirPath+File.separatorChar+feedsDirRelativePath;
+		this.feedsMeDataDir = dataRootDirPath+File.separatorChar+feedsMeDirRelativePath;
+		this.feedsFriendsDataDir = dataRootDirPath+File.separatorChar+feedsFriendsDirRelativePath;		
 		
-		this.feedsDataDir = dataRootDirPath+File.separatorChar+feedsDirRelativePath;
-		this.feedsMeDataDir = feedsDataDir+File.separatorChar+feedsMeDirRelativePath;
-		this.feedsFriendsDataDir = feedsDataDir+File.separatorChar+feedsFriendsDirRelativePath;		
-				
+		this.mutualFriendsParser = mutualFriendsParser;
 		this.postsParser = postsParser;
 		
 		this.useridToUserMap = new ConcurrentHashMap<>();
@@ -64,9 +73,9 @@ public class GlobalParser {
 
 	public void parse() throws JAXBException, FileNotFoundException, XMLStreamException {
 		
-		List<File> friendsDirectories = getDirectories(feedsFriendsDataDir);
-		File ownUserDirectory = getDirectories(feedsMeDataDir).get(0);
-		setUsersTotal((friendsDirectories.size())+1);
+		File ownUserDirectory = getDirectories(feedsMeDataDir).get(0);		
+		List<File> friendsDirectories = getDirectories(feedsFriendsDataDir);		
+		setUsersTotal( friendsDirectories.size()+1 );
 		
 System.out.println("Parsing my friends feeds:");		
 		parse( friendsDirectories );
@@ -74,6 +83,7 @@ System.out.println("Parsing my friends feeds:");
 System.out.println("");
 		
 System.out.println("Parsing my own feeds:");
+		incrementUserCounter();
 		parse( ownUserDirectory );
 	}
 	
@@ -85,16 +95,14 @@ System.out.println("Parsing my own feeds:");
 		userCounter++;
 	}
 
-	protected void parse(List<File> usersDirs) {
+	private void parse(List<File> usersDirs) {
 		Date start = new Date();
-//System.out.println("acting on "+usersTotal);
 		usersDirs.stream()
 		.parallel()
 //		.sequential()
 		.forEach( new Consumer<File>() {
 			@Override
 			public void accept(File userDir) {
-//		for (File userDir: friendsDirs) {
 				incrementUserCounter();
 				parse(userDir);
 			}
@@ -107,20 +115,20 @@ System.out.println( "parsed "+usersTotal+" users in: "+finish+"s" );
 	private void parse(File userDir) {
 		// userId is Post.sourceId, that is the id of user which wall contains the post
 		String owningWallUserId = userDir.getName();
-System.out.println("user ["+userCounter+"/"+usersTotal+"]:"+owningWallUserId);
+System.out.println("["+userCounter+"/"+usersTotal+"] user "+owningWallUserId+": ");
+		
 		File[] files = userDir.listFiles();
-		if (files.length==0) {
+		if (files.length ==0) {
 			incrementUserCounter();
 			return;
 		}
-		
+		mutualFriendsParser.parse(userDir, owningWallUserId, useridToUserMap);
 		postsParser.parse(userDir, owningWallUserId, useridToUserMap);
+		
 	}
 	
 	private List<File> getDirectories(String dirName) {
 		List<File> dataDirs = Arrays.asList( new File(dirName).listFiles() );
-//		List<File> dataDirs = new CopyOnWriteArrayList<>();
-//		dataDirs.addAll( Arrays.asList( new File(dirName).listFiles() ) );
 		return dataDirs;
 	}
 

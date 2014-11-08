@@ -1,0 +1,6 @@
+NAME                 FRIEND_NAME                      FRIEND_UID
+Emanuela Pergolizzi  Rosa Maiorana                    1267055942
+                     Leggere Strutture Profilo Pieno  1493432158
+                     Sesto Senso                      1613226624
+                     Mandovai Summer                  100001280413385
+                     La Tua Piadina                   100002294510758

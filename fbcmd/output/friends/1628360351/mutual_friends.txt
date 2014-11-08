@@ -1,0 +1,14 @@
+NAME           FRIEND_NAME                      FRIEND_UID
+Fienile Fluò  Giardini Sonori                  1337746570
+               Leggere Strutture Profilo Pieno  1493432158
+               Davide Garattoni                 1527332539
+               RockcityNight Bologna            1552176403
+               Red Ip                           1579172220
+               Massimo Di Stefano               1629302317
+               Mrnomoney Bluesband              1643448655
+               Sette Archi Bologna              100000179415374
+               Zeduardo Martins                 100000274192255
+               Museo Musica Bologna             100000949851672
+               Abruzzesi A Bologna              100001871897493
+               Cucchiaiodoro D'oro              100004426682363
+               Bentivoglio Club                 100004482155086

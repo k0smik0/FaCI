@@ -7,6 +7,8 @@ source bin/_facri-mutual_friends
 
 friends_ids=$(getFriends)
 
+# echo $friends_ids
+
 for friend_id in ${friends_ids}; do
   getMutualFriends $friend_id
 done

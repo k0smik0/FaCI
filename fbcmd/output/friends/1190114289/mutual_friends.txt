@@ -1,0 +1,27 @@
+NAME                           FRIEND_NAME              FRIEND_UID
+Vag Spazio Libero Autogestito  Sara Manfredi            603716019
+                               Alessandro Drugo Scali   640367065
+                               Serena Grazzini          659499600
+                               Circe Cagliostro         751502974
+                               Consuelo Marchionni      1054171618
+                               Yzu Selly                1150567451
+                               PaPino Fazio             1246760058
+                               Lima Nera                1256518516
+                               Sophie Du Monde          1396771412
+                               Immoralia Nomade         1463362965
+                               Luigi Fazio              1475837888
+                               Paola Paoletta Nigro     1544416648
+                               Nikò Vitiello           1556264029
+                               Gianluca Martino         1583767010
+                               Cinzia Ganesh            1590354310
+                               Sesto Senso              1613226624
+                               Massimo Di Stefano       1629302317
+                               Mrnomoney Bluesband      1643448655
+                               Bologna Undrgrnd Mvmnt   1784412457
+                               Zeduardo Martins         100000274192255
+                               Il Barattolo             100000437562594
+                               Christian Quintili       100001005424972
+                               Universo Interculturale  100001079463242
+                               Antonino Barresi         100001291308549
+                               Meryxm Fioravanti        100002815756523
+                               Time Out                 100002967732289

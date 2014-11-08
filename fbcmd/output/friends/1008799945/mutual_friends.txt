@@ -1,0 +1,6 @@
+NAME              FRIEND_NAME               FRIEND_UID
+Giorgia Baiocchi  Robertina Wednesday       695477887
+                  Micol Girardi Migliorisi  1052252922
+                  Francesca Api             1249174445
+                  Elvio Basello             1581378866
+                  Viola Violet              100001693022196

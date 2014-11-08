@@ -1,0 +1,10 @@
+NAME        FRIEND_NAME             FRIEND_UID
+Laura Wong  Temper Tantrum          1346911280
+            Monica Settembrini      1347703224
+            Viviana Llth Canale     1504298546
+            Antonio Siddiolo        1547402711
+            Mela Zoe Avvelenata     100000494169403
+            Lea Jael de Cristofaro  100000664030510
+            La Novakova             100001952146734
+            Fiamm Etta              100002888949752
+            De La Tourette Gilles   100004427701083

@@ -1,0 +1,15 @@
+NAME            FRIEND_NAME                               FRIEND_UID
+Chiara Dionigi  Domna Soisseubuda                         659780554
+                Riccardo Giannitrapani                    741463054
+                Stefano Baffetti                          752049186
+                Rocco Spagnoletta                         1003742112
+                Yzu Selly                                 1150567451
+                Francesco Capponi                         1422401843
+                Mariangela Perone                         1478113265
+                Paola Paoletta Nigro                      1544416648
+                Mimmo Albano                              1550065701
+                Gianluca Martino                          1583767010
+                Federica de Santis                        1668550495
+                Massimo Marga                             100000460797181
+                Is Bran                                   100000614600550
+                Frankenphotography Fotografia Autarchica  100000988246699

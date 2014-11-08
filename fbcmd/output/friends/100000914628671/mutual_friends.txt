@@ -1,0 +1,5 @@
+NAME              FRIEND_NAME                 FRIEND_UID
+Marco IU Toscano  Va Le                       1405480620
+                  Teresa Claudia Gallo Wolli  1449108101
+                  Antonio Siddiolo            1547402711
+                  Ilaria Dragmetohell         1745385892

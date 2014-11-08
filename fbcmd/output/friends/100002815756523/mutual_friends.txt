@@ -1,0 +1,34 @@
+NAME               FRIEND_NAME                      FRIEND_UID
+Meryxm Fioravanti  Sara Manfredi                    603716019
+                   Consuelo Marchionni              1054171618
+                   Vag Spazio Libero Autogestito    1190114289
+                   Giardini Sonori                  1337746570
+                   Marco Prati                      1353053028
+                   Sophie Du Monde                  1396771412
+                   Luigi Fazio                      1475837888
+                   Leggere Strutture Profilo Pieno  1493432158
+                   Memento Eventi                   1516178922
+                   Rha Elettronica                  1526265547
+                   Officina della Musica            1536653620
+                   Circoloquace Bologna             1540724040
+                   Paola Paoletta Nigro             1544416648
+                   RockcityNight Bologna            1552176403
+                   Nikò Vitiello                   1556264029
+                   Gianluca Martino                 1583767010
+                   Cinzia Ganesh                    1590354310
+                   Massimo Di Stefano               1629302317
+                   Mrnomoney Bluesband              1643448655
+                   Giardino Del Guasto              1745483871
+                   Bologna Undrgrnd Mvmnt           1784412457
+                   Sette Archi Bologna              100000179415374
+                   Zeduardo Martins                 100000274192255
+                   Il Barattolo                     100000437562594
+                   Lab Sedici                       100000487715596
+                   Christian Quintili               100001005424972
+                   Universo Interculturale          100001079463242
+                   Antonino Barresi                 100001291308549
+                   Time Out                         100002967732289
+                   Mille Novecento Ottanta Quattro  100003142745920
+                   Mi ʞi                           100003730505905
+                   Sob Prod                         100003829702779
+                   Bentivoglio Club                 100004482155086

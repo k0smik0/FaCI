@@ -1,0 +1,5 @@
+NAME             FRIEND_NAME            FRIEND_UID
+Elena Romanelli  Martina Romanelli      692951915
+                 Giorgio Leone          1311855495
+                 Coccagna Anna          1439750394
+                 Benedetta Dal Signore  100001677596972

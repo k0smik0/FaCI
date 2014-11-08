@@ -1,0 +1,4 @@
+NAME           FRIEND_NAME       FRIEND_UID
+Agostina Polo  Coccagna Anna     1439750394
+               Fabiola Di Carlo  1795054285
+               Lorenzo Albani    100000268942092

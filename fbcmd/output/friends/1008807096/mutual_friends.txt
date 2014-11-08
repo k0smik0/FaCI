@@ -1,0 +1,5 @@
+NAME           FRIEND_NAME                FRIEND_UID
+Giulia Duvese  Zandra Lovell              1120025226
+               Massimo D. Vezzelli        1120816688
+               Donatella AliCe BlackLady  1472505912
+               Annarita Larac Fortini     100003825277168

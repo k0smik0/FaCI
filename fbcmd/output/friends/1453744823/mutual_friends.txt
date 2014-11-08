@@ -1,0 +1,5 @@
+NAME                 FRIEND_NAME          FRIEND_UID
+Valerio Ftp Mancini  Robertina Wednesday  695477887
+                     Daddà Daddareia     1148213848
+                     Francesca Api        1249174445
+                     Giorgio Leone        1311855495

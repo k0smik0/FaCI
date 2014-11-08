@@ -1,0 +1,9 @@
+NAME              FRIEND_NAME               FRIEND_UID
+Marina Antonucci  Valentina Mancinelli      505001217
+                  Giovanni D'Onofrio        734901842
+                  Luca Sozio ヅ            780892602
+                  Lorenzo Marchegiani       1540549221
+                  Silvia SeeLveea           1560710573
+                  Ludovica Luda D'Archivio  1577885232
+                  Giulio Voto               1622738773
+                  Clara Saraceni            100000452481169

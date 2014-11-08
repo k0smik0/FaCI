@@ -1,0 +1,1 @@
+{"query":{"date":"2014-11-7_16:14:54","fql":"SELECT fromid,time FROM comment WHERE object_id=779591882071359 and parent_id=0"}}
