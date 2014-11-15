@@ -2,7 +2,7 @@ package net.iubris.facri.model.adapters;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import net.iubris.facri.model.Type;
+import net.iubris.facri.model.posts.Type;
 
 public class TypeAdapter extends XmlAdapter<String, Type> {
 

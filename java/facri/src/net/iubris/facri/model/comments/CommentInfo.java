@@ -1,4 +1,4 @@
-package net.iubris.facri.model;
+package net.iubris.facri.model.comments;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

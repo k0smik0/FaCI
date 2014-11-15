@@ -1,12 +1,10 @@
-package net.iubris.facri.parsers;
+package net.iubris.facri.parsers.posts;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.inject.Inject;
@@ -15,12 +13,12 @@ import javax.xml.stream.XMLStreamException;
 
 import net.iubris.facri._di.annotations.filenamefilters.FeedsDirFilenameFilter;
 import net.iubris.facri._di.annotations.filenamefilters.PostsFilenameFilter;
-import net.iubris.facri.model.Post;
-import net.iubris.facri.model.Posts;
-import net.iubris.facri.model.User;
+import net.iubris.facri.model.posts.Post;
+import net.iubris.facri.model.posts.Posts;
+import net.iubris.facri.parsers.Parser;
 import de.odysseus.staxon.json.jaxb.JsonXMLMapper;
 
-public class PostsParser {
+public class PostsParser implements Parser {
 	
 	private final FilenameFilter feedsDirFilenameFilter;
 	private final FilenameFilter postFilesFilenameFilter;
@@ -43,37 +41,50 @@ public class PostsParser {
 				this.commentsParser = commentsParser;
 	}
 	
-	public void parse(File userDir, String owningWallUserId, Map<String, User> useridToUserMap) {
+	public void parse(File... arguments/*,String owningWallUserId,*/ /*Map<String, User> useridToUserMap*/) {
 		
-//		userDir.listFiles( new FilenameFilter() {
-//			@Override
-//			public boolean accept(File dir, String name) {
-//				return false;
-//			}
-//		});
-		File feedDir = userDir.listFiles(feedsDirFilenameFilter)[0];
-//		System.out.println("FEED: "+feedDir.getName());
-		List<File> userFeedsJsonFiles = Arrays.asList(feedDir.listFiles(postFilesFilenameFilter) );
+		File userDir = arguments[0];
+//		File feedDir = 
+		Arrays.asList(
+				(userDir.listFiles(feedsDirFilenameFilter)[0])
+						.listFiles(postFilesFilenameFilter)
+						)
+//						;
+//		List<File> userFeedsJsonFiles = Arrays.asList(feedDir.listFiles(postFilesFilenameFilter) );
 		
-		userFeedsJsonFiles.stream().parallel().forEach( new Consumer<File>() {
+//		userFeedsJsonFiles
+		.stream()
+//		.parallel()
+		.forEach( new Consumer<File>() {
 			@Override
 			public void accept(File userFeedsJsonFile) {
 				try {
+					String owningWallUserId = userDir.getName();
+					
 					Posts posts = postsMapper.readObject(new FileReader(userFeedsJsonFile));
-					List<Post> postsList = posts.getPosts();
+//					List<Post> postsList = 
+							posts.getPosts()
+//							;
 
 //System.out.println("\tPosts: "+postsList.size());
 //					int postsCounter = 1;
-					for (Post post : postsList) {
-						postParser.parse(post, owningWallUserId, useridToUserMap);
-						commentsParser.parse(userDir, owningWallUserId, post, useridToUserMap);
-//						postsCounter++;
-					}
+					
+//					for (Post post: postsList) {
+//					postsList
+					.stream()
+					.parallel()
+					.forEach( new Consumer<Post>() {
+						@Override
+						public void accept(Post post) {
+							postParser.parse(post, owningWallUserId/*, useridToUserMap*/);
+							commentsParser.parse(userDir, owningWallUserId, post/*, useridToUserMap*/);
+	//						postsCounter++;
+						}
+					});
 				} catch (FileNotFoundException | XMLStreamException | NullPointerException | JAXBException e) {
 					e.printStackTrace();
 				}
 			}
 		});
-
 	}
 }

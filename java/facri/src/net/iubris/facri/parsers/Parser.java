@@ -1,11 +1,8 @@
 package net.iubris.facri.parsers;
 
 import java.io.File;
-import java.util.Map;
-
-import net.iubris.facri.model.User;
 
 public interface Parser {
 
-	void parse(File userDir, String userId, Map<String,User> useridToUserMap) throws Exception;
+	void parse(File... userDir/*, Map<String,User> useridToUserMap*/) throws Exception;
 }

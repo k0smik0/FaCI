@@ -1,4 +1,4 @@
-package net.iubris.facri.model;
+package net.iubris.facri.model.comments;
 
 import java.net.URL;
 import java.util.Set;

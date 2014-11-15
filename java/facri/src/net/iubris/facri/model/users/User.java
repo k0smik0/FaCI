@@ -1,23 +1,49 @@
-package net.iubris.facri.model;
+package net.iubris.facri.model.users;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
-public class User {
+import net.iubris.facri.model.posts.Post;
 
-	private String id;
+
+public interface User {
+	
+	public void setId(String userId);
+	public String getId();
+	
+	public boolean addOwnPost(Post post);
+	
+	public List<Post> getOwnPosts();
+	
+	public int howOwnPosts();
+	
+//	public void addToSomeoneElsePost(String targetUserId, Post post);
+//	public Map<String, List<Post>> getToSomeoneElsePosts();
+	
+	public void incrementOwnPostResharing(int shareCount);
+	
+	public int getOwnPostsResharingCount();
+
+	public Map<String, Interactions> getOtherUsersInteractions();
+	
+	public Interactions getOtherUserInteractions(String targetUserId);
+	
+	public int howUserInteracted();
+	
+	public void incrementOwnPostsLiked(int likesCount);
+	
+	public int getHowOwnPostsLiked();
+
+	/*private String id;
 //	private int postCounter;
 //	private Map<String,List<Post>> toSomeoneElsePosts = new HashMap<>();
 	final private List<Post> ownPosts = new ArrayList<>();
-	private int ownPostsResharingCount;
 	final private Map<String,Interactions> interactionsMap = new ConcurrentHashMap<>();
-	private int ownPostsLiking;
 	final private Set<String> mutualFriends = new HashSet<>();
+	final private Set<String> friends = new HashSet<>();
 	
+	private int ownPostsResharingCount;
+	private int ownPostsLiking;
 	
 	public User(String userId) {
 		this.id = userId;
@@ -26,6 +52,8 @@ public class User {
 	public String getId() {
 		return id;
 	}
+	
+	
 
 	public boolean addOwnPost(Post post) {
 		return ownPosts.add(post);
@@ -37,7 +65,7 @@ public class User {
 		return ownPosts.size();
 	}
 
-	/*public void addToSomeoneElsePost(String targetUserId, Post post) {
+	public void addToSomeoneElsePost(String targetUserId, Post post) {
 		if (toSomeoneElsePosts.containsKey(targetUserId)) {
 			toSomeoneElsePosts.get(targetUserId).add(post);
 		} else {
@@ -48,7 +76,7 @@ public class User {
 	}
 	public Map<String, List<Post>> getToSomeoneElsePosts() {
 		return toSomeoneElsePosts;
-	}*/	
+	}
 //	public int howToSomeoneElsePosts(String targetUserId) {
 //		return toSomeoneElsePosts.get(targetUserId).size();
 //	}
@@ -90,4 +118,11 @@ public class User {
 	public Set<String> getMutualFriends(){
 		return mutualFriends;
 	}
+	
+	public Set<String> getFriends() {
+		return friends;
+	}
+	public void addFriends(Set<String> friends) {
+		this.friends.addAll(friends);
+	}*/
 }

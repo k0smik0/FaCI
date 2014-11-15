@@ -1,7 +1,9 @@
-package net.iubris.facri.model;
+package net.iubris.facri.model.users;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.iubris.facri.model.posts.Post;
 
 public class Interactions {
 

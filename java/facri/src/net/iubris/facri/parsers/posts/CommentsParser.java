@@ -1,11 +1,10 @@
-package net.iubris.facri.parsers;
+package net.iubris.facri.parsers.posts;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.xml.bind.JAXBException;
@@ -14,10 +13,10 @@ import javax.xml.stream.XMLStreamException;
 import net.iubris.facri._di.annotations.filenamefilters.CommentsFilenameFilter;
 import net.iubris.facri._di.guice.module.FacriModule;
 import net.iubris.facri._di.providers.mappers.CommentsHolderMapperProvider;
-import net.iubris.facri.model.Comment;
-import net.iubris.facri.model.CommentsHolder;
-import net.iubris.facri.model.Post;
-import net.iubris.facri.model.User;
+import net.iubris.facri.model.World;
+import net.iubris.facri.model.comments.Comment;
+import net.iubris.facri.model.comments.CommentsHolder;
+import net.iubris.facri.model.posts.Post;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -28,14 +27,18 @@ public class CommentsParser {
 	
 	private final JsonXMLMapper<CommentsHolder> commentsMapper;
 	private final FilenameFilter commentFilesFilenameFilter;
+	private final World world;
 
 	@Inject
-	public CommentsParser(JsonXMLMapper<CommentsHolder> commentsMapper, @CommentsFilenameFilter FilenameFilter commentFilesFilenameFilter) {
+	public CommentsParser(JsonXMLMapper<CommentsHolder> commentsMapper, 
+			@CommentsFilenameFilter FilenameFilter commentFilesFilenameFilter,
+			World world) {
 		this.commentsMapper = commentsMapper;
 		this.commentFilesFilenameFilter = commentFilesFilenameFilter;
+		this.world = world;
 	}
 
-	public void parse(File userDir, String owningWallUserId, Post post, Map<String,User> useridToUserMap) {
+	public void parse(File userDir, String owningWallUserId, Post post/*, Map<String,User> useridToUserMap*/) {
 		
 		File[] commentsFiles = userDir.listFiles(commentFilesFilenameFilter);
 		if (commentsFiles.length>0) {
@@ -50,8 +53,12 @@ public class CommentsParser {
 				for (Comment commentData: commentsData) {
 					String commentingUserId = commentData.getFromId();
 //		System.out.println("\t\t\tcomment: "+commentingUserId);
-					User commentingUser = ParsingUtils.isExistentUserOrCreateEmpty(commentingUserId, useridToUserMap);
-					commentingUser.getOtherUserMapInteractions(owningWallUserId).incrementComments();				
+//					User commentingUser = ParsingUtils.isExistentFriendUserOrCreateEmpty(commentingUserId, useridToUserMap);
+//					User commentingUser = 
+							world.isExistentUserOrCreateNew(commentingUserId)
+//							;
+//					commentingUser
+					.getOtherUserInteractions(owningWallUserId).incrementComments();				
 				}
 			} catch (FileNotFoundException | JAXBException | XMLStreamException e) {
 				System.out.println("error for file: "+commentsJsonFile.getName());
@@ -62,25 +69,6 @@ public class CommentsParser {
 		}*/
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	public static void main(String[] args) {
@@ -111,5 +99,4 @@ public class CommentsParser {
 			e.printStackTrace();
 		}
 	}
-
 }

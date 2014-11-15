@@ -1,4 +1,4 @@
-package net.iubris.facri.model;
+package net.iubris.facri.model.posts;
 
 import java.net.URL;
 import java.util.Date;
@@ -14,6 +14,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import net.iubris.facri.model.adapters.DateAdapter;
 import net.iubris.facri.model.adapters.TypeAdapter;
 import net.iubris.facri.model.adapters.URLAdapter;
+import net.iubris.facri.model.comments.Comment;
+import net.iubris.facri.model.comments.CommentInfo;
+import net.iubris.facri.model.comments.LikesInfo;
 /**
  * 
  * @author Massimiliano Leone - maximilianus@gmail.com - http://plus.google.com/+MassimilianoLeone
@@ -105,7 +108,7 @@ public class Post {
 	}
 
 	/**
-	 * @return a {@link net.iubris.facri.model.CommentInfo} instance
+	 * @return a {@link net.iubris.facri.model.comments.CommentInfo} instance
 	 */
 	public CommentInfo getCommentInfo() {
 		return commentInfo;

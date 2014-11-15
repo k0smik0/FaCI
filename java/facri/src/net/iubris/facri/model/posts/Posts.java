@@ -1,4 +1,4 @@
-package net.iubris.facri.model;
+package net.iubris.facri.model.posts;
 
 import java.util.List;
 
