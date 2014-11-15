@@ -11,7 +11,7 @@ import net.iubris.facri.model.World;
 import net.iubris.facri.model.users.Ego;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.User;
-import net.iubris.facri.parsers.GlobalParser;
+import net.iubris.facri.parsers.AllDataParser;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -25,7 +25,7 @@ public class Main {
 		
 		Injector injector = Guice.createInjector( new FacriModule() );
 		
-		GlobalParser jsonParser = injector.getInstance(GlobalParser.class);
+		AllDataParser jsonParser = injector.getInstance(AllDataParser.class);
 		try {
 			jsonParser.parse();
 			
@@ -42,7 +42,7 @@ public class Main {
 		
 	}
 	
-	static void printData(GlobalParser parser) {
+	static void printData(AllDataParser parser) {
 		
 		BiConsumer<String, User> friendConsumer = new BiConsumer<String, User>() {
 			@Override

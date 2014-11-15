@@ -5,7 +5,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import net.iubris.facri.gui.FacriGUIFrame;
-import net.iubris.facri.gui._di.guice.module.FacriGuiMainModule;
+import net.iubris.facri.gui._di.guice.module.FacriGUIModule;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -22,12 +22,12 @@ public class GUIMain {
 			e.printStackTrace();
 		}
 
-		Injector injector = Guice.createInjector( new FacriGuiMainModule() );
-		final FacriGUIFrame guiMain = injector.getInstance(FacriGUIFrame.class);
+		Injector injector = Guice.createInjector( new FacriGUIModule() );
+		final FacriGUIFrame guiFrame = injector.getInstance(FacriGUIFrame.class);
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				guiMain.setVisible(true);
+				guiFrame.setVisible(true);
 			}
 		});
 	}

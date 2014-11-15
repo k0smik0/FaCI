@@ -10,7 +10,7 @@ import javax.inject.Named;
 
 import net.iubris.facri.parsers.posts.PostsParser;
 import net.iubris.facri.parsers.utils.ParsingUtils;
-import net.iubris.ishtaran.gui._di.annotations.ProgressBarGlobalSize;
+//import net.iubris.ishtaran.gui._di.annotations.ProgressBarGlobalSize;
 
 public class FriendsDataParser {
 	
@@ -22,7 +22,7 @@ public class FriendsDataParser {
 //	private final World world;
 	
 	
-	@ProgressBarGlobalSize
+//	@ProgressBarGlobalSize
 	private int usersTotal;
 	
 	private int userCounter;
