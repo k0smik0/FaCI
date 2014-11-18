@@ -1,9 +1,9 @@
 package net.iubris.facri.model.users;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.iubris.facri.model.posts.Post;
 
@@ -12,7 +12,7 @@ public abstract class AbstractUser implements User {
 	private String id;
 //	private int postCounter;
 //	private Map<String,List<Post>> toSomeoneElsePosts = new HashMap<>();
-	final private List<Post> ownPosts = new ArrayList<>();
+	final private List<Post> ownPosts = new CopyOnWriteArrayList<>();
 	final private Map<String,Interactions> interactionsMap = new ConcurrentHashMap<>();
 //	final private Set<String> mutualFriends = new HashSet<>();
 //	final private Set<String> friends = new HashSet<>();

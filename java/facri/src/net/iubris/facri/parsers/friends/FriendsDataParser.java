@@ -26,6 +26,8 @@ public class FriendsDataParser {
 	private int usersTotal;
 	
 	private int userCounter;
+
+	private int percentCounter;
 	
 	@Inject
 	public FriendsDataParser(PostsParser postsParser, MutualFriendsParser mutualFriendsParser,
@@ -133,17 +135,19 @@ System.out.println("Parsing my friends feeds:");
 				incrementUserCounter();
 System.out.println("["+userCounter+"/"+usersTotal+"] user "+userDir.getName()+": ");
 			}}*/
-			s->System.out.print("["+ incrementUserCounter() +"/"+usersTotal+"] user "+s.getName()+": ")
+//			s->System.out.print("["+ incrementUserCounter() +"/"+usersTotal+"] user "+s.getName()+": ")
+//			s->System.out.print("["+ incrementUserCounter() +"/"+usersTotal+"] user "+s.getName()+": ")
+				s->printPercentual( incrementUserCounter() )
 		)
 		.filter( s->s.listFiles().length>0 /*checkDir(s)*/ )
-		.parallel()
+//		.parallel()
 		.forEach( new Consumer<File>() {
 			@Override
 			public void accept(File userDir) {				
 //				String owningWallUserId = userDir.getName();
-				postsParser.parse(userDir/*owningWallUserId,*/ /*useridsToUsersMap*/);
-				mutualFriendsParser.parse(userDir/*, owningWallUserId, useridsToUsersMap*/);
-System.out.println("ok");
+				postsParser.parse(userDir);
+				mutualFriendsParser.parse(userDir);
+//System.out.println("ok");
 //				System.out.println("");
 			}
 		});
@@ -154,11 +158,34 @@ System.out.println("ok");
 System.out.println( "parsed "+usersTotal+" users in: "+finish+"s" );
 	}
 	
+	private void printPercentual(int userCounter) {
+		double percent = Math.ceil( userCounter*1.0f/usersTotal*100 );
+//		int percent = Math.ceil(userCounter%10;
+//		System.out.print(Math.ceil(percent)+" ");
+		if (Math.floor(percent)%10 == 0) {
+//			percentCounter=0;
+			percentCounter++;
+			if (percentCounter==1) {
+				int toPrint = (int)percent;
+				System.out.print(toPrint);					
+				if (toPrint<100) {
+					System.out.print("%... ");					
+				} else
+					System.out.println("%");
+//				percentCounter++;
+			}
+			if (percentCounter>9)
+				percentCounter=0;
+		}
+		
+	
+//		System.out.print("["+ incrementUserCounter() +"/"+usersTotal+"] user "+s.getName()+": ")
+	}
+	
 	private void setUsersTotal(int usersTotal) {
 		this.usersTotal = usersTotal;	
-	}	
+	}
 	private int incrementUserCounter() {
 		return ++userCounter;
 	}
-
 }

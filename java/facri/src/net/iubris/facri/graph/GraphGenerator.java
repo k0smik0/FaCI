@@ -1,6 +1,9 @@
 package net.iubris.facri.graph;
 
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,6 +20,9 @@ import org.gephi.graph.api.GraphController;
 import org.gephi.graph.api.GraphFactory;
 import org.gephi.graph.api.GraphModel;
 import org.gephi.graph.api.Node;
+import org.gephi.io.exporter.api.ExportController;
+import org.gephi.io.exporter.spi.CharacterExporter;
+import org.gephi.io.exporter.spi.Exporter;
 import org.gephi.project.api.ProjectController;
 import org.gephi.project.api.Workspace;
 import org.openide.util.Lookup;
@@ -73,7 +79,7 @@ public class GraphGenerator {
          
          for (String myOtherFriendAlsoMutualId : mutualFriendsIds) {
          	
-         	if ( friendsToMutualFriendsTable.contains(friendId, myOtherFriendAlsoMutualId) || friendsToMutualFriendsTable.contains(friendId, myOtherFriendAlsoMutualId) ) {
+         	if ( friendsToMutualFriendsTable.contains(friendId, myOtherFriendAlsoMutualId) || friendsToMutualFriendsTable.contains(myOtherFriendAlsoMutualId, friendId) ) {
          		continue;
          	}
          	
@@ -81,7 +87,7 @@ public class GraphGenerator {
          	Node myOtherFriendAlsoMutualNode = createAndMaintainOrRetrieveFriendNodeAndEdgeWithMe(myOtherFriendAlsoMutualId, egoNode);
          	directedGraph.addNode(myOtherFriendAlsoMutualNode);
          	
-         	Edge myFriendWithOtherMutualFriendEdge = factory.newEdge(myFriendNode, myOtherFriendAlsoMutualNode, 1f, false);
+         	Edge myFriendWithOtherMutualFriendEdge = factory.newEdge(myFriendNode, myOtherFriendAlsoMutualNode, 1f, true);
          	directedGraph.addEdge(myFriendWithOtherMutualFriendEdge);
          	
          	friendsToMutualFriendsTable.put(friendId, myOtherFriendAlsoMutualId, myFriendWithOtherMutualFriendEdge);         	
@@ -90,7 +96,7 @@ public class GraphGenerator {
       
       Iterator<Entry<String, FriendOrAlike>> myFriendsOfFriendsIterator = world.getOtherUsersMap().entrySet().iterator();
       while (myFriendsOfFriendsIterator.hasNext()) {
-      	Entry<String, FriendOrAlike> myFriendOfFriendEntry = myFriendsIterator.next();
+      	Entry<String, FriendOrAlike> myFriendOfFriendEntry = myFriendsOfFriendsIterator.next();
       	String friendOfFriendId = myFriendOfFriendEntry.getKey();
       	
       	FriendOrAlike myFriendOfFriend = myFriendOfFriendEntry.getValue();
@@ -102,12 +108,28 @@ public class GraphGenerator {
 
          for (String friendOfFriendMutualFriendIdThatIsMyFriendId : friendOfFriendMutualFriendsIdsThatIsMyFriendsIds) {
 				Node myFriendNode = myFriendsNodesMap.get(friendOfFriendMutualFriendIdThatIsMyFriendId);
-				Edge friendOfFriendWithMyFriendEdge = factory.newEdge(myFriendNode, friendOfFriendNode, 1f, false);
+				Edge friendOfFriendWithMyFriendEdge = factory.newEdge(myFriendNode, friendOfFriendNode, 1f, true
+						);
 				directedGraph.addEdge(friendOfFriendWithMyFriendEdge);
 				friendsOfFriendsWithFriendsTable.put(friendOfFriendId, friendOfFriendMutualFriendIdThatIsMyFriendId, friendOfFriendWithMyFriendEdge);
 			}
-      }
-		
+      }		
+	}
+	
+	public void exportGraphToGraphML() {
+		ExportController ec = Lookup.getDefault().lookup(ExportController.class);
+		Exporter exporterGraphML = ec.getExporter("graphml");     //Get GraphML exporter
+		exporterGraphML.setWorkspace(workspace);
+		StringWriter stringWriter = new StringWriter();
+		ec.exportWriter(stringWriter, (CharacterExporter) exporterGraphML);
+//		FileWriter fileWriter;
+		try {
+			/*fileWriter = */new FileWriter("facri.graphml")
+//			.fileWriter
+			.write( stringWriter.toString() );
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private Node createNode(String id) {
@@ -121,7 +143,7 @@ public class GraphGenerator {
 			Node friendNode = createNode(friendId);
 			directedGraph.addNode(friendNode);
 	      myFriendsNodesMap.put(friendId, friendNode );
-	      Edge myFriendNodeEdge = factory.newEdge(egoNode, friendNode, 1f, false);
+	      Edge myFriendNodeEdge = factory.newEdge(egoNode, friendNode, 1f, true);
 	      directedGraph.addEdge(myFriendNodeEdge);
 	      myFriendsWithMeEdgesMap.put(friendId, myFriendNodeEdge);
 	      return friendNode;

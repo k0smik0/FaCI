@@ -10,7 +10,7 @@ import net.iubris.facri.model.World;
 import net.iubris.facri.parsers.ego.EgoDataParser;
 import net.iubris.facri.parsers.friends.FriendsDataParser;
 
-public class AllDataParser {
+public class FacriDataParser {
 
 private final EgoDataParser egoDataParser;
 private final FriendsDataParser friendsDataParser;
@@ -42,7 +42,7 @@ private final World world;
 	
 
 	@Inject
-	public AllDataParser(
+	public FacriDataParser(
 			EgoDataParser egoDataParser,
 			FriendsDataParser friendsDataParser,
 			World world

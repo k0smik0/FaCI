@@ -7,11 +7,12 @@ import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
 import net.iubris.facri._di.guice.module.FacriModule;
+import net.iubris.facri.graph.GraphGenerator;
 import net.iubris.facri.model.World;
 import net.iubris.facri.model.users.Ego;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.User;
-import net.iubris.facri.parsers.AllDataParser;
+import net.iubris.facri.parsers.FacriDataParser;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -25,12 +26,21 @@ public class Main {
 		
 		Injector injector = Guice.createInjector( new FacriModule() );
 		
-		AllDataParser jsonParser = injector.getInstance(AllDataParser.class);
+
 		try {
-			jsonParser.parse();
+			FacriDataParser parser = injector.getInstance(FacriDataParser.class);
+			parser.parse();
+			
+			World result = parser.getResult();
 			
 			System.out.println("\nPrinting data");
-//			printData(jsonParser);
+//			printData(result);
+			
+			
+			
+			GraphGenerator gg = new GraphGenerator();
+			gg.generate(result);			
+			gg.exportGraphToGraphML();
 			
 		} catch (FileNotFoundException | JAXBException | XMLStreamException e) {
 			e.printStackTrace();
@@ -42,7 +52,7 @@ public class Main {
 		
 	}
 	
-	static void printData(AllDataParser parser) {
+	static void printData(World world) {
 		
 		BiConsumer<String, User> friendConsumer = new BiConsumer<String, User>() {
 			@Override
@@ -55,8 +65,6 @@ public class Main {
 				}
 			}
 		};
-		
-		World world = parser.getResult();
 		
 		Ego ego = world.getMyUser();
 		System.out.println(ego.getId()+" "+ego.howOwnPosts()+","
