@@ -37,7 +37,7 @@ public class EgoDataParser {
 	}
 	
 	public void parse() {
-System.out.println("Parsing my own feeds:");
+System.out.print("Parsing my own feeds:");
 		List<File> dirs = ParsingUtils.getDirectories(feedsMeDataDir);
 		if (!dirs.isEmpty()) {
 			File myUserDirectory = dirs.get(0);
@@ -46,6 +46,8 @@ System.out.println("Parsing my own feeds:");
 			
 			myFriendsParser.parse( new File(friendsIdsFileRelativePath) );
 			myUser.addFriendsIds( myFriendsParser.getFriendsIds() );
+			
+//			System.out.println("my friends: "+myUser.getFriendsIds().size() );
 			
 			world.setMyUser(myUser);
 			
@@ -56,5 +58,6 @@ System.out.println("Parsing my own feeds:");
 //		world.setMyUser(myUser);
 //		User myUserRemoved = useridsToUsersMap.remove( myUser );
 //		System.out.println(myUserRemoved);
+		System.out.println(".");
 	}
 }

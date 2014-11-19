@@ -17,8 +17,7 @@ public class PostParser {
 		this.world = world;
 	}
 
-	public void parse(Post post, String owningWallUserId /*, int i,*/ /*Map<String, User> useridToUserMap*/) {
-// System.out.print("\tpost ["+i+"]: "+post.getPostId()+", ");
+	public void parse(Post post, String owningWallUserId) {
 		// the actorId is the post author id
 		String actorPostId = post.getActorId();
 

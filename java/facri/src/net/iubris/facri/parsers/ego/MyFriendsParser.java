@@ -26,5 +26,4 @@ public class MyFriendsParser implements Parser {
 	public Set<String> getFriendsIds() {
 		return friendsIds;
 	}
-
 }

@@ -9,7 +9,7 @@ public class Interactions {
 
 	private int tags;
 	private int likes;
-	private List<Post> posts = new CopyOnWriteArrayList<>();
+	private final List<Post> posts = new CopyOnWriteArrayList<>();
 	private int comments;
 
 	public void incrementTags() {

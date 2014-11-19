@@ -8,6 +8,7 @@ import java.util.Properties;
 import net.iubris.facri._di.annotations.filenamefilters.CommentsFilenameFilter;
 import net.iubris.facri._di.annotations.filenamefilters.FeedsDirFilenameFilter;
 import net.iubris.facri._di.annotations.filenamefilters.PostsFilenameFilter;
+import net.iubris.facri._di.guice.module.graphgenerators.gephi.GephiGraphGeneratorModule;
 import net.iubris.facri._di.providers.filenamefilters.CommentsFilenameFilterProvider;
 import net.iubris.facri._di.providers.filenamefilters.FeedsDirFilenameFilterProvider;
 import net.iubris.facri._di.providers.filenamefilters.PostsFilenameFilterProvider;
@@ -41,5 +42,7 @@ public class FacriModule extends AbstractModule {
 		
 		bind( new TypeLiteral<JsonXMLMapper<Posts>>(){}).toProvider(PostsMapperProvider.class);
 		bind( new TypeLiteral<JsonXMLMapper<CommentsHolder>>(){}).toProvider(CommentsHolderMapperProvider.class);
+		
+		install(new GephiGraphGeneratorModule());
 	}
 }

@@ -10,12 +10,8 @@ import net.iubris.facri.model.posts.Post;
 public abstract class AbstractUser implements User {
 
 	private String id;
-//	private int postCounter;
-//	private Map<String,List<Post>> toSomeoneElsePosts = new HashMap<>();
 	final private List<Post> ownPosts = new CopyOnWriteArrayList<>();
 	final private Map<String,Interactions> interactionsMap = new ConcurrentHashMap<>();
-//	final private Set<String> mutualFriends = new HashSet<>();
-//	final private Set<String> friends = new HashSet<>();
 	
 	private int ownPostsResharingCount;
 	private int ownPostsLiking;
@@ -43,22 +39,6 @@ public abstract class AbstractUser implements User {
 	public int howOwnPosts() {
 		return ownPosts.size();
 	}
-
-	/*public void addToSomeoneElsePost(String targetUserId, Post post) {
-		if (toSomeoneElsePosts.containsKey(targetUserId)) {
-			toSomeoneElsePosts.get(targetUserId).add(post);
-		} else {
-			List<Post> posts = new ArrayList<>();
-			posts.add(post);
-			toSomeoneElsePosts.put(targetUserId, posts);
-		}
-	}
-	public Map<String, List<Post>> getToSomeoneElsePosts() {
-		return toSomeoneElsePosts;
-	}*/	
-//	public int howToSomeoneElsePosts(String targetUserId) {
-//		return toSomeoneElsePosts.get(targetUserId).size();
-//	}
 
 	public void incrementOwnPostResharing(int shareCount) {
 		this.ownPostsResharingCount += shareCount;		
@@ -90,18 +70,4 @@ public abstract class AbstractUser implements User {
 	public int getHowOwnPostsLiked() {
 		return ownPostsLiking;
 	}
-
-//	public void addMutualFriend(String friendId) {
-//		mutualFriends.add(friendId);		
-//	}
-//	public Set<String> getMutualFriends(){
-//		return mutualFriends;
-//	}
-	
-//	public Set<String> getFriends() {
-//		return friends;
-//	}
-//	public void addFriends(Set<String> friends) {
-//		this.friends.addAll(friends);
-//	}
 }

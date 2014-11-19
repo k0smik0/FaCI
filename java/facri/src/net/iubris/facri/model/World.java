@@ -13,12 +13,9 @@ import net.iubris.facri.model.users.User;
 public class World {
 
 	private Ego myUser;
-	private Map<String,FriendOrAlike> myFriendsMap= new ConcurrentHashMap<>();
-	
-	private Map<String,FriendOrAlike> otherUsersMap = new ConcurrentHashMap<>();
-	
-	
-//	public World() {}
+	private final Map<String,FriendOrAlike> myFriendsMap= new ConcurrentHashMap<>();
+	private final Map<String,FriendOrAlike> otherUsersMap = new ConcurrentHashMap<>();
+	private int newUser = 0;
 	
 	public Ego getMyUser() {
 		return myUser;
@@ -28,14 +25,14 @@ public class World {
 	}
 	
 	public void setMyFriendsMap(Map<String, FriendOrAlike> myFriendsMap) {
-		this.myFriendsMap = myFriendsMap;
+		this.myFriendsMap.putAll(myFriendsMap);
 	}
 	public Map<String, FriendOrAlike> getMyFriendsMap() {
 		return myFriendsMap;
 	}
 	
 	public void setOtherUsersMap(Map<String, FriendOrAlike> otherUsersMap) {
-		this.otherUsersMap = otherUsersMap;
+		this.otherUsersMap.putAll(otherUsersMap);
 	}
 	public Map<String, FriendOrAlike> getOtherUsersMap() {
 		return otherUsersMap;
@@ -56,6 +53,7 @@ public class World {
 		
 		FriendOrAlike user = null;
 		if (myUser.isMyFriendById(userId)) {
+//			System.out.println(userId+" friend!");
 			if (myFriendsMap.containsKey(userId)) {
 				user = myFriendsMap.get(userId);
 			} else {
@@ -68,10 +66,10 @@ public class World {
 			} else {
 				user = new FriendOrAlike(userId);
 				otherUsersMap.put(userId, user);
+//				System.out.println("new user "+(++newUser ));
 			}
 		}
 		
 		return user;		
 	}
-	
 }

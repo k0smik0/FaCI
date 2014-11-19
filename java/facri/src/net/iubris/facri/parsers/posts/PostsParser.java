@@ -41,20 +41,15 @@ public class PostsParser implements Parser {
 				this.commentsParser = commentsParser;
 	}
 	
-	public void parse(File... arguments/*,String owningWallUserId,*/ /*Map<String, User> useridToUserMap*/) {
+	public void parse(File... arguments) {
 		
 		File userDir = arguments[0];
-//		File feedDir = 
 		Arrays.asList(
 				(userDir.listFiles(feedsDirFilenameFilter)[0])
 						.listFiles(postFilesFilenameFilter)
 						)
-//						;
-//		List<File> userFeedsJsonFiles = Arrays.asList(feedDir.listFiles(postFilesFilenameFilter) );
-		
-//		userFeedsJsonFiles
 		.stream()
-//		.parallel()
+		.parallel() // parallel on each posts file
 		.forEach( new Consumer<File>() {
 			@Override
 			public void accept(File userFeedsJsonFile) {
@@ -62,23 +57,15 @@ public class PostsParser implements Parser {
 					String owningWallUserId = userDir.getName();
 					
 					Posts posts = postsMapper.readObject(new FileReader(userFeedsJsonFile));
-//					List<Post> postsList = 
-							posts.getPosts()
-//							;
-
-//System.out.println("\tPosts: "+postsList.size());
-//					int postsCounter = 1;
 					
-//					for (Post post: postsList) {
-//					postsList
+					posts.getPosts()
 					.stream()
-					.parallel()
+					.parallel() // parallel on each post
 					.forEach( new Consumer<Post>() {
 						@Override
 						public void accept(Post post) {
 							postParser.parse(post, owningWallUserId/*, useridToUserMap*/);
 							commentsParser.parse(userDir, owningWallUserId, post/*, useridToUserMap*/);
-	//						postsCounter++;
 						}
 					});
 				} catch (FileNotFoundException | XMLStreamException | NullPointerException | JAXBException e) {

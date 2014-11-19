@@ -3,63 +3,47 @@ package net.iubris.facri.main;
 import java.io.FileNotFoundException;
 import java.util.function.BiConsumer;
 
+import javax.inject.Inject;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
 import net.iubris.facri._di.guice.module.FacriModule;
-import net.iubris.facri.graph.GraphGenerator;
+import net.iubris.facri.graph.GephiGraphGenerator;
 import net.iubris.facri.model.World;
 import net.iubris.facri.model.users.Ego;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.User;
-import net.iubris.facri.parsers.FacriDataParser;
+import net.iubris.facri.parsers.DataParser;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 
 public class Main {
-
-	public static void main(String[] args) {
-		
-//		Date start = new Date();
-		
-		Injector injector = Guice.createInjector( new FacriModule() );
-		
-
+	
+	void doStuff(Injector... injectors) {
 		try {
-			FacriDataParser parser = injector.getInstance(FacriDataParser.class);
-			parser.parse();
+			dataParser.parse();
 			
-			World result = parser.getResult();
+			World world = dataParser.getResult();
 			
-			System.out.println("\nPrinting data");
-//			printData(result);
+			System.out.println("");
 			
-			
-			
-			GraphGenerator gg = new GraphGenerator();
-			gg.generate(result);			
-			gg.exportGraphToGraphML();
+			graphGenerator.generate(world);
+			graphGenerator.testGraph();
+//			gg.exportGraphToGraphML();
 			
 		} catch (FileNotFoundException | JAXBException | XMLStreamException e) {
 			e.printStackTrace();
 		}
-		
-//		Date end = new Date();
-//		double finish = (end.getTime()-start.getTime())/1000f;
-//System.out.println( "parsed in: "+finish+"s" );
-		
 	}
 	
-	static void printData(World world) {
-		
+	void printData(World world) {		
 		BiConsumer<String, User> friendConsumer = new BiConsumer<String, User>() {
 			@Override
 			public void accept(String t, User u) {
 				if (u instanceof FriendOrAlike) {
 					FriendOrAlike f = (FriendOrAlike) u;
-//					int mfs = f.getMutualFriends().size();
 					if (f.getMutualFriends().size() >0)
 						System.out.println(u.getId()+" "+u.howOwnPosts()+","+u.howUserInteracted()+","+f.getMutualFriends().size());
 				}
@@ -80,4 +64,40 @@ public class Main {
 			.getOtherUsersMap()
 			.forEach( friendConsumer );
 	}
+	
+	private static final long MEGABYTE = 1024L * 1024L;
+
+	public static long bytesToMegabytes(long bytes) {
+		return bytes / MEGABYTE;
+	}
+
+	static void checkMemory() {
+	// Get the Java runtime
+	    Runtime runtime = Runtime.getRuntime();
+	    // Run the garbage collector
+	    runtime.gc();
+	    // Calculate the used memory
+	    long memory = runtime.totalMemory() - runtime.freeMemory();
+	    System.out.println("Used memory is bytes: " + memory);
+	    System.out.println("Used memory is megabytes: "
+	        + bytesToMegabytes(memory));
+	}
+	
+	private final DataParser dataParser;
+	private final GephiGraphGenerator graphGenerator;
+	
+	@Inject
+	public Main(DataParser dataParser, GephiGraphGenerator graphGenerator) {
+		this.dataParser = dataParser;
+		this.graphGenerator = graphGenerator;
+	}
+	
+	public static void main(String[] args) {
+//		checkMemory();
+		Injector injector = Guice.createInjector( new FacriModule() );
+		Main main = injector.getInstance(Main.class);
+		main.doStuff();
+//		checkMemory();
+	}
+
 }
