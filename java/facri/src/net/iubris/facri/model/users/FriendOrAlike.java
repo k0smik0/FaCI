@@ -6,6 +6,8 @@ import java.util.Set;
 
 public class FriendOrAlike extends AbstractUser {
 
+	private static final long serialVersionUID = 6593382542268675220L;
+
 	final private Set<String> mutualFriends = new HashSet<>();
 	
 	public FriendOrAlike(String userId) {

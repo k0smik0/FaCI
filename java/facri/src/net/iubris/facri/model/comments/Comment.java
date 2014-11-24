@@ -1,5 +1,6 @@
 package net.iubris.facri.model.comments;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -10,7 +11,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import net.iubris.facri.model.adapters.DateAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Comment {
+public class Comment implements Serializable {
+
+	private static final long serialVersionUID = 6999503471597138386L;
 
 	@XmlElement(name="fromid")
    private String fromId;

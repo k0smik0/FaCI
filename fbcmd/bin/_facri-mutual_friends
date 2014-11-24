@@ -7,7 +7,7 @@ function getMutualFriends() {
   target_dir=${FACRI_OUTPUT}/friends/${user}
   [ -d $target_dir ] || mkdir $target_dir
   echo -n -e "\t${user}'s mutual friends: "
-  local target=$target_dir/mutual_friends
+  local target=$target_dir/mutual_friends.txt
   if [ -f $target ]; then 
     echo "found, skipping"
   else

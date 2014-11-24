@@ -1,7 +1,11 @@
 package net.iubris.facri.model;
 
+import java.io.Serializable;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 
 import javax.inject.Singleton;
 
@@ -10,12 +14,16 @@ import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.User;
 
 @Singleton
-public class World {
+public class World implements Serializable {
+
+	private static final long serialVersionUID = -7112902990753202438L;
 
 	private Ego myUser;
 	private final Map<String,FriendOrAlike> myFriendsMap= new ConcurrentHashMap<>();
 	private final Map<String,FriendOrAlike> otherUsersMap = new ConcurrentHashMap<>();
-	private int newUser = 0;
+	
+	private final Set<Integer> appreciations = new TreeSet<>();
+//	private int newUser = 0;
 	
 	public Ego getMyUser() {
 		return myUser;
@@ -53,7 +61,6 @@ public class World {
 		
 		FriendOrAlike user = null;
 		if (myUser.isMyFriendById(userId)) {
-//			System.out.println(userId+" friend!");
 			if (myFriendsMap.containsKey(userId)) {
 				user = myFriendsMap.get(userId);
 			} else {
@@ -66,10 +73,41 @@ public class World {
 			} else {
 				user = new FriendOrAlike(userId);
 				otherUsersMap.put(userId, user);
-//				System.out.println("new user "+(++newUser ));
 			}
 		}
 		
+		int updatedAppreciation = user.getOwnLikedPostsCount() + user.getOwnPostsResharingCount();
+		appreciations.add(updatedAppreciation);
+		
 		return user;		
+	}
+	
+	public Set<Integer> getAppreciationsRange() {
+		return appreciations;
+	}
+	
+	public void testData() {
+		BiConsumer<String, User> friendConsumer = new BiConsumer<String, User>() {
+			@Override
+			public void accept(String t, User u) {
+				if (u instanceof FriendOrAlike) {
+					FriendOrAlike f = (FriendOrAlike) u;
+					if (f.getMutualFriends().size() >0)
+						System.out.println(u.getId()+" "+u.getOwnPostsCount()+","+u.howUserInteracts()+","+f.getMutualFriends().size());
+				}
+			}
+		};
+		
+		Ego ego = getMyUser();
+		System.out.println(ego.getId()+" "+ego.getOwnPostsCount()+","
+				+ego.howUserInteracts()+","+ego.getFriendsIds().size());
+		System.out.println("");
+
+		getMyFriendsMap()
+			.forEach( friendConsumer );
+		System.out.println("");
+		
+		getOtherUsersMap()
+			.forEach( friendConsumer );
 	}
 }

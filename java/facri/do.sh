@@ -6,5 +6,5 @@ classpath_to_build=$(find libs/guice libs/guava -iname *.jar):$(find libs -type 
 classpath=$(echo $classpath_to_build| sed 's/ /:/g' | sed 's/:$//'):bin
 
 #echo \
-java -classpath ${classpath} net.iubris.facri.main.Main
+java -classpath ${classpath} net.iubris.facri.main.Main $@
 

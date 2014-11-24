@@ -1,5 +1,6 @@
 package net.iubris.facri.model.posts;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +25,9 @@ import net.iubris.facri.model.comments.LikesInfo;
  * {@link https://developers.facebook.com/docs/reference/fql/stream/}
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Post {
+public class Post implements Serializable {
+
+	private static final long serialVersionUID = -7310605935366057489L;
 
 	@XmlElement(name = "actor_id")
 	private String actorId;

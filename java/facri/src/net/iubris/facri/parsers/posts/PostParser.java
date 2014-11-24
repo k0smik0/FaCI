@@ -18,15 +18,17 @@ public class PostParser {
 	}
 
 	public void parse(Post post, String owningWallUserId) {
+		// always owning wall user
+		world.isExistentUserOrCreateNew(owningWallUserId);
+		
 		// the actorId is the post author id
 		String actorPostId = post.getActorId();
-
+		
 		// we use actorId because a wall contains both posts
 		// from owner (actorId == userDir) or other users (actorId != userDir)
-		User actorUser = 
-//				ParsingUtils.isExistentFriendUserOrCreateEmpty(actorPostId, useridToUserMap);
-				world.isExistentUserOrCreateNew(actorPostId);
-		actorUser.addOwnPost(post); // always add post to its author
+		User actorUser = world.isExistentUserOrCreateNew(actorPostId);
+		// always add post to its author
+		actorUser.addOwnPost(post);
 
 		if (actorPostId == owningWallUserId) { // post author is the same of the wall owner
 			handleAuthorUser(actorUser, post);
@@ -54,7 +56,6 @@ public class PostParser {
 	 * @param targetUserId
 	 */
 	private void handleTargetUser(User actorUser, Post post, String targetUserId) {
-//		user.addToSomeoneElsePost(targetUserId, post);
 		actorUser.getOtherUserInteractions(targetUserId).addPost(post);
 	}
 	
@@ -77,23 +78,14 @@ public class PostParser {
 		if (howLikes > 0) {
 			for (String interactingUserId: likingUsersIds) {
 				// create owner user if it doesn't exist
-//				if (!useridToUserMap.containsKey(wallOwnerId))
-//					useridToUserMap.put(wallOwnerId, ParsingUtils.isExistentUserOrCreateEmpty(wallOwnerId, useridToUserMap));
-//				ParsingUtils.isExistentFriendUserOrCreateEmpty(wallOwnerId, useridToUserMap);
-//				User wallOwnerUser = 
-						world.isExistentUserOrCreateNew(wallOwnerId);
+				world.isExistentUserOrCreateNew(wallOwnerId);
 				
 				// create interacting user if it doesn't exist
-//				User interactingUser = 
-//						ParsingUtils.isExistentFriendUserOrCreateEmpty(interactingUserId, useridToUserMap);
-						world.isExistentUserOrCreateNew(interactingUserId)
-//						;
-//				useridToUserMap.put(interactingUserId, interactingUser);
-				
-//				interactingUser
+				world.isExistentUserOrCreateNew(interactingUserId)
+				// then use for its likes
 				.getOtherUserInteractions(wallOwnerId).incrementLikes();
 			}
-			actorUser.incrementOwnPostsLiked(howLikes);
+			actorUser.incrementOwnLikedPosts(howLikes);
 		}
 	}
 

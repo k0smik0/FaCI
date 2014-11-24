@@ -38,13 +38,11 @@ public class CommentsParser {
 		this.world = world;
 	}
 
-	public void parse(File userDir, String owningWallUserId, Post post/*, Map<String,User> useridToUserMap*/) {
-		
+	public void parse(File userDir, String owningWallUserId, Post post) {
+		world.isExistentUserOrCreateNew(owningWallUserId); // redundant ?
 		File[] commentsFiles = userDir.listFiles(commentFilesFilenameFilter);
 		if (commentsFiles.length>0) {
-//System.out.println(commentsFiles.length+" commentsFiles");
 			File commentsJsonFile = commentsFiles[0];
-//System.out.println("\t\tcomments in: "+commentsJsonFile.getName());
 			try {
 				CommentsHolder comments = commentsMapper.readObject( new FileReader(commentsJsonFile));
 				
@@ -52,22 +50,14 @@ public class CommentsParser {
 				
 				for (Comment commentData: commentsData) {
 					String commentingUserId = commentData.getFromId();
-//		System.out.println("\t\t\tcomment: "+commentingUserId);
-//					User commentingUser = ParsingUtils.isExistentFriendUserOrCreateEmpty(commentingUserId, useridToUserMap);
-//					User commentingUser = 
-							world.isExistentUserOrCreateNew(commentingUserId)
-//							;
-//					commentingUser
-					.getOtherUserInteractions(owningWallUserId).incrementComments();				
+					world.isExistentUserOrCreateNew(commentingUserId)
+						.getOtherUserInteractions(owningWallUserId).incrementComments();				
 				}
 			} catch (FileNotFoundException | JAXBException | XMLStreamException e) {
 				System.out.println("error for file: "+commentsJsonFile.getName());
 				e.printStackTrace();
 			}
-		}	/*else {
-			System.out.println(".");
-		}*/
-		
+		}		
 	}
 	
 	

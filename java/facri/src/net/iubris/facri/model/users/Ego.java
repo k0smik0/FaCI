@@ -5,6 +5,8 @@ import java.util.Set;
 
 public class Ego extends AbstractUser {
 
+	private static final long serialVersionUID = -7587672566751011500L;
+
 	final private Set<String> friends = new HashSet<>();
 	
 	public Ego(String userId) {

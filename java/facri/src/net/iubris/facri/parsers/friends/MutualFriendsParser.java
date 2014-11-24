@@ -56,7 +56,7 @@ public class MutualFriendsParser implements Parser {
 				.filter(f->f.getFileName().toString().equals(mutualFriendsFilename))
 				.forEach(
 						f->parse(f.toFile(), userDir.getName())
-					);			
+					);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -65,9 +65,7 @@ public class MutualFriendsParser implements Parser {
 	private void parse(File mutualFriendsFile, String owningWallUserId) {
 		try {
 			Path mutualFriendsFilePath = mutualFriendsFile.toPath();
-			List<String> mutualFriendsLines = Files.readAllLines(mutualFriendsFilePath,
-					StandardCharsets.UTF_8
-					);
+			List<String> mutualFriendsLines = Files.readAllLines(mutualFriendsFilePath, StandardCharsets.UTF_8);
 			if (mutualFriendsLines.size() < 2)
 				return;
 			

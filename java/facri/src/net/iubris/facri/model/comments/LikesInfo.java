@@ -1,5 +1,6 @@
 package net.iubris.facri.model.comments;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Set;
 
@@ -12,7 +13,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import net.iubris.facri.model.adapters.URLAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class LikesInfo {
+public class LikesInfo implements Serializable {
+
+	private static final long serialVersionUID = 6999503471597138387L;
 
 	@XmlElement(name="href")
 	@XmlJavaTypeAdapter(URLAdapter.class)

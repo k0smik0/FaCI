@@ -44,34 +44,35 @@ public class PostsParser implements Parser {
 	public void parse(File... arguments) {
 		
 		File userDir = arguments[0];
-		Arrays.asList(
-				(userDir.listFiles(feedsDirFilenameFilter)[0])
-						.listFiles(postFilesFilenameFilter)
-						)
-		.stream()
-		.parallel() // parallel on each posts file
-		.forEach( new Consumer<File>() {
-			@Override
-			public void accept(File userFeedsJsonFile) {
-				try {
-					String owningWallUserId = userDir.getName();
-					
-					Posts posts = postsMapper.readObject(new FileReader(userFeedsJsonFile));
-					
-					posts.getPosts()
-					.stream()
-					.parallel() // parallel on each post
-					.forEach( new Consumer<Post>() {
-						@Override
-						public void accept(Post post) {
-							postParser.parse(post, owningWallUserId/*, useridToUserMap*/);
-							commentsParser.parse(userDir, owningWallUserId, post/*, useridToUserMap*/);
-						}
-					});
-				} catch (FileNotFoundException | XMLStreamException | NullPointerException | JAXBException e) {
-					e.printStackTrace();
+		
+		File[] feedsFiles = userDir.listFiles(feedsDirFilenameFilter);
+		
+		if (feedsFiles.length>0) {
+			Arrays.asList( feedsFiles[0].listFiles(postFilesFilenameFilter) ).stream()
+			.parallel() // parallel on each posts file
+			.forEach( new Consumer<File>() {
+				@Override
+				public void accept(File userFeedsJsonFile) {
+					try {
+						String owningWallUserId = userDir.getName();
+						
+						Posts posts = postsMapper.readObject(new FileReader(userFeedsJsonFile));
+						
+						posts.getPosts()
+						.stream()
+						.parallel() // parallel on each post
+						.forEach( new Consumer<Post>() {
+							@Override
+							public void accept(Post post) {
+								postParser.parse(post, owningWallUserId/*, useridToUserMap*/);
+								commentsParser.parse(userDir, owningWallUserId, post/*, useridToUserMap*/);
+							}
+						});
+					} catch (FileNotFoundException | XMLStreamException | NullPointerException | JAXBException e) {
+						e.printStackTrace();
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 }

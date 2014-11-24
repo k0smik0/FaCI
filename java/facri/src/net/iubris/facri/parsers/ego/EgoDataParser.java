@@ -8,10 +8,11 @@ import javax.inject.Named;
 
 import net.iubris.facri.model.World;
 import net.iubris.facri.model.users.Ego;
+import net.iubris.facri.parsers.Parser;
 import net.iubris.facri.parsers.posts.PostsParser;
 import net.iubris.facri.parsers.utils.ParsingUtils;
 
-public class EgoDataParser {
+public class EgoDataParser implements Parser {
 
 	private final String feedsMeDataDir;
 	private final String friendsIdsFileRelativePath;
@@ -36,7 +37,8 @@ public class EgoDataParser {
 		this.world = world;
 	}
 	
-	public void parse() {
+	@Override
+	public void parse(File... userDirs) {
 System.out.print("Parsing my own feeds:");
 		List<File> dirs = ParsingUtils.getDirectories(feedsMeDataDir);
 		if (!dirs.isEmpty()) {
@@ -47,17 +49,10 @@ System.out.print("Parsing my own feeds:");
 			myFriendsParser.parse( new File(friendsIdsFileRelativePath) );
 			myUser.addFriendsIds( myFriendsParser.getFriendsIds() );
 			
-//			System.out.println("my friends: "+myUser.getFriendsIds().size() );
-			
 			world.setMyUser(myUser);
 			
 			postsParser.parse(myUserDirectory/*, owningWallUserId*/);
 		}
-//		System.out.println(myUser.getId());
-//		world = new World( myUser );
-//		world.setMyUser(myUser);
-//		User myUserRemoved = useridsToUsersMap.remove( myUser );
-//		System.out.println(myUserRemoved);
-		System.out.println(".");
+		System.out.println(" ok");
 	}
 }

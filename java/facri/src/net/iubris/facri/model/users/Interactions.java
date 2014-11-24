@@ -1,11 +1,14 @@
 package net.iubris.facri.model.users;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.iubris.facri.model.posts.Post;
 
-public class Interactions {
+public class Interactions implements Serializable {
+
+	private static final long serialVersionUID = -2972638634494988995L;
 
 	private int tags;
 	private int likes;

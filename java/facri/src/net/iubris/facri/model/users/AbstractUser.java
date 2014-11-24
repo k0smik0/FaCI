@@ -1,5 +1,6 @@
 package net.iubris.facri.model.users;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -7,8 +8,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.iubris.facri.model.posts.Post;
 
-public abstract class AbstractUser implements User {
+public abstract class AbstractUser implements User,Serializable {
 
+	private static final long serialVersionUID = -1400614535955943141L;
 	private String id;
 	final private List<Post> ownPosts = new CopyOnWriteArrayList<>();
 	final private Map<String,Interactions> interactionsMap = new ConcurrentHashMap<>();
@@ -36,7 +38,7 @@ public abstract class AbstractUser implements User {
 	public List<Post> getOwnPosts() {
 		return ownPosts ;
 	}	
-	public int howOwnPosts() {
+	public int getOwnPostsCount() {
 		return ownPosts.size();
 	}
 
@@ -60,14 +62,14 @@ public abstract class AbstractUser implements User {
 		return interactionsMap.get(targetUserId);
 	}
 
-	public int howUserInteracted() {
+	public int howUserInteracts() {
 		return interactionsMap.size();
 	}
 	
-	public void incrementOwnPostsLiked(int likesCount) {
+	public void incrementOwnLikedPosts(int likesCount) {
 		this.ownPostsLiking += likesCount;
 	}
-	public int getHowOwnPostsLiked() {
+	public int getOwnLikedPostsCount() {
 		return ownPostsLiking;
 	}
 }

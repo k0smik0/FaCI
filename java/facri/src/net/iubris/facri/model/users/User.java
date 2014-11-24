@@ -13,7 +13,7 @@ public interface User {
 	
 	public boolean addOwnPost(Post post);	
 	public List<Post> getOwnPosts();	
-	public int howOwnPosts();
+	public int getOwnPostsCount();
 	
 	public void incrementOwnPostResharing(int shareCount);	
 	public int getOwnPostsResharingCount();
@@ -21,8 +21,8 @@ public interface User {
 	public Map<String, Interactions> getOtherUsersInteractions();	
 	public Interactions getOtherUserInteractions(String targetUserId);
 	
-	public int howUserInteracted();
+	public int howUserInteracts();
 	
-	public void incrementOwnPostsLiked(int likesCount);	
-	public int getHowOwnPostsLiked();
+	public void incrementOwnLikedPosts(int likesCount);	
+	public int getOwnLikedPostsCount();
 }

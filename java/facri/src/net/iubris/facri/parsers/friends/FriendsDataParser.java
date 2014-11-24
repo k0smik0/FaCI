@@ -1,7 +1,6 @@
 package net.iubris.facri.parsers.friends;
 
 import java.io.File;
-import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -11,6 +10,7 @@ import javax.inject.Named;
 import net.iubris.facri.parsers.posts.PostsParser;
 import net.iubris.facri.parsers.utils.ParsingUtils;
 //import net.iubris.ishtaran.gui._di.annotations.ProgressBarGlobalSize;
+import net.iubris.facri.utils.Timing;
 
 public class FriendsDataParser {
 	
@@ -30,8 +30,6 @@ public class FriendsDataParser {
 	public FriendsDataParser(PostsParser postsParser, MutualFriendsParser mutualFriendsParser,
 			@Named("data_root_dir_path") String dataRootDirPath, // "output"
 			@Named("feeds_friends_dir_relative_path") String feedsFriendsDirRelativePath // "friends"
-//			,@Named("friends_like_dir_relative_path") String friendsLikesDirRelativePath
-//			, World world
 			) {
 		this.postsParser = postsParser;
 		this.mutualFriendsParser = mutualFriendsParser;
@@ -42,12 +40,11 @@ public class FriendsDataParser {
 	public void parse() {
 		List<File> friendsDirectories = ParsingUtils.getDirectories(feedsFriendsDataDir);		
 		setUsersTotal( friendsDirectories.size() );
-System.out.println("Parsing my friends feeds:");	
-		parseFriendsDirs( friendsDirectories );
-		
+System.out.print("Parsing my friends feeds: ");	
+		parseUsersDirs( friendsDirectories );		
 	}
-	private void parseFriendsDirs(List<File> usersDirs) {
-		Date start = new Date();
+	private void parseUsersDirs(List<File> usersDirs) {
+		Timing timing = new Timing();
 
 		// explicit stream
 //		usersDirs.stream()
@@ -107,7 +104,7 @@ System.out.println("Parsing my friends feeds:");
 		// lambda stream
 		usersDirs.stream()
 		.parallel()
-		.sequential()
+//		.sequential()
 		.peek( 
 				s->printPercentual( incrementUserCounter() )
 		)
@@ -125,8 +122,7 @@ System.out.println("Parsing my friends feeds:");
 		});
 		
 		
-		Date end = new Date();
-		double finish = (end.getTime()-start.getTime())/1000f;
+		double finish = timing.getTiming();
 System.out.println( "parsed "+usersTotal+" users in: "+finish+"s" );
 	}
 	
