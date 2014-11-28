@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import net.iubris.facri.model.adapters.URLAdapter;
@@ -24,11 +23,13 @@ public class LikesInfo implements Serializable {
 	@XmlElement(name="count")
 	private int count;
 	
-	@XmlElementWrapper(name="sample")
+	@XmlElement(name="sample")
+//	@XmlElementWrapper(name="sample")
 //	@XmlElement(name="sample")
 	private Set<String> samplesUserIDs;
 
-	@XmlElementWrapper(name="friends")
+	@XmlElement(name="friends")
+//	@XmlElementWrapper(name="friends")
 //	@XmlElement(name="friends")
 	private Set<String> friendsUserIDs;
 	
@@ -55,16 +56,21 @@ public class LikesInfo implements Serializable {
 		return samplesUserIDs;
 	}
 
-	public void setSamplesUserIDs(Set<String> samplesUserIDs) {
-		this.samplesUserIDs = samplesUserIDs;
-	}
+//	public void setSamplesUserIDs(Set<String> samplesUserIDs) {
+//		this.samplesUserIDs = samplesUserIDs;
+//	}
 
 	public Set<String> getFriendsUserIDs() {
 		return friendsUserIDs;
 	}
 
-	public void setFriendsUserIDs(Set<String> friendsUserIDs) {
-		this.friendsUserIDs = friendsUserIDs;
+//	public void setFriendsUserIDs(Set<String> friendsUserIDs) {
+//		this.friendsUserIDs = friendsUserIDs;
+//	}
+	
+	@Override
+	public String toString() {
+		return count+" "+friendsUserIDs.size()+" "+samplesUserIDs.size();
 	}
 
 //	public boolean isUserLikes() {

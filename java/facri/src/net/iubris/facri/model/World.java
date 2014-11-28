@@ -3,8 +3,8 @@ package net.iubris.facri.model;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.BiConsumer;
 
 import javax.inject.Singleton;
@@ -17,13 +17,15 @@ import net.iubris.facri.model.users.User;
 public class World implements Serializable {
 
 	private static final long serialVersionUID = -7112902990753202438L;
-
-	private Ego myUser;
+	
 	private final Map<String,FriendOrAlike> myFriendsMap= new ConcurrentHashMap<>();
 	private final Map<String,FriendOrAlike> otherUsersMap = new ConcurrentHashMap<>();
 	
-	private final Set<Integer> appreciations = new TreeSet<>();
-//	private int newUser = 0;
+	private final Set<Integer> appreciationsRange = new ConcurrentSkipListSet<Integer>();
+	private final Set<Integer> postsCountRange = new ConcurrentSkipListSet<Integer>();
+	private final Set<Integer> interactionsRange = new ConcurrentSkipListSet<Integer>();
+	
+	private Ego myUser;
 	
 	public Ego getMyUser() {
 		return myUser;
@@ -76,14 +78,26 @@ public class World implements Serializable {
 			}
 		}
 		
+		int updatedOwnPostsCount = user.getOwnPostsCount();
+		postsCountRange.add(updatedOwnPostsCount);
+		
 		int updatedAppreciation = user.getOwnLikedPostsCount() + user.getOwnPostsResharingCount();
-		appreciations.add(updatedAppreciation);
+		appreciationsRange.add(updatedAppreciation);
+		
+		int updatedInteractions = user.getUserInteractionsCount();
+		interactionsRange.add(updatedInteractions);
 		
 		return user;		
 	}
 	
 	public Set<Integer> getAppreciationsRange() {
-		return appreciations;
+		return appreciationsRange;
+	}
+	public Set<Integer> getPostsCountRange() {
+		return postsCountRange;
+	}
+	public Set<Integer> getInteractionsRange() {
+		return interactionsRange;
 	}
 	
 	public void testData() {
@@ -93,14 +107,14 @@ public class World implements Serializable {
 				if (u instanceof FriendOrAlike) {
 					FriendOrAlike f = (FriendOrAlike) u;
 					if (f.getMutualFriends().size() >0)
-						System.out.println(u.getId()+" "+u.getOwnPostsCount()+","+u.howUserInteracts()+","+f.getMutualFriends().size());
+						System.out.println(u.getId()+" "+u.getOwnPostsCount()+","+u.getUserInteractionsCount()+","+f.getMutualFriends().size());
 				}
 			}
 		};
 		
 		Ego ego = getMyUser();
 		System.out.println(ego.getId()+" "+ego.getOwnPostsCount()+","
-				+ego.howUserInteracts()+","+ego.getFriendsIds().size());
+				+ego.getUserInteractionsCount()+","+ego.getFriendsIds().size());
 		System.out.println("");
 
 		getMyFriendsMap()

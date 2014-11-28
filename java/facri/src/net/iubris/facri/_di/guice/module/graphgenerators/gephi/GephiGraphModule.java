@@ -7,8 +7,10 @@ import net.iubris.facri._di.providers.graphgenerators.gephi.GephiUndirectedGraph
 import net.iubris.facri._di.providers.graphgenerators.gephi.GephiWorkspaceProvider;
 import net.iubris.facri.graph.exporter.GraphExporter;
 import net.iubris.facri.graph.exporter.gephi.GephiGraphExporter;
-import net.iubris.facri.graph.generator.GraphGenerator;
-import net.iubris.facri.graph.generator.gephi.GephiFriendnessGraphGenerator;
+import net.iubris.facri.graph.generator.FriendshipsGraphGenerator;
+import net.iubris.facri.graph.generator.InteractionsGraphGenerator;
+import net.iubris.facri.graph.generator.gephi.GephiFriendshipsGraphGenerator;
+import net.iubris.facri.graph.generator.gephi.GephiInteractionsGraphGenerator;
 
 import org.gephi.graph.api.DirectedGraph;
 import org.gephi.graph.api.GraphFactory;
@@ -29,7 +31,8 @@ public class GephiGraphModule extends AbstractModule {
 		bind(UndirectedGraph.class).toProvider(GephiUndirectedGraphProvider.class);
 		
 		bind(GraphExporter.class).to(GephiGraphExporter.class);
-		bind(GraphGenerator.class).to(GephiFriendnessGraphGenerator.class);
+		bind(FriendshipsGraphGenerator.class).to(GephiFriendshipsGraphGenerator.class);
+		bind(InteractionsGraphGenerator.class).to(GephiInteractionsGraphGenerator.class);
 	}
 
 }

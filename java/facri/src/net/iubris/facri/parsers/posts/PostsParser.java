@@ -64,8 +64,11 @@ public class PostsParser implements Parser {
 						.forEach( new Consumer<Post>() {
 							@Override
 							public void accept(Post post) {
-								postParser.parse(post, owningWallUserId/*, useridToUserMap*/);
-								commentsParser.parse(userDir, owningWallUserId, post/*, useridToUserMap*/);
+								postParser.parse(post, owningWallUserId);
+								commentsParser.parse(userDir, owningWallUserId, post);
+								
+//								System.out.println( post.getLikesInfo() );
+//								System.out.println(post.getTaggedIDs().size() );
 							}
 						});
 					} catch (FileNotFoundException | XMLStreamException | NullPointerException | JAXBException e) {

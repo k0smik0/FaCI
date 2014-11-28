@@ -1,5 +1,6 @@
 package net.iubris.facri.graph.exporter.gephi;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -34,7 +35,10 @@ public class GephiGraphExporter extends AbstractGraphExporter {
 		exporterGraphML.setWorkspace(workspace);
 		ec.exportWriter(new StringWriter(), (CharacterExporter) exporterGraphML);
 		try {
-			FileWriter f=  new FileWriter(super.corpusNameAsGraphFilesPrefix+"_-_"+fileName+".graphml");			
+			File outputDir = new File("graphmls");
+			if (!outputDir.exists())
+				outputDir.mkdirs();
+			FileWriter f=  new FileWriter("graphmls"+File.pathSeparator+super.corpusNameAsGraphFilesPrefix+"_-_"+fileName+".graphml");			
 			ec.exportWriter(f, (CharacterExporter) exporterGraphML);
 		} catch (IOException e) {
 			e.printStackTrace();

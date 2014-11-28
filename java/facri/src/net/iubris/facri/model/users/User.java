@@ -5,7 +5,6 @@ import java.util.Map;
 
 import net.iubris.facri.model.posts.Post;
 
-
 public interface User {
 	
 	public void setId(String userId);
@@ -18,11 +17,12 @@ public interface User {
 	public void incrementOwnPostResharing(int shareCount);	
 	public int getOwnPostsResharingCount();
 
-	public Map<String, Interactions> getOtherUsersInteractions();	
-	public Interactions getOtherUserInteractions(String targetUserId);
+	public Map<String, Interactions> getToOtherUsersInteractions();	
+	public Interactions getToOtherUserInteractions(String targetUserId);
+	public int getToOtherUserInteractionsCount(String targetUserId);
 	
-	public int howUserInteracts();
+	public int getUserInteractionsCount();
 	
 	public void incrementOwnLikedPosts(int likesCount);	
-	public int getOwnLikedPostsCount();
+	public int getOwnLikedPostsCount();	
 }

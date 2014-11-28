@@ -22,38 +22,44 @@ public abstract class AbstractUser implements User,Serializable {
 		this.id = userId;
 	}
 
+	@Override
 	public String getId() {
 		return id;
-	}
-	
+	}	
 	@Override
 	public void setId(String userId) {
 		this.id = userId;		
 	}
 	
-
+	@Override
 	public boolean addOwnPost(Post post) {
 		return ownPosts.add(post);
 	}
+	@Override
 	public List<Post> getOwnPosts() {
 		return ownPosts ;
-	}	
+	}
+	@Override
 	public int getOwnPostsCount() {
 		return ownPosts.size();
 	}
 
-	public void incrementOwnPostResharing(int shareCount) {
-		this.ownPostsResharingCount += shareCount;		
+	@Override
+	public void incrementOwnPostResharing(int reshareCount) {
+System.out.println(reshareCount);
+		this.ownPostsResharingCount += reshareCount;		
 	}
+	@Override
 	public int getOwnPostsResharingCount() {
 		return ownPostsResharingCount;
 	}
 
-	public Map<String, Interactions> getOtherUsersInteractions() {
+	@Override
+	public Map<String, Interactions> getToOtherUsersInteractions() {
 		return interactionsMap;
-	}
-	
-	public Interactions getOtherUserInteractions(String targetUserId) {
+	}	
+	@Override
+	public Interactions getToOtherUserInteractions(String targetUserId) {
 		if (!interactionsMap.containsKey(targetUserId)) {
 			Interactions interactions = new Interactions();
 			interactionsMap.put(targetUserId, interactions);
@@ -61,14 +67,23 @@ public abstract class AbstractUser implements User,Serializable {
 		}
 		return interactionsMap.get(targetUserId);
 	}
+	
+	@Override
+	public int getToOtherUserInteractionsCount(String targetUserId) {
+		return getToOtherUserInteractions(targetUserId).getTotalInteractions();
+	}
 
-	public int howUserInteracts() {
+	@Override
+	public int getUserInteractionsCount() {
 		return interactionsMap.size();
 	}
 	
+	@Override
 	public void incrementOwnLikedPosts(int likesCount) {
+//System.out.println(likesCount);
 		this.ownPostsLiking += likesCount;
 	}
+	@Override
 	public int getOwnLikedPostsCount() {
 		return ownPostsLiking;
 	}

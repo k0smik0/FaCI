@@ -1,10 +1,12 @@
 package net.iubris.facri.parsers.posts;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.inject.Inject;
 
 import net.iubris.facri.model.World;
+import net.iubris.facri.model.comments.LikesInfo;
 import net.iubris.facri.model.posts.Post;
 import net.iubris.facri.model.users.User;
 
@@ -39,8 +41,8 @@ public class PostParser {
 		handleTags(post, actorUser, post.getTaggedIDs());
 		handleTags(post, actorUser, post.getWithTaggedFriendsIDs());
 
-		handleLikes(post.getLikesInfo().getFriendsUserIDs(), actorUser, owningWallUserId/*, useridToUserMap*/);
-		handleLikes(post.getLikesInfo().getSamplesUserIDs(), actorUser, owningWallUserId/*, useridToUserMap*/);
+		handleLikes(post.getLikesInfo()/*.getFriendsUserIDs()*/, actorUser, owningWallUserId);
+//		handleLikes(post.getLikesInfo().getSamplesUserIDs(), actorUser, owningWallUserId);
 	}
 	
 	private void handleAuthorUser(User actorUser, Post post) {
@@ -56,12 +58,12 @@ public class PostParser {
 	 * @param targetUserId
 	 */
 	private void handleTargetUser(User actorUser, Post post, String targetUserId) {
-		actorUser.getOtherUserInteractions(targetUserId).addPost(post);
+		actorUser.getToOtherUserInteractions(targetUserId).addPost(post);
 	}
 	
 	private void handleTags(Post post, User user, Set<String> taggedIds) {
 		for (String taggedId : post.getTaggedIDs()) {
-			user.getOtherUserInteractions(taggedId).incrementTags();
+			user.getToOtherUserInteractions(taggedId).incrementTags();
 		}
 	}
 	
@@ -72,21 +74,28 @@ public class PostParser {
 	 * @param likingUsersIds
 	 * @param wallOwnerId
 	 */
-	private void handleLikes(Set<String> likingUsersIds, User actorUser, String wallOwnerId/*, Map<String, User> useridToUserMap*/) {
+	private void handleLikes(LikesInfo likesInfo,/*Set<String> likingUsersIds,*/ User actorUser, String wallOwnerId) {
 		// interactingUsersIds could be friends of user owning wall - it depends on wall privacy		
-		int howLikes = likingUsersIds.size();
-		if (howLikes > 0) {
-			for (String interactingUserId: likingUsersIds) {
+		int howLikes = likesInfo.getCount();
+		actorUser.incrementOwnLikedPosts(howLikes);
+//				likingUsersIds.size();
+		Set<String> friendsUserIDs = likesInfo.getFriendsUserIDs();
+		Set<String> samplesUserIDs = likesInfo.getSamplesUserIDs();
+		Set<String> allUser = new HashSet<>();
+		allUser.addAll(friendsUserIDs);
+		allUser.addAll(samplesUserIDs);
+//		if (howLikes > 0) {
+			for (String interactingUserId: allUser) {
 				// create owner user if it doesn't exist
 				world.isExistentUserOrCreateNew(wallOwnerId);
 				
 				// create interacting user if it doesn't exist
 				world.isExistentUserOrCreateNew(interactingUserId)
 				// then use for its likes
-				.getOtherUserInteractions(wallOwnerId).incrementLikes();
+				.getToOtherUserInteractions(wallOwnerId).incrementLikes();
 			}
 			actorUser.incrementOwnLikedPosts(howLikes);
-		}
+//		}
 	}
 
 }

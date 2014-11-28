@@ -18,26 +18,32 @@ public class Interactions implements Serializable {
 	public void incrementTags() {
 		tags++;		
 	}
-	public int getHowTags() {
+	public int getTagsCount() {
 		return tags;
 	}
 
 	public void incrementLikes() {
-		likes++;		
+		likes++;
+//System.out.println(likes);
 	}
-	public int getHowLikes() {
+	public int getLikesCount() {
 		return likes;
 	}
 	
 	public void addPost(Post post) {
 		this.posts.add(post);
+//	System.out.println(posts.size());
 	}
 
 	public void incrementComments() {
 		this.comments++;
+//System.out.println(comments);
 	}
-	public int getHowComments() {
+	public int getCommentsCount() {
 		return comments;
 	}
-
+	
+	public int getTotalInteractions() {
+		return tags+likes+posts.size()+comments;
+	}
 }

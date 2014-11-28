@@ -69,8 +69,8 @@ public class Post implements Serializable {
 	@XmlElement(name="source_id")
 	private String sourceID;	
 	
-	@XmlElementWrapper(name="tagged_ids")
-//	@XmlElement(name="tagged_ids")
+//	@XmlElementWrapper(name="tagged_ids")
+	@XmlElement(name="tagged_ids")
 	private Set<String> taggedIDs;
 	
 	
@@ -82,7 +82,8 @@ public class Post implements Serializable {
 	@XmlJavaTypeAdapter(DateAdapter.class)
 	private Date updatedTime;
 	
-	@XmlElementWrapper(name="with_tags")
+	@XmlElement(name="with_tags")
+//	@XmlElementWrapper(name="with_tags")
 //	@XmlElement(name="with_tags")
 	private Set<String> withTaggedFriendsIDs;
 
@@ -95,9 +96,9 @@ public class Post implements Serializable {
 		return actorId;
 	}
 
-	public void setActorId(String actorId) {
-		this.actorId = actorId;
-	}
+//	public void setActorId(String actorId) {
+//		this.actorId = actorId;
+//	}
 
 	/**
 	 * @return the post id
@@ -106,9 +107,9 @@ public class Post implements Serializable {
 		return postId;
 	}
 
-	public void setPostId(String postId) {
-		this.postId = postId;
-	}
+//	public void setPostId(String postId) {
+//		this.postId = postId;
+//	}
 
 	/**
 	 * @return a {@link net.iubris.facri.model.comments.CommentInfo} instance
@@ -117,81 +118,81 @@ public class Post implements Serializable {
 		return commentInfo;
 	}
 
-	public void setCommentInfo(CommentInfo commentInfo) {
-		this.commentInfo = commentInfo;
-	}
+//	public void setCommentInfo(CommentInfo commentInfo) {
+//		this.commentInfo = commentInfo;
+//	}
 
 	public Date getCreatedTime() {
 		return createdTime;
 	}
 
-	public void setCreatedTime(Date createdTime) {
-		this.createdTime = createdTime;
-	}
+//	public void setCreatedTime(Date createdTime) {
+//		this.createdTime = createdTime;
+//	}
 
 	public boolean isPopular() {
 		return isPopular;
 	}
 
-	public void setPopular(boolean isPopular) {
-		this.isPopular = isPopular;
-	}
+//	public void setPopular(boolean isPopular) {
+//		this.isPopular = isPopular;
+//	}
 
 	public LikesInfo getLikesInfo() {
 		return likesInfo;
 	}
 
-	public void setLikesInfo(LikesInfo likesInfo) {
-		this.likesInfo = likesInfo;
-	}
+//	public void setLikesInfo(LikesInfo likesInfo) {
+//		this.likesInfo = likesInfo;
+//	}
 
 	public URL getPermalink() {
 		return permalink;
 	}
 
-	public void setPermalink(URL permalink) {
-		this.permalink = permalink;
-	}
+//	public void setPermalink(URL permalink) {
+//		this.permalink = permalink;
+//	}
 
 	public int getShareCount() {
 		return shareCount;
 	}
 
-	public void setShareCount(int shareCount) {
-		this.shareCount = shareCount;
-	}
+//	public void setShareCount(int shareCount) {
+//		this.shareCount = shareCount;
+//	}
 
 	public String getSourceID() {
 		return sourceID;
 	}
 
-	public void setSourceID(String sourceID) {
-		this.sourceID = sourceID;
-	}
+//	public void setSourceID(String sourceID) {
+//		this.sourceID = sourceID;
+//	}
 
 	public Set<String> getTaggedIDs() {
 		return taggedIDs;
 	}
 
-	public void setTaggedIDs(Set<String> taggedIDs) {
-		this.taggedIDs = taggedIDs;
-	}
+//	public void setTaggedIDs(Set<String> taggedIDs) {
+//		this.taggedIDs = taggedIDs;
+//	}
 
 	public Type getType() {
 		return type;
 	}
 
-	public void setType(Type type) {
-		this.type = type;
-	}
+//	public void setType(Type type) {
+//		this.type = type;
+//	}
 
 	public Date getUpdatedTime() {
 		return updatedTime;
 	}
 
-	public void setUpdatedTime(Date updatedTime) {
-		this.updatedTime = updatedTime;
-	}
+//	public void setUpdatedTime(Date updatedTime) {
+//		this.updatedTime = updatedTime;
+//	}
 
 	public Set<String> getWithTaggedFriendsIDs() {
 		return withTaggedFriendsIDs;

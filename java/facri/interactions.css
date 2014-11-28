@@ -1,0 +1,22 @@
+node {
+	size-mode: dyn-size;
+	/*size: 10px;*/
+	
+	fill-color: white, blue;
+	fill-mode: dyn-plain;
+	         
+	stroke-mode: plain;
+	stroke-color: black;
+	stroke-width: 1px;
+	
+	/*z-index: 0;*/ 
+}
+node.ego {
+	fill-color: white, red;
+}
+edge {
+	shape: line;
+	fill-mode: dyn-plain;
+	fill-color: #FFFF99, #FFFF66, #FFFF33, #FFFF00, #FFCC00, #FF9900;
+	/*arrow-size: 1gu, 100gu;*/
+}

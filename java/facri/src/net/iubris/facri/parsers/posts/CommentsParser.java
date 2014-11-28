@@ -51,7 +51,7 @@ public class CommentsParser {
 				for (Comment commentData: commentsData) {
 					String commentingUserId = commentData.getFromId();
 					world.isExistentUserOrCreateNew(commentingUserId)
-						.getOtherUserInteractions(owningWallUserId).incrementComments();				
+						.getToOtherUserInteractions(owningWallUserId).incrementComments();				
 				}
 			} catch (FileNotFoundException | JAXBException | XMLStreamException e) {
 				System.out.println("error for file: "+commentsJsonFile.getName());
