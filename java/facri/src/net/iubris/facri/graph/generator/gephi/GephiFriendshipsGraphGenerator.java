@@ -50,7 +50,7 @@ public class GephiFriendshipsGraphGenerator implements FriendshipsGraphGenerator
 	}
 	
 	@Override
-	public void generateAll() {
+	public void generateMeWithMyFriendsAndTheirFriends() {
 		this.egoNode = createMe();
 		createMyFriendsWithMe(egoNode);
 		createFriendsOfFriends();

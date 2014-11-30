@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Timing {
 
-	Date start;
+	private final Date start;
 	
 	public Timing() {
 		start = new Date();

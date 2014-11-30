@@ -48,8 +48,9 @@ public class PostsParser implements Parser {
 		File[] feedsFiles = userDir.listFiles(feedsDirFilenameFilter);
 		
 		if (feedsFiles.length>0) {
-			Arrays.asList( feedsFiles[0].listFiles(postFilesFilenameFilter) ).stream()
-			.parallel() // parallel on each posts file
+			Arrays.asList( feedsFiles[0].listFiles(postFilesFilenameFilter) )
+			.stream()
+			.parallel() // parallel on each posts file: 1-2 sec benefit
 			.forEach( new Consumer<File>() {
 				@Override
 				public void accept(File userFeedsJsonFile) {
@@ -60,7 +61,7 @@ public class PostsParser implements Parser {
 						
 						posts.getPosts()
 						.stream()
-						.parallel() // parallel on each post
+						.parallel() // parallel on each post: half-time benefit
 						.forEach( new Consumer<Post>() {
 							@Override
 							public void accept(Post post) {

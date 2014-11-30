@@ -11,5 +11,4 @@ public class ParseTaskWrapper extends AbstractTaskWrapper<World> {
 	public ParseTaskWrapper(ParserAble callable) {
 		super(callable);
 	}
-
 }

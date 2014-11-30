@@ -6,7 +6,7 @@ public interface GraphGenerator {
 
 	void generateMyFriendsAndFriendOfFriends();
 
-	void generateAll();
+	void generateMeWithMyFriendsAndTheirFriends();
 
 	void generateMeWithMyFriends();
 	

@@ -29,7 +29,6 @@ private final World world;
 
 	public void parse() throws JAXBException, FileNotFoundException, XMLStreamException {
 		egoDataParser.parse();
-//System.out.println("");
 		friendsDataParser.parse();		
 	}
 	

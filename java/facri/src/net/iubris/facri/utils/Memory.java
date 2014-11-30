@@ -1,6 +1,6 @@
-package net.iubris.facri.main;
+package net.iubris.facri.utils;
 
-public class Utils {
+public class Memory {
 	
 	private static final long MEGABYTE = 1024L * 1024L;
 
@@ -8,16 +8,17 @@ public class Utils {
 		return bytes / MEGABYTE;
 	}
 	
-	static void checkMemory() {
+	public static long checkMemory() {
 		// Get the Java runtime
 		Runtime runtime = Runtime.getRuntime();
 		// Run the garbage collector
 		runtime.gc();
 		// Calculate the used memory
 		long memory = runtime.totalMemory() - runtime.freeMemory();
-		System.out.println("Used memory is bytes: " + memory);
-		System.out.println("Used memory is megabytes: "
-				+ bytesToMegabytes(memory));
+//System.out.println("Used memory is bytes: " + memory);
+		long bytesToMegabytes = bytesToMegabytes(memory);
+//System.out.println("Used memory is megabytes: " + bytesToMegabytes);
+		return bytesToMegabytes;
 	}
 
 }

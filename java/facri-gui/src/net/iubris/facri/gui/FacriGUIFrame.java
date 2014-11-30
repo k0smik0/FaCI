@@ -8,13 +8,13 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 
-import net.iubris.ishtaran.gui.GUIFrame;
 import net.iubris.ishtaran.gui._di.annotations.GUIButtons;
 import net.iubris.ishtaran.gui._di.annotations.JLabelGlobal;
 import net.iubris.ishtaran.gui._di.annotations.JLabelRelative;
 import net.iubris.ishtaran.gui._di.annotations.JTextAreaGlobal;
 import net.iubris.ishtaran.gui._di.annotations.ProgressBarGlobal;
 import net.iubris.ishtaran.gui._di.annotations.ProgressBarRelative;
+import net.iubris.ishtaran.gui.frame.GUIFrame;
 
 public class FacriGUIFrame extends GUIFrame {
 

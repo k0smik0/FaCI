@@ -69,7 +69,7 @@ public class GephiInteractionsGraphGenerator implements InteractionsGraphGenerat
 	}
 	
 	@Override
-	public void generateAll() {
+	public void generateMeWithMyFriendsAndTheirFriends() {
 		retrieveAppreciations();
 		this.egoNode = createMe();
 		createMyFriendsWithMe(egoNode);

@@ -2,7 +2,7 @@ package net.iubris.facri.gui._di.guice.module;
 
 import net.iubris.facri._ishtaran.FacriCommandActionEventsHandlerProvider;
 import net.iubris.ishtaran.gui._di.guice.modules.AbstractIshtaranModule;
-import net.iubris.ishtaran.gui._di.providers.CommandActionEventsHandlerProvider;
+import net.iubris.ishtaran.gui.actionevents.handler.CommandActionEventsHandler;
 
 
 public class FacriGUIModule extends AbstractIshtaranModule {
@@ -13,8 +13,8 @@ public class FacriGUIModule extends AbstractIshtaranModule {
 	}
 
 	@Override
-	protected Class<? extends CommandActionEventsHandlerProvider> providesCommandActionEventsHandlerProviderType() {
-		return FacriCommandActionEventsHandlerProvider.class;
+	protected void bindCommandActionEventsHandlerToProvider() {
+		bind(CommandActionEventsHandler.class).toProvider(FacriCommandActionEventsHandlerProvider.class);
 	}
 
 }

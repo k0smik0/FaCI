@@ -1,22 +1,50 @@
 node {
 	size-mode: dyn-size;
-	/*size: 10px;*/
+	/*size: 50px;*/
 	
-	fill-color: white, blue;
 	fill-mode: dyn-plain;
 	         
 	stroke-mode: plain;
 	stroke-color: black;
 	stroke-width: 1px;
 	
-	/*z-index: 0;*/ 
+	/*z-index: 0;*/
+	 
 }
 node.ego {
-	fill-color: white, red;
+	fill-color: #ffeebb, red;
 }
+/* friends are in green range #ddffac */
+node.friend { 
+	fill-color: #ddffac, #008800;
+}
+node.friendof {
+	fill-color: #C4C3D0, blue;
+}
+node.giantcomponent {
+	fill-color: #888888, black;
+}
+
 edge {
-	shape: line;
+	shape: blob;
 	fill-mode: dyn-plain;
-	fill-color: #FFFF99, #FFFF66, #FFFF33, #FFFF00, #FFCC00, #FF9900;
-	/*arrow-size: 1gu, 100gu;*/
+	arrow-size: 1px;
+	size-mode: dyn-size;
+}
+/* light pink to red */
+edge.metomyfriend {
+	fill-color: #ffeebb, #FF0000;
+}
+/* light yellow to orange */
+edge.myfriendtome {
+ fill-color: #fdff00, #FF8C00;
+}
+edge.myfriendwithmutualfriend {
+ /* yellow-green range */
+	/*fill-color: #white, #FFFFDD, #FFFF99, #FFFF00, #FFCC00, #FF9900;*/
+	/*fill-color: #F7E98E, #DFFF00, #A7FC00, #00FF00;*/
+	fill-color: #ddffac, #008800;
+}
+edge.friendofmyfriendwithmyfriend {
+	fill-color: #f8cbfb, purple;
 }

@@ -1,4 +1,4 @@
-package net.iubris.facri._di.guice.module;
+package net.iubris.facri._di.guice.module.parser;
 
 import java.io.FileReader;
 import java.io.FilenameFilter;
@@ -25,7 +25,7 @@ import com.google.inject.name.Names;
 
 import de.odysseus.staxon.json.jaxb.JsonXMLMapper;
 
-public class FacriModule extends AbstractModule {
+public class FacriParserModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
@@ -47,6 +47,6 @@ public class FacriModule extends AbstractModule {
 		
 		bind(String.class).annotatedWith(CorpusPrefix.class).toProvider(CorpusPrefixProvider.class);
 		
-		install(new GephiGraphModule());
+//		install(new GephiGraphModule());
 	}
 }
