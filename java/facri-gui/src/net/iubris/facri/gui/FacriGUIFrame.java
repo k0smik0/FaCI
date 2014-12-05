@@ -25,7 +25,7 @@ public class FacriGUIFrame extends GUIFrame {
 			@ProgressBarRelative JProgressBar jProgressBarRelative, 
 			@JLabelGlobal JLabel jLabelGlobal, 
 			@ProgressBarGlobal JProgressBar jProgressBarGlobal) {
-		super(buttons, jTextArea, jLabelRelative, jProgressBarRelative, jLabelGlobal, jProgressBarGlobal);
+		super(buttons, jTextArea, jLabelRelative, jProgressBarRelative, jLabelGlobal, jProgressBarGlobal, "FaCRI");
 	}
 
 	private static final long serialVersionUID = 4642194410605183875L;

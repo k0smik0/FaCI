@@ -1,21 +1,18 @@
 package net.iubris.facri.main;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
-import javax.inject.Inject;
-
-import com.teradata.jdbc.jdbc_4.parcel.OptionsParcel;
-
-import net.iubris.facri.main.options.Options;
+import net.iubris.facri._di.guice.module.parser.FacriParserModule;
 import net.iubris.facri.main.options.OptionAction;
+import net.iubris.facri.main.options.OptionActionParse;
+import net.iubris.facri.main.options.OptionActionViewByGraphstream;
+import net.iubris.facri.main.options.OptionArgument;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 public class Main {
-	
-
-//	void doParse() throws FileNotFoundException, JAXBException, XMLStreamException {
-//		dataParser.parse();
-//	}
 	
 	
 	/*void createInteractionsGephiGraphs(boolean createGraphmlFile) {
@@ -59,17 +56,10 @@ public class Main {
 	
 
 	
-//	private final DataParser dataParser;
-//	private final FriendshipsGraphGenerator friendshipsGraphGenerator;
-//	private final GraphExporter graphExporter;
-//	
-//	private final CacheUtils cacheUtils;
-//	private final InteractionsGraphGenerator interactionsGraphGenerator;
-//	private final GraphstreamInteractionsGraphGenerator graphstreamInteractionsGraphGenerator;
 	
-	static private Map<Options,OptionAction> optionsMap = new EnumMap<Options,OptionAction>(Options.class);
+	Map<String,Class<? extends OptionAction>> optionsMap = new /*Enum*/HashMap<String/*OptionArgument*/,Class<? extends OptionAction>>(/*OptionArgument.class*/);
 	
-	@Inject
+//	@Inject
 	public Main(
 //			DataParser dataParser, 
 //			FriendshipsGraphGenerator friendshipsGraphGenerator, 
@@ -78,25 +68,30 @@ public class Main {
 //			CacheUtils cacheUtils,
 //			GraphstreamInteractionsGraphGenerator graphstreamInteractionsGraphGenerator
 			) {
-		
-//		this.graphstreamInteractionsGraphGenerator = graphstreamInteractionsGraphGenerator;
-		
-//		optionsMap.get
+		optionsMap.put(OptionArgument.PARSE.name(), OptionActionParse.class);
+		optionsMap.put(OptionArgument.VIEW.name(), OptionActionViewByGraphstream.class);
 	}
 	
 	public static void main(String[] args) {
 		
+		Main main = new Main();
+		String arg = args[0].toUpperCase();
+//		OptionArgument optionArgument = OptionArgument.valueOf(arg);
+//		Option
 		try {
-			Options.valueOf(args[0].toUpperCase()).doCommand();
+			if (main.optionsMap.containsKey( arg )) {
+				Class<? extends OptionAction> actionClass = main.optionsMap.get(arg);
+				Injector injector = Guice.createInjector( new FacriParserModule() );
+				OptionAction optionAction = injector.getInstance(actionClass);
+				optionAction.execute();
+			} else {
+				OptionArgument.HELP.doCommand();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		/*Injector injector = Guice.createInjector( new FacriModule() );
-		Main main = injector.getInstance(Main.class);
-		
-		
-		
+/*		
 		try {
 			if (args.length == 0) {
 				main.printHelp();
@@ -138,7 +133,7 @@ public class Main {
 		}*/
 	}
 	
-	void printHelp() {
-		System.out.println("Facri: graphml | view | [save | read] cacheFilename");
-	}
+//	void printHelp() {
+//		System.out.println("Facri: graphml | view | [save | read] cacheFilename");
+//	}
 }

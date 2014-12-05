@@ -22,21 +22,22 @@ import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
+import org.graphstream.ui.swingViewer.Viewer;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
 @Singleton
-public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphGenerator {
+public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphGenerator, GraphstreamGraphGenerator {
 	
 	private final World world;
 	
-	private final Map<String, FriendOrAlike> myFriendsMap;
+	private final Map<String, FriendOrAlike> myFriendsFromWorldMap;
 	private final Map<String, Node> myFriendsNodesMap = new ConcurrentHashMap<>();
 	private final Table<String, String, Edge> myFriendsWithMeEdgesAndViceversaTable = HashBasedTable.create();
 	private final Table<String, String, Edge> myFriendsToMutualFriendsTable = HashBasedTable.create();
 
-	private final Map<String, FriendOrAlike> friendOfFriendMap;
+	private final Map<String, FriendOrAlike> friendOfFriendFromWorldMap;
 	private final Map<String, Node> friendOfFriendNodeMap = new ConcurrentHashMap<>();
 	private final Table<String, String, Edge> friendsOfFriendsWithFriendsEdgesTable = HashBasedTable.create();
 	
@@ -74,8 +75,8 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 		graph.setAttribute("ui.stylesheet", "url('interactions.css')");
 //		MultiGraph multiGraph = new MultiGraph("a");
 		this.world = world;
-		this.myFriendsMap = world.getMyFriendsMap();
-		this.friendOfFriendMap = world.getOtherUsersMap();
+		this.myFriendsFromWorldMap = world.getMyFriendsMap();
+		this.friendOfFriendFromWorldMap = world.getOtherUsersMap();
 	}	
 
 	private void retrieveDataForNormalizations() {
@@ -95,6 +96,19 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 //System.out.print("["+interactionsMin+", "+interactionsDenominator+"] ");
 	}
 	
+	public void prepareForDisplay() {
+		graph.addAttribute("ui.quality");
+		graph.addAttribute("ui.antialias");
+		graph.display();
+		
+		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
+		Viewer viewer = new Viewer(graph,  Viewer.ThreadingModel.GRAPH_IN_SWING_THREAD);
+//		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
+		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
+		viewer.enableAutoLayout();
+	}
+	
+	@Override
 	public Graph getGraph() {
 		return graph;
 	}
@@ -114,7 +128,8 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 		retrieveDataForNormalizations();
 		this.egoNode = createMe();
 		createMyFriendsWithMe(egoNode);
-		garbageUselessFriendsOfFriends();
+		testGraph();
+//		garbageUselessFriendsOfFriends();
 	}
 	
 	@Override
@@ -237,7 +252,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 				Node myFriendNode = getOrCreateFriendNode(friendOfFriendUserIdThatIsMyFriendThatIsMutualFriendId);
 				myFriendNode.addAttribute("ui.class", friendNodeUiClass);
 				
-				int myfriendToHimFriendInteractionsAsWeight = myFriendsMap.get(friendOfFriendUserIdThatIsMyFriendThatIsMutualFriendId).getToOtherUserInteractionsCount(friendOfMyFriendId);
+				int myfriendToHimFriendInteractionsAsWeight = myFriendsFromWorldMap.get(friendOfFriendUserIdThatIsMyFriendThatIsMutualFriendId).getToOtherUserInteractionsCount(friendOfMyFriendId);
 		      Edge myFriendWithHimFriendEdge = createEdge(myFriendNode, friendOfMyFriendNode, myfriendToHimFriendInteractionsAsWeight, friendofmyfriendWithmyfriendEdgeUiClass);
 		      friendsOfFriendsWithFriendsEdgesTable.put(friendOfFriendUserIdThatIsMyFriendThatIsMutualFriendId, friendOfMyFriendId, myFriendWithHimFriendEdge);
 		      
@@ -259,7 +274,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 	}
 	
 	private Node getOrCreateFriendNode(String myFriendId) {
-		FriendOrAlike myFriend = myFriendsMap.get(myFriendId);
+		FriendOrAlike myFriend = myFriendsFromWorldMap.get(myFriendId);
 		Node myFriendNode = graph.getNode(myFriendId); 
 		if (myFriendNode==null) {
 			myFriendNode = createNode(myFriend);
@@ -365,11 +380,11 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 		graphEdgesCount = graph.getEdgeCount();
 		
 		System.out.println( "\tmy friends:\n" 
-				+"\t\tnodes (map): "+ myFriendsMap.size()+" = "+myFriendsNodesMap.size()+"\n"
+				+"\t\tnodes (map): "+ myFriendsFromWorldMap.size()+" = "+myFriendsNodesMap.size()+"\n"
 				+"\t\tedges with me (map): "+myFriendsWithMeEdgesAndViceversaTable.size()+"\n"
 				+"\t\tedges to each others (map): "+myFriendsToMutualFriendsTable.values().size()+"\n"/*" graph:"+graphEdgesCount+"(friendsToMutualFriends+friendsToMe)\n"*/
 				+"\tfriends of my friends (maps):\n"
-				+"\t\tnodes (map): "+friendOfFriendMap.size()+" = "+friendOfFriendNodeMap.size()+"\n"/*+" graph:"+undirectedGraph.getNodeCount()+"(f+fof+me)\n"*/
+				+"\t\tnodes (map): "+friendOfFriendFromWorldMap.size()+" = "+friendOfFriendNodeMap.size()+"\n"/*+" graph:"+undirectedGraph.getNodeCount()+"(f+fof+me)\n"*/
 				+"\t\tedges to their/my friends (map): "+friendsOfFriendsWithFriendsEdgesTable.size()+"\n"
 				+"\n"
 				+"\tgraph nodes:"+graphNodesCount+"\n"
@@ -378,19 +393,19 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 //		for (Edge edge: myFriendsWithMeEdgesAndViceversaTable.values())
 //			System.out.print(edge.getId()+" ");
 		
-		garbageUselessFriendsOfFriends();
-		garbageUselessFriends();
+//		garbageUselessFriendsOfFriends();
+//		garbageUselessFriends();
 	}
 	
 	public void clear() {
-		garbageUseless();		
-		graph.clear();
-		egoNode = null;
+//		garbageUseless();		
+//		graph.clear();
+//		egoNode = null;
 	}
 	
 	private void garbageUselessFriendsOfFriends() {
 		long checkMemoryPre = Memory.checkMemory();
-		friendOfFriendMap.clear();
+//		friendOfFriendFromWorldMap.clear();
 		friendOfFriendNodeMap.clear();
 		friendsOfFriendsWithFriendsEdgesTable.clear();
 		long checkMemoryAfter = Memory.checkMemory();
@@ -399,7 +414,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 	
 	private void garbageUselessFriends() {
 		long checkMemoryPre = Memory.checkMemory();
-		myFriendsMap.clear();
+//		myFriendsFromWorldMap.clear();
 		myFriendsNodesMap.clear();
 		myFriendsToMutualFriendsTable.clear();
 		myFriendsWithMeEdgesAndViceversaTable.clear();

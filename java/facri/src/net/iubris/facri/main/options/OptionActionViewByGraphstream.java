@@ -6,7 +6,6 @@ import javax.inject.Inject;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
-import net.iubris.facri.graph.analyzer.graphstream.GraphstreamInteractionsAnalyzer;
 import net.iubris.facri.graph.generator.graphstream.GraphstreamInteractionsGraphGenerator;
 import net.iubris.facri.parsers.DataParser;
 
@@ -14,12 +13,12 @@ import org.graphstream.graph.Graph;
 import org.graphstream.ui.swingViewer.Viewer;
 import org.graphstream.ui.swingViewer.ViewerListener;
 
-public class OptionActionView extends AbstractOptionActionParsable {
+public class OptionActionViewByGraphstream extends AbstractOptionActionParsable {
 	
 	private final GraphstreamInteractionsGraphGenerator graphstreamInteractionsGraphGenerator;
 	
 	@Inject
-	public OptionActionView(DataParser dataParser, GraphstreamInteractionsGraphGenerator graphstreamInteractionsGraphGenerator) {
+	public OptionActionViewByGraphstream(DataParser dataParser, GraphstreamInteractionsGraphGenerator graphstreamInteractionsGraphGenerator) {
 		super(dataParser);
 		this.graphstreamInteractionsGraphGenerator = graphstreamInteractionsGraphGenerator;
 	}
@@ -42,7 +41,7 @@ public class OptionActionView extends AbstractOptionActionParsable {
 		
 		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		Viewer viewer = new Viewer(graph,  Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
-		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
+		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
 		viewer.enableAutoLayout();
 //		ViewerPipe viewerPipe = viewer.newViewerPipe();
 //		viewerPipe.addViewerListener(viewerListener);
@@ -56,8 +55,8 @@ public class OptionActionView extends AbstractOptionActionParsable {
 //			viewerPipe.pump();
 //		}
 		
-		GraphstreamInteractionsAnalyzer graphstreamInteractionsAnalyzer = new GraphstreamInteractionsAnalyzer(graph, graphstreamInteractionsGraphGenerator.getEgoNode());
-		graphstreamInteractionsAnalyzer.analyzeConnected();
+//		GraphstreamInteractionsAnalyzer graphstreamInteractionsAnalyzer = new GraphstreamInteractionsAnalyzer(graph, graphstreamInteractionsGraphGenerator.getEgoNode());
+//		graphstreamInteractionsAnalyzer.analyzeConnected();
 		
 
 		

@@ -9,7 +9,7 @@ import net.iubris.facri._di.annotations.corpus.CorpusPrefix;
 import net.iubris.facri._di.annotations.filenamefilters.CommentsFilenameFilter;
 import net.iubris.facri._di.annotations.filenamefilters.FeedsDirFilenameFilter;
 import net.iubris.facri._di.annotations.filenamefilters.PostsFilenameFilter;
-import net.iubris.facri._di.guice.module.graphgenerators.gephi.GephiGraphModule;
+import net.iubris.facri._di.guice.module.console.InteractiveConsoleModule;
 import net.iubris.facri._di.providers.corpusprefix.CorpusPrefixProvider;
 import net.iubris.facri._di.providers.filenamefilters.CommentsFilenameFilterProvider;
 import net.iubris.facri._di.providers.filenamefilters.FeedsDirFilenameFilterProvider;
@@ -48,5 +48,7 @@ public class FacriParserModule extends AbstractModule {
 		bind(String.class).annotatedWith(CorpusPrefix.class).toProvider(CorpusPrefixProvider.class);
 		
 //		install(new GephiGraphModule());
+		install(new InteractiveConsoleModule());
+		
 	}
 }

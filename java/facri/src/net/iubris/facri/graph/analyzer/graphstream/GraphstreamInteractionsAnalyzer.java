@@ -9,14 +9,16 @@ import org.graphstream.graph.Node;
 public class GraphstreamInteractionsAnalyzer {
 	
 	private final Graph graph;
-	private Node egoNode;
+	private final Node egoNode;
 	
-	public GraphstreamInteractionsAnalyzer(Graph graph, Node node) {
+//	@Inj
+	public GraphstreamInteractionsAnalyzer(Graph graph, Node egoNode) {
 		this.graph = graph;
-		this.egoNode = node;
+		this.egoNode = egoNode;
 	}
 
 	public void analyzeConnected() {
+		// TODO this is just a demo
 		graph.removeNode(egoNode);
 		ConnectedComponents connectedComponents = new ConnectedComponents(graph);
 		List<Node> giantComponent = connectedComponents.getGiantComponent();

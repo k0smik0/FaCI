@@ -3,13 +3,14 @@ package net.iubris.facri.parsers;
 import java.io.FileNotFoundException;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
 import net.iubris.facri.model.World;
 import net.iubris.facri.parsers.ego.EgoDataParser;
 import net.iubris.facri.parsers.friends.FriendsDataParser;
-
+@Singleton
 public class DataParser {
 
 private final EgoDataParser egoDataParser;

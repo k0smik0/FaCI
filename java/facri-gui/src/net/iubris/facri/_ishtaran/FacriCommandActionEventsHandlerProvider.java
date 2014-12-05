@@ -2,7 +2,11 @@ package net.iubris.facri._ishtaran;
 
 import javax.inject.Inject;
 
-import net.iubris.facri.gui.actionevents.ParseButtonCommandActionEvent;
+import net.iubris.facri.gui.actionevents.graphgeneration.Interactions.graphstream.MyFriendsInteractionsGraphstreamGenerationButtonCommandActionEvent;
+import net.iubris.facri.gui.actionevents.graphgeneration.Interactions.graphstream.MyFriendsWithMeAndTheirFriendsInteractionsGraphstreamGenerationButtonCommandActionEvent;
+import net.iubris.facri.gui.actionevents.graphgeneration.Interactions.graphstream.MyFriendsWithMeInteractionsGraphstreamGenerationButtonCommandActionEvent;
+import net.iubris.facri.gui.actionevents.graphgeneration.Interactions.graphstream.MyFriendsWithTheirFriendsInteractionsGraphstreamGenerationButtonCommandActionEvent;
+import net.iubris.facri.gui.actionevents.parse.ParseButtonCommandActionEvent;
 import net.iubris.ishtaran.gui._di.providers.AbstractCommandActionEventsHandlerProvider;
 
 public class FacriCommandActionEventsHandlerProvider extends AbstractCommandActionEventsHandlerProvider {
@@ -13,9 +17,20 @@ public class FacriCommandActionEventsHandlerProvider extends AbstractCommandActi
 			/*StemButtonCommandActionEvent stemButtonCommandActionEvent, 
 			MultigraphsButtonCommandActionEvent multigraphsButtonCommandActionEvent,
 			MiningButtonCommandActionEvent miningButtonCommandActionEvent*/
-			ParseButtonCommandActionEvent parseButtonCommandActionEvent		
+			ParseButtonCommandActionEvent parseButtonCommandActionEvent
+			,MyFriendsInteractionsGraphstreamGenerationButtonCommandActionEvent myFriendsInteractionsGraphstreamGenerationButtonCommandActionEvent
+			,MyFriendsWithMeInteractionsGraphstreamGenerationButtonCommandActionEvent myFriendsWithMeInteractionsGraphstreamGenerationButtonCommandActionEvent
+			,MyFriendsWithTheirFriendsInteractionsGraphstreamGenerationButtonCommandActionEvent myFriendsWithTheirFriendsInteractionsGraphstreamGenerationButtonCommandActionEvent
+			,MyFriendsWithMeAndTheirFriendsInteractionsGraphstreamGenerationButtonCommandActionEvent myFriendsWithMeAndTheirFriendsInteractionsGraphstreamGenerationButtonCommandActionEvent
 			) {
-		super(parseButtonCommandActionEvent);
+		super(parseButtonCommandActionEvent 
+				
+				,myFriendsInteractionsGraphstreamGenerationButtonCommandActionEvent
+				,myFriendsWithMeInteractionsGraphstreamGenerationButtonCommandActionEvent 
+				,myFriendsWithTheirFriendsInteractionsGraphstreamGenerationButtonCommandActionEvent
+				,myFriendsWithMeAndTheirFriendsInteractionsGraphstreamGenerationButtonCommandActionEvent
+				
+				);
 	}
 	
 }

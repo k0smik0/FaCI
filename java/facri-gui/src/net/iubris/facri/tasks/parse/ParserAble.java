@@ -1,4 +1,4 @@
-package net.iubris.facri.tasks;
+package net.iubris.facri.tasks.parse;
 
 import javax.inject.Inject;
 
@@ -39,7 +39,7 @@ public class ParserAble extends AbstractPhasable<World> {
 	}
 
 	@Override
-	public World getPartialResult() {
+	public World getResult() {
 		return dataParser.getResult();
 //		return null;
 	}

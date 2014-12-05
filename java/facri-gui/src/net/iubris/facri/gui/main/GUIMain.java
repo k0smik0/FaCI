@@ -3,6 +3,7 @@ package net.iubris.facri.gui.main;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
 
 import net.iubris.facri.gui.FacriGUIFrame;
 import net.iubris.facri.gui._di.guice.module.FacriGUIModule;
@@ -27,6 +28,7 @@ public class GUIMain {
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				guiFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 				guiFrame.setVisible(true);
 			}
 		});

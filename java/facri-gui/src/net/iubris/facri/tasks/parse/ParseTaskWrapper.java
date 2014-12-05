@@ -1,4 +1,4 @@
-package net.iubris.facri.tasks;
+package net.iubris.facri.tasks.parse;
 
 import javax.inject.Inject;
 
@@ -10,5 +10,10 @@ public class ParseTaskWrapper extends AbstractTaskWrapper<World> {
 	@Inject
 	public ParseTaskWrapper(ParserAble callable) {
 		super(callable);
+	}
+	
+	@Override
+	public void postStart() throws Exception {
+		super.postStart();
 	}
 }
