@@ -1,0 +1,24 @@
+normalizzare il tempo:
+
+150 messaggi in 2 giorni non ha senso (potrebbe essere l'evento tipo "matrimonio")
+
+quindi bisogna filtrare questi eventi
+
+poiche non posso richiedere piu di 150 messaggi, allora creo una distribuzione di densita', utilizzando il numero di messaggi diviso per unita' di tempo, e ottengo una curva di gauss, con dei valori che si assestano sulle code (gli outlier) e li escludo
+
+
+oppure, assumendo che tutti i messaggi siano significativi (gli outlier), allora è ragionevole ripetere il campionamento (e lo studio) ogni tot "mesi"
+
+
+creare 3 reti:
+rete dei post autografi con like (il numero dei post èattributo di nodo)
+rete dei post autografi con commenti (idem)
+rete dei post altrui a autore della bacheca (gli out-degree sono i legami [i post intenzionali agli altrui])
+
+
+prima dicotomizzo e poi metto in AND sui 3 grafi, in modo da trovare i componenti comuni
+
+
+
+10 righe di introduzione
+20 righe sulla descrizione dei dati, dei vincoli per ottenerli, sulla distribuzione

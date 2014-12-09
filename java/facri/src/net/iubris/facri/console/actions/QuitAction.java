@@ -14,7 +14,7 @@ public class QuitAction implements CommandAction {
 		System.exit(0);
 	}
 	
-	enum QuitCommand implements ConsoleCommand {
+	public enum QuitCommand implements ConsoleCommand {
 		q;
 		@Override
 		public String getHelpMessage() {
@@ -23,3 +23,5 @@ public class QuitAction implements CommandAction {
 		private String message = HelpAction.tab(1)+"'"+name()+"': exit\n";
 	}
 }
+
+

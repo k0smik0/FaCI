@@ -1,15 +1,10 @@
 package net.iubris.facri.console.actions;
 
 import java.io.Console;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.jar.Attributes.Name;
 
-import net.iubris.facri.console.actions.AnalyzerLocator.WorldTargetChar;
 import net.iubris.facri.console.actions.QuitAction.QuitCommand;
 import net.iubris.heimdall.actions.CommandAction;
-import net.iubris.heimdall.command.Command;
 import net.iubris.heimdall.command.ConsoleCommand;
 
 public class HelpAction implements CommandAction {
@@ -27,7 +22,7 @@ public class HelpAction implements CommandAction {
 		.append( QuitCommand.q.getHelpMessage() )
 //		.append(tab(1)).append("'"+ Command.h +"': display this help").append(newLine)
 		.append( HelpCommand.h.getHelpMessage() )
-		.append(tab(1)).append("'"+ Command.a +"': analyze [world] [analysis type]").append(newLine)
+		.append(tab(1)).append("'"+ "a" +"': analyze [world] [analysis type]").append(newLine)
 		.append(tab(2)).append("analyze command needs two arguments:").append(newLine)
 		.append(tab(2)).append("first argument select 'world' to analyze:").append(newLine)
 //		.append(tab(3)).append("'"+ AnalyzerLocator.WorldTargetChar.f +"': analyze friendships 'world'").append(newLine)
@@ -43,18 +38,18 @@ public class HelpAction implements CommandAction {
 		.append(newLine)
 		.toString();
 		
-		Map<Enum<? extends ConsoleCommand> ,CommandAction> actionsMap = new HashMap<>();
-		actionsMap.put(WorldTargetChar.f, null	);
-		
-		ConsoleCommand consoleCommand;
-		for(Enum<? extends ConsoleCommand> consolecommandEnum: actionsMap.keySet()) {
-			try {
-				consoleCommand = Enum.valueOf(consolecommandEnum.getDeclaringClass(), "asd");
-			break;
-			} catch(IllegalArgumentException e) {
-				
-			}
-		}
+//		Map<Enum<? extends ConsoleCommand> ,CommandAction> actionsMap = new HashMap<>();
+//		actionsMap.put(WorldTargetChar.f, null	);
+//		
+//		ConsoleCommand consoleCommand;
+//		for(Enum<? extends ConsoleCommand> consolecommandEnum: actionsMap.keySet()) {
+//			try {
+//				consoleCommand = Enum.valueOf(consolecommandEnum.getDeclaringClass(), "asd");
+//			break;
+//			} catch(IllegalArgumentException e) {
+//				
+//			}
+//		}
 		
 		
 	}
@@ -82,13 +77,14 @@ public class HelpAction implements CommandAction {
 //		return HelpCommand.h;
 //	}
 	
-	enum HelpCommand implements ConsoleCommand {
+	public enum HelpCommand implements ConsoleCommand {
 		h;
 		@Override
 		public String getHelpMessage() {
 			return helpMessage;
 		}
-		private String helpMessage = tab(1)+"'"+name()+"': display this help\n";
+		private String helpMessage = HelpAction.tab(1)+"'"+name()+"': display this help\n";
 	}
+
 
 }

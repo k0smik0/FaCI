@@ -102,7 +102,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 		graph.display();
 		
 		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
-		Viewer viewer = new Viewer(graph,  Viewer.ThreadingModel.GRAPH_IN_SWING_THREAD);
+		Viewer viewer = new Viewer(graph,  Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
 //		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
 		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
 		viewer.enableAutoLayout();

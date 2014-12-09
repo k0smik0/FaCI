@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import net.iubris.facri.console.actions.HelpAction.HelpCommand;
 import net.iubris.facri.graph.generator.graphstream.GraphstreamGraphGenerator;
 import net.iubris.facri.graph.generator.graphstream.GraphstreamInteractionsGraphGenerator;
 import net.iubris.heimdall.command.ConsoleCommand;
@@ -50,7 +49,6 @@ public class AnalyzerLocator {
 		,my_friends_with_their_friends {
 			@Override
 			public void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator) {
-				// TODO Auto-generated method stub
 				graphstreamGraphGenerator.generateMyFriendsAndFriendOfFriends();
 			}
 		}
@@ -70,7 +68,6 @@ public class AnalyzerLocator {
 		,me_and_my_friends_and_friends_of_my_friends {
 			@Override
 			public void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator) {
-				// TODO Auto-generated method stub
 				graphstreamGraphGenerator.generateMyFriendsAndFriendOfFriends();
 			}
 		};
