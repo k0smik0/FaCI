@@ -149,7 +149,15 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 	public void generateMyFriendsAndFriendOfFriends() {
 		retrieveDataForNormalizations();
 		createMyFriendsOnly();
-		createFriendsOfFriends();
+		createFriendsOfFriendsWithMyFriends();
+	}
+	
+	@Override
+	public void generateFriendOfFriends() {
+		retrieveDataForNormalizations();
+		createFriendsOfFriendsWithMyFriends();
+		for (Node myfriendNode: myFriendsNodesMap.values())
+			graph.removeNode(myfriendNode);
 	}
 	
 	@Override
@@ -157,7 +165,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 		retrieveDataForNormalizations();
 		this.egoNode = createMe();
 		createMyFriendsWithMe(egoNode);
-		createFriendsOfFriends();
+		createFriendsOfFriendsWithMyFriends();
 	}
 
 	
@@ -265,7 +273,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 	}
 	
 	
-	private void createFriendsOfFriends() {
+	private void createFriendsOfFriendsWithMyFriends() {
 		Map<String, FriendOrAlike> otherUsersMap = world.getOtherUsersMap();
 		Iterator<Entry<String, FriendOrAlike>> friendsOfMyFriendsIterator = otherUsersMap.entrySet().iterator();
 		while (friendsOfMyFriendsIterator.hasNext()) {
@@ -282,19 +290,24 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 			for (String mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId: friendOfMyFriendMutualFriendsIdsThatIsMyFriendsIds ) {
 				Node myFriendNode = getOrCreateFriendNode(mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId);
 				myFriendNode.addAttribute("ui.class", friendNodeUiClass);
-				
+
+				// TODO normalize
 				Interactions myfriendToHimFriendInteractions = myFriendsFromWorldMap.get(mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId).getToOtherUserInteractions(friendOfMyFriendId);
 				float myfriendToHimFriendInteractionsAsWeight = 
-						myFriendsFromWorldMap.get(mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId).getToOtherUserInteractionsCount(friendOfMyFriendId);
+//						myFriendsFromWorldMap.get(mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId).getToOtherUserInteractionsCount(friendOfMyFriendId);
 					getWeightedInteractions(myfriendToHimFriendInteractions);
-		      Edge myFriendWithHimFriendEdge = createEdge(myFriendNode, friendOfMyFriendNode, myfriendToHimFriendInteractionsAsWeight, friendofmyfriendWithmyfriendEdgeUiClass);
+//				System.out.println(myfriendToHimFriendInteractionsAsWeight);
+				float myfriendToHimFriendInteractionsAsNormalizedWeight = ((float)myfriendToHimFriendInteractionsAsWeight-interactionsMin)/interactionsDenominator;
+		      Edge myFriendWithHimFriendEdge = createEdge(myFriendNode, friendOfMyFriendNode, myfriendToHimFriendInteractionsAsNormalizedWeight, friendofmyfriendWithmyfriendEdgeUiClass);
 		      friendsOfFriendsWithFriendsEdgesTable.put(mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId, friendOfMyFriendId, myFriendWithHimFriendEdge);
 		      
 		      Interactions friendOfFriendUserToMyFriendInteractions = friendOfMyFriend.getToOtherUserInteractions(mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId);
-		      float friendOfMyFriendToHimFrienThatIsMutualFriendWithMeInteractions = 
+		      float friendOfMyFriendToHimFrienThatIsMutualFriendWithMeInteractionsValue = 
 //		      		friendOfMyFriend.getToOtherUserInteractionsCount(friendOfFriendUserIdThatIsMyFriendThatIsMutualFriendId);
-		      		getWeightedInteractions(friendOfFriendUserToMyFriendInteractions);
-				Edge friendOfMyFriendToHimFrienThatIsMutualFriendEdge = createEdge(friendOfMyFriendNode,myFriendNode,friendOfMyFriendToHimFrienThatIsMutualFriendWithMeInteractions, friendofmyfriendWithmyfriendEdgeUiClass);
+	      		getWeightedInteractions(friendOfFriendUserToMyFriendInteractions);
+//		      System.out.println(friendOfMyFriendToHimFrienThatIsMutualFriendWithMeInteractions);
+		      float friendOfMyFriendToHimFrienThatIsMutualFriendWithMeNormalizedInteractionsValue = ((float)friendOfMyFriendToHimFrienThatIsMutualFriendWithMeInteractionsValue-interactionsMin)/interactionsDenominator;
+				Edge friendOfMyFriendToHimFrienThatIsMutualFriendEdge = createEdge(friendOfMyFriendNode,myFriendNode,friendOfMyFriendToHimFrienThatIsMutualFriendWithMeNormalizedInteractionsValue, friendofmyfriendWithmyfriendEdgeUiClass);
 				friendsOfFriendsWithFriendsEdgesTable.put(friendOfMyFriendId, mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId, friendOfMyFriendToHimFrienThatIsMutualFriendEdge);
 			}
 		}

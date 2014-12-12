@@ -11,4 +11,6 @@ public interface GraphGenerator {
 	void generateMeWithMyFriends();
 	
 	void clear();
+
+	void generateFriendOfFriends();
 }

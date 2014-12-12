@@ -82,45 +82,56 @@ public class Analyzer {
 //			@Inject static GraphstreamInteractionsGraphGenerator graphstreamInteractionsGraphGenerator;
 			@Override
 			public void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException {
-//				GraphstreamInteractionsGraphGenerator graphstreamInteractionsGraphGenerator = TestConsoleMain.injector.getInstance(GraphstreamInteractionsGraphGenerator.class);
-				
 				String filename = getFilename(filenamePrefix, name());
-				
 				Graph graph = graphstreamGraphGenerator.getGraph();
 				if ( ! handleReadingFromCache(useCache, graph, filename) )
 					graphstreamGraphGenerator.generateMeWithMyFriends();
 				handleWritingToCache(useCache, graph, filename);
-				
-//				handleWritingToCache(useCache, graphstreamGraphGenerator.getGraph(), INTERACTIONS_CACHE_FILENAME);
-				
-//				graphstreamInteractionsGraphGenerator.generateMeWithMyFriends();
-			}
-		}
-		/*,my_friends_with_their_friends {
-			@Override
-			public void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator) {
-				graphstreamGraphGenerator.generateMyFriendsAndFriendOfFriends();
-			}
-		}
-		,friends_of_my_friends {
-			@Override
-			public void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator) {
-				// TODO Auto-generated method stub
-//				graphstreamGraphGenerator.ge
 			}
 		}
 		,my_friends {
 			@Override
-			public void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator) {
-				graphstreamGraphGenerator.generateMyFriends();
+			public void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException {
+				String filename = getFilename(filenamePrefix, name());
+				Graph graph = graphstreamGraphGenerator.getGraph();
+				if ( ! handleReadingFromCache(useCache, graph, filename) ) {
+					graphstreamGraphGenerator.generateMyFriends();
+				}
+				handleWritingToCache(useCache, graph, filename);
+			}
+		}
+		,my_friends_with_their_friends {
+			@Override
+			public void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException {
+				String filename = getFilename(filenamePrefix, name());
+				Graph graph = graphstreamGraphGenerator.getGraph();
+				if ( ! handleReadingFromCache(useCache, graph, filename) )
+					graphstreamGraphGenerator.generateMyFriendsAndFriendOfFriends();
+				handleWritingToCache(useCache, graph, filename);
+			}
+		}
+		,friends_of_my_friends {
+			@Override
+			public void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException {
+				String filename = getFilename(filenamePrefix, name());
+				Graph graph = graphstreamGraphGenerator.getGraph();
+				if ( ! handleReadingFromCache(useCache, graph, filename) ) {
+					graphstreamGraphGenerator.generateFriendOfFriends();
+				}
+				handleWritingToCache(useCache, graph, filename);
 			}
 		}
 		,me_and_my_friends_and_friends_of_my_friends {
 			@Override
-			public void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator) {
-				graphstreamGraphGenerator.generateMyFriendsAndFriendOfFriends();
+			public void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException {
+				String filename = getFilename(filenamePrefix, name());
+				Graph graph = graphstreamGraphGenerator.getGraph();
+				if ( ! handleReadingFromCache(useCache, graph, filename) ) {
+					graphstreamGraphGenerator.generateMyFriendsAndFriendOfFriends();
+				}
+				handleWritingToCache(useCache, graph, filename);
 			}
-		}*/;
+		};
 		
 		public abstract void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException;
 		
@@ -148,32 +159,30 @@ public class Analyzer {
 				return AnalysisType.me_and_my_friends;
 			}
 		}
-		// TODO
-		/*,
-		f {
+		,f {
 			@Override
 			public AnalysisType getAnalysisType() {
 				return AnalysisType.my_friends;
 			}
-		},
-		ft {
+		}
+		,ft {
 			@Override
 			public AnalysisType getAnalysisType() {
 				return AnalysisType.my_friends_with_their_friends;
 			}
-		},
-		t {
+		}
+		,t {
 			@Override
 			public AnalysisType getAnalysisType() {
 				return AnalysisType.friends_of_my_friends;
 			}
-		},
-		mft {
+		}
+		,mft {
 			@Override
 			public AnalysisType getAnalysisType() {
 				return AnalysisType.me_and_my_friends_and_friends_of_my_friends;
 			}
-		}*/;
+		};
 		public abstract AnalysisType getAnalysisType();
 	}
 }

@@ -21,7 +21,6 @@ import org.graphstream.graph.Graph;
 import org.graphstream.stream.file.FileSink;
 import org.graphstream.stream.file.FileSinkGraphML;
 import org.graphstream.stream.file.FileSource;
-import org.graphstream.stream.file.FileSourceFactory;
 import org.graphstream.stream.file.FileSourceGraphML;
 
 public class AnalyzeAction implements CommandAction {
@@ -172,9 +171,10 @@ public class AnalyzeAction implements CommandAction {
 			+HelpAction.tab(3)+Analyzer.WorldTargetChar.i.getHelpMessage()+"\n"
 			+HelpAction.tab(2)+"second argument select analysis type:"+"\n"
 			+HelpAction.tab(3)+"'"+ Analyzer.AnalysisTypeChar.mf +"': me and my friends"+"\n"
-//			+HelpAction.tab(3)+"'"+ Analyzer.AnalysisTypeChar.ft +"': my friends and their friends (friends of friends)"+"\n"
-//			+HelpAction.tab(3)+"'"+ Analyzer.AnalysisTypeChar.t +"': friends of my friends"+"\n"
-//			+HelpAction.tab(3)+"'"+ Analyzer.AnalysisTypeChar.mft +"': me, my friends, their friends"+"\n"
+			+HelpAction.tab(3)+"'"+ Analyzer.AnalysisTypeChar.f +"': my friends"+"\n"
+			+HelpAction.tab(3)+"'"+ Analyzer.AnalysisTypeChar.ft +"': my friends and their friends (friends of friends)"+"\n"
+			+HelpAction.tab(3)+"'"+ Analyzer.AnalysisTypeChar.t +"': friends of my friends"+"\n"
+			+HelpAction.tab(3)+"'"+ Analyzer.AnalysisTypeChar.mft +"': me, my friends, their friends"+"\n"
 			+HelpAction.tab(2)+"third argument uses cache for reading or writing generated graph:"+"\n"
 			+HelpAction.tab(3)+"'cr': cache read = (try to) import previous generated graph from a cached file\n"
 			+HelpAction.tab(3)+"'cw': cache write = export generated graph on a cache file\n"

@@ -13,6 +13,8 @@ node {
 }
 node.ego {
 	fill-color: #ffaadd, #880000;
+   /*size-mode: normal;
+   size: 200px;*/
 }
 /* friends are in green range #ddffac */
 node.friend { 
@@ -47,5 +49,5 @@ edge.myfriendwithmutualfriend {
 	fill-color: #ddffaa, #008800;
 }
 edge.friendofmyfriendwithmyfriend {
-	fill-color: #f8cbfb, purple;
+	fill-color: #aaddff, #000088;
 }

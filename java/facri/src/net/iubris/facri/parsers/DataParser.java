@@ -10,12 +10,14 @@ import javax.xml.stream.XMLStreamException;
 import net.iubris.facri.model.World;
 import net.iubris.facri.parsers.ego.EgoDataParser;
 import net.iubris.facri.parsers.friends.FriendsDataParser;
+
 @Singleton
 public class DataParser {
 
 private final EgoDataParser egoDataParser;
 private final FriendsDataParser friendsDataParser;
 private final World world;
+private boolean parsed = false;
 
 	@Inject
 	public DataParser(
@@ -29,8 +31,11 @@ private final World world;
 	}
 
 	public void parse() throws JAXBException, FileNotFoundException, XMLStreamException {
-		egoDataParser.parse();
-		friendsDataParser.parse();		
+		if (!parsed) {
+			egoDataParser.parse();
+			friendsDataParser.parse();
+			parsed = true;
+		}
 	}
 	
 	public World getResult() {

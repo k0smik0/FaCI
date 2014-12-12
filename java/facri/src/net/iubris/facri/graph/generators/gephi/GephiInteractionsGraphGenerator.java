@@ -308,6 +308,12 @@ public class GephiInteractionsGraphGenerator implements InteractionsGraphGenerat
 		graphNodesCount=0;
 		graphEdgesCount=0;
 	}
+
+	@Override
+	public void generateFriendOfFriends() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

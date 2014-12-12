@@ -73,6 +73,11 @@ public class GephiFriendshipsGraphGenerator implements FriendshipsGraphGenerator
 		createFriendsOfFriends();
 	}
 	
+	@Override
+	public void generateFriendOfFriends() {
+		createFriendsOfFriends();		
+	}
+	
 	private Node createMe() {
 		Ego ego = world.getMyUser();
 		String egoId = ego.getId();
@@ -248,6 +253,5 @@ public class GephiFriendshipsGraphGenerator implements FriendshipsGraphGenerator
 		undirectedGraph.clear();
 		myFriendsToMutualFriendsTable.clear();
 	}
-	
-	
+
 }
