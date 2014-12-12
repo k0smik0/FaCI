@@ -2,9 +2,7 @@ package net.iubris.facri.main;
 
 import java.io.Console;
 
-import net.iubris.facri._di.guice.module.parser.FacriParserModule;
-import net.iubris.facri.console.actions.HelpAction;
-import net.iubris.facri.parsers.DataParser;
+import net.iubris.facri._di.guice.module.parser.FacriModule;
 import net.iubris.heimdall.InteractiveConsole;
 
 import com.google.inject.Guice;
@@ -12,27 +10,16 @@ import com.google.inject.Injector;
 
 public class TestConsoleMain {
 	private static final String NO_CONSOLE = "Error: Console unavailable";
+	
+	public static Injector injector;
+//	private static final String TITLE = "FaCRI";
 
 	public static void main(String[] args) {
 		Console console = System.console();
 		if (console != null) {
-//			Command help = Command.h;
-//			help.exec(console, 
-//				new CommandExceptionListener(console, help)
-//			);
+//			new HelpAction().exec(console, TITLE);
 			
-			new HelpAction().exec(console, null);
-			
-//			Command.h.exec(console, new CommandExceptionListener(console, Command.h));
-			
-			Injector injector = Guice.createInjector( new FacriParserModule() );
-			DataParser dataParser = injector.getInstance(DataParser.class);
-			/*try {
-				dataParser.parse();
-			} catch (FileNotFoundException | JAXBException | XMLStreamException e) {
-				e.printStackTrace();
-				System.exit(0);
-			}*/
+			injector = Guice.createInjector( new FacriModule() );
 			
 			InteractiveConsole interactiveConsole = injector.getInstance(InteractiveConsole.class);
 			interactiveConsole.execCommandLoop(console);

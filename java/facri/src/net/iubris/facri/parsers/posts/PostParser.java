@@ -11,7 +11,7 @@ import net.iubris.facri.model.posts.Post;
 import net.iubris.facri.model.users.User;
 
 public class PostParser {
-
+	
 	private final World world;
 	
 	@Inject
@@ -41,14 +41,15 @@ public class PostParser {
 		handleTags(post, actorUser, post.getTaggedIDs());
 		handleTags(post, actorUser, post.getWithTaggedFriendsIDs());
 
-		handleLikes(post.getLikesInfo()/*.getFriendsUserIDs()*/, actorUser, owningWallUserId);
+//		handleLikes(post.getLikesInfo().getFriendsUserIDs(), actorUser, owningWallUserId);
 //		handleLikes(post.getLikesInfo().getSamplesUserIDs(), actorUser, owningWallUserId);
+		handleLikes(post.getLikesInfo(), actorUser, owningWallUserId);
 	}
 	
 	private void handleAuthorUser(User actorUser, Post post) {
 		int shareCount = post.getShareCount();
 		if (shareCount>0)
-			actorUser.incrementOwnPostResharing(shareCount);
+			actorUser.incrementOwnPostResharing(shareCount); // node attribute
 	}
 	
 	/**
@@ -61,9 +62,9 @@ public class PostParser {
 		actorUser.getToOtherUserInteractions(targetUserId).addPost(post);
 	}
 	
-	private void handleTags(Post post, User user, Set<String> taggedIds) {
+	private void handleTags(Post post, User actorUser, Set<String> taggedIds) {
 		for (String taggedId : post.getTaggedIDs()) {
-			user.getToOtherUserInteractions(taggedId).incrementTags();
+			actorUser.getToOtherUserInteractions(taggedId).incrementTags();
 		}
 	}
 	
@@ -90,11 +91,12 @@ public class PostParser {
 				world.isExistentUserOrCreateNew(wallOwnerId);
 				
 				// create interacting user if it doesn't exist
-				world.isExistentUserOrCreateNew(interactingUserId)
-				// then use for its likes
-				.getToOtherUserInteractions(wallOwnerId).incrementLikes();
+				world
+					.isExistentUserOrCreateNew(interactingUserId)
+						// then use for its likes, that is a link attribute
+						.getToOtherUserInteractions(wallOwnerId).incrementLikes();
 			}
-			actorUser.incrementOwnLikedPosts(howLikes);
+			actorUser.incrementOwnLikedPosts(howLikes); // node attribute
 //		}
 	}
 

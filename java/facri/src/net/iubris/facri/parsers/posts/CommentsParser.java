@@ -11,7 +11,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
 import net.iubris.facri._di.annotations.filenamefilters.CommentsFilenameFilter;
-import net.iubris.facri._di.guice.module.parser.FacriParserModule;
+import net.iubris.facri._di.guice.module.parser.FacriModule;
 import net.iubris.facri._di.providers.mappers.CommentsHolderMapperProvider;
 import net.iubris.facri.model.World;
 import net.iubris.facri.model.comments.Comment;
@@ -64,7 +64,7 @@ public class CommentsParser {
 	public static void main(String[] args) {
 		String commentsJsonFile = "../../fbcmd/output/feeds/friends/1529169343/10203765980702095_comments.json";
 		
-		Injector injector = Guice.createInjector( new FacriParserModule() );
+		Injector injector = Guice.createInjector( new FacriModule() );
 		
 		JsonXMLMapper<CommentsHolder> commentsMapper = injector.getInstance(CommentsHolderMapperProvider.class).get();
 		

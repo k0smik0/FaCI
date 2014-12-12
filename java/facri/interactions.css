@@ -12,38 +12,39 @@ node {
 	 
 }
 node.ego {
-	fill-color: #ffeebb, red;
+	fill-color: #ffaadd, #880000;
 }
 /* friends are in green range #ddffac */
 node.friend { 
-	fill-color: #ddffac, #008800;
+	fill-color: #ddffaa, #008800;
 }
 node.friendof {
-	fill-color: #C4C3D0, blue;
+	fill-color: #ddaaff, #000088;
 }
 node.giantcomponent {
 	fill-color: #888888, black;
 }
 
 edge {
-	shape: blob;
+	shape: line;
 	fill-mode: dyn-plain;
 	arrow-size: 1px;
 	size-mode: dyn-size;
 }
-/* light pink to red */
+/* light red to dark red */
 edge.metomyfriend {
-	fill-color: #ffeebb, #FF0000;
+/*	fill-color: #ffeebb, #FF0000; */
+	fill-color: #FFaadd, #880000;
 }
 /* light yellow to orange */
 edge.myfriendtome {
- fill-color: #fdff00, #FF8C00;
+ fill-color: #ffee00, #FF2200;
 }
 edge.myfriendwithmutualfriend {
  /* yellow-green range */
 	/*fill-color: #white, #FFFFDD, #FFFF99, #FFFF00, #FFCC00, #FF9900;*/
 	/*fill-color: #F7E98E, #DFFF00, #A7FC00, #00FF00;*/
-	fill-color: #ddffac, #008800;
+	fill-color: #ddffaa, #008800;
 }
 edge.friendofmyfriendwithmyfriend {
 	fill-color: #f8cbfb, purple;

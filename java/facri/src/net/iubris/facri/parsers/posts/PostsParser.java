@@ -67,7 +67,6 @@ public class PostsParser implements Parser {
 							public void accept(Post post) {
 								postParser.parse(post, owningWallUserId);
 								commentsParser.parse(userDir, owningWallUserId, post);
-								
 //								System.out.println( post.getLikesInfo() );
 //								System.out.println(post.getTaggedIDs().size() );
 							}

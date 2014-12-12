@@ -102,11 +102,12 @@ System.out.print("Parsing my friends feeds: ");
 //		}
 		
 		// lambda stream
+		userCounter = 0;
 		usersDirs.stream()
 		.parallel()
 //		.sequential()
 		.peek( 
-				s->printPercentual( incrementUserCounter() )
+			s->printPercentual( incrementUserCounter() )
 		)
 		.filter( s->s.listFiles().length>0 /*checkDir(s)*/ )
 		.parallel() // parallel on each directory
@@ -124,6 +125,8 @@ System.out.print("Parsing my friends feeds: ");
 		
 		double finish = timing.getTiming();
 System.out.println( "parsed "+usersTotal+" users in: "+finish+"s" );
+		userCounter = 0;
+		percentCounter = 0;
 	}
 	
 	private void printPercentual(int userCounter) {

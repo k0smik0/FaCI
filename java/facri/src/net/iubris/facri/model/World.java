@@ -9,6 +9,7 @@ import java.util.function.BiConsumer;
 
 import javax.inject.Singleton;
 
+import net.iubris.facri.graph.generators.InteractionsWeigths;
 import net.iubris.facri.model.users.Ego;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.User;
@@ -81,13 +82,13 @@ public class World implements Serializable {
 		int updatedOwnPostsCount = user.getOwnPostsCount();
 		postsCountRange.add(updatedOwnPostsCount);
 		
-		int updatedAppreciation = user.getOwnLikedPostsCount() + user.getOwnPostsResharingCount();
+		int updatedAppreciation = user.getOwnLikedPostsCount() + InteractionsWeigths.RESHARED_OWN_POST*user.getOwnPostsResharingCount();
 		appreciationsRange.add(updatedAppreciation);
 		
 		int updatedInteractions = user.getUserInteractionsCount();
 		interactionsRange.add(updatedInteractions);
 		
-		return user;		
+		return user;
 	}
 	
 	public Set<Integer> getAppreciationsRange() {

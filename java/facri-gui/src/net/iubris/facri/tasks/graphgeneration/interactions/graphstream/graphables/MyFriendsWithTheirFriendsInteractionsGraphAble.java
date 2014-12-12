@@ -2,7 +2,7 @@ package net.iubris.facri.tasks.graphgeneration.interactions.graphstream.graphabl
 
 import javax.inject.Inject;
 
-import net.iubris.facri.graph.generator.graphstream.GraphstreamInteractionsGraphGenerator;
+import net.iubris.facri.graph.generators.graphstream.GraphstreamInteractionsGraphGenerator;
 import net.iubris.ishtaran.task.phasable.CallState;
 
 public class MyFriendsWithTheirFriendsInteractionsGraphAble extends AbstractInteractionsGraphstreamGraphAble {

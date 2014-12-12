@@ -16,7 +16,7 @@ public class Interactions implements Serializable {
 	private int comments;
 
 	public void incrementTags() {
-		tags++;		
+		tags++;
 	}
 	public int getTagsCount() {
 		return tags;
@@ -33,6 +33,9 @@ public class Interactions implements Serializable {
 	public void addPost(Post post) {
 		this.posts.add(post);
 //	System.out.println(posts.size());
+	}
+	public int getPostsCount() {
+		return posts.size();
 	}
 
 	public void incrementComments() {
