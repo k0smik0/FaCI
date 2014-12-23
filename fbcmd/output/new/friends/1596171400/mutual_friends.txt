@@ -1,0 +1,9 @@
+NAME                FRIEND_NAME            FRIEND_UID
+Edoardo Convertino  Federico Barocci       1041832045
+                    Gianluca Crimi         1529169343
+                    Vincenzo Lomonaco      1557184819
+                    Giovanni Sitta         1577991118
+                    Lorenzo Valerio Vinci  100000048381511
+                    Ivan Heibi             100002081767299
+                    Luca Pompei            100004490670042
+                    Tommaso Lau            100008029844848

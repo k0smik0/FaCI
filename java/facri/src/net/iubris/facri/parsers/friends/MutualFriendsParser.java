@@ -32,6 +32,7 @@ public class MutualFriendsParser implements Parser {
 		this.world = world;
 	}
 
+	@Override
 	public void parse(File... arguments) {
 		File userDir = arguments[0];
 		
@@ -72,18 +73,18 @@ public class MutualFriendsParser implements Parser {
 			FriendOrAlike user = (FriendOrAlike) world.isExistentUserOrCreateNew(owningWallUserId);
 			
 			mutualFriendsLines
-				.stream()
-				.parallel()
-				.forEach(
-						new Consumer<String>() {
-							@Override
-							public void accept(String t) {
-								Matcher matcher = pattern.matcher(t);
-								if (matcher.find())
-									user.addMutualFriend(matcher.group(0));
-							}
-						}
-					);
+			.stream()
+			.parallel()
+			.forEach(
+				new Consumer<String>() {
+					@Override
+					public void accept(String t) {
+						Matcher matcher = pattern.matcher(t);
+						if (matcher.find())
+							user.addMutualFriend(matcher.group(0));
+					}
+				}
+			);
 		} catch (IOException e) {
 			System.out.println("errors on "+mutualFriendsFile.getName());
 			e.printStackTrace();

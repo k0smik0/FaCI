@@ -1,0 +1,9 @@
+NAME               FRIEND_NAME                               FRIEND_UID
+Francesco Capponi  Domna Soisseubuda                         659780554
+                   Stefano Baffetti                          752049186
+                   Rocco Spagnoletta                         1003742112
+                   Chiara Dionigi                            1377861809
+                   Marco Ziglioli                            1592342186
+                   Federica de Santis                        1668550495
+                   Massimo Marga                             100000460797181
+                   Frankenphotography Fotografia Autarchica  100000988246699

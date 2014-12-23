@@ -2,17 +2,17 @@ package net.iubris.facri.parsers.friends;
 
 import java.io.File;
 import java.util.List;
-import java.util.function.Consumer;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import net.iubris.facri.parsers.Parser;
 import net.iubris.facri.parsers.posts.PostsParser;
 import net.iubris.facri.parsers.utils.ParsingUtils;
 //import net.iubris.ishtaran.gui._di.annotations.ProgressBarGlobalSize;
 import net.iubris.facri.utils.Timing;
 
-public class FriendsDataParser {
+public class FriendsDataParser implements Parser {
 	
 	private final String feedsFriendsDataDir;
 	
@@ -36,13 +36,14 @@ public class FriendsDataParser {
 		this.feedsFriendsDataDir = dataRootDirPath+File.separatorChar+feedsFriendsDirRelativePath;
 	}
 	
-	
-	public void parse() {
+	@Override
+	public void parse(File... userDirs) {
 		List<File> friendsDirectories = ParsingUtils.getDirectories(feedsFriendsDataDir);		
 		setUsersTotal( friendsDirectories.size() );
-System.out.print("Parsing my friends feeds: ");	
+System.out.print("Parsing posts on my friends walls: ");	
 		parseUsersDirs( friendsDirectories );		
 	}
+	
 	private void parseUsersDirs(List<File> usersDirs) {
 		Timing timing = new Timing();
 
@@ -103,24 +104,18 @@ System.out.print("Parsing my friends feeds: ");
 		
 		// lambda stream
 		userCounter = 0;
-		usersDirs.stream()
+		usersDirs
+		.stream()
 		.parallel()
 //		.sequential()
 		.peek( 
 			s->printPercentual( incrementUserCounter() )
 		)
-		.filter( s->s.listFiles().length>0 /*checkDir(s)*/ )
+		.filter( s->s.listFiles().length>0 ) // check existant dir
 		.parallel() // parallel on each directory
-		.forEach( new Consumer<File>() {
-			@Override
-			public void accept(File userDir) {				
-//				String owningWallUserId = userDir.getName();
-				postsParser.parse(userDir);
-				mutualFriendsParser.parse(userDir);
-//System.out.println("ok");
-//				System.out.println("");
-			}
-		});
+		.forEach( 
+			ud->consumeUserDir(ud)
+		);
 		
 		
 		double finish = timing.getTiming();
@@ -129,13 +124,21 @@ System.out.println( "parsed "+usersTotal+" users in: "+finish+"s" );
 		percentCounter = 0;
 	}
 	
+	private void consumeUserDir(File userDir) {
+//		String owningWallUserId = userDir.getName();
+		postsParser.parse(userDir);
+		mutualFriendsParser.parse(userDir);
+//System.out.println("ok");
+//		System.out.println("");
+	}
+	
 	private void printPercentual(int userCounter) {
 		double percent = Math.ceil( userCounter*1.0f/usersTotal*100 );
 		if (Math.floor(percent)%10 == 0) {
 			percentCounter++;
 			if (percentCounter==1) {
 				int toPrint = (int)percent;
-				System.out.print(toPrint);					
+				System.out.print(toPrint);
 				if (toPrint<100) {
 					System.out.print("%... ");					
 				} else

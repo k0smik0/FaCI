@@ -4,14 +4,32 @@ source bin/_facri-friends
 
 function getMutualFriends() {
   local user=$1
+  local parallelize=$2
   target_dir=${FACRI_OUTPUT}/friends/${user}
-  [ -d $target_dir ] || mkdir $target_dir
-  echo -n -e "\t${user}'s mutual friends: "
+  [ -d $target_dir ] || mkdir -p $target_dir
+#   echo -n -e "\t${user}'s mutual friends: "
+  message="\t${user}'s mutual friends: "
   local target=$target_dir/mutual_friends.txt
-  if [ -f $target ]; then 
-    echo "found, skipping"
+  if [ -f $target ] && [ ! -f .mutual_error ]; then
+#     echo "found, skipping"
+    message="${message}found, skipping"
+    rm -f $FACRI_DONE_CALL
   else
-    $FBCMD mutual $user > $target ;
-    [ $(ls -s $target | cut -d" " -f1) -gt 0 ] && echo "ok" || echo "empty"
+    $FBCMD mutual $user > $target
+    if [ ! -z "$(grep ERROR $target)" ]; then
+      message="${message}error"
+      touch .mutual_error
+    elif [ $(ls -s $target | cut -d" " -f1) -gt 0 ]; then
+      message="${message}ok"
+      rm -f .mutual_error
+    else
+      message="${message}empty"
+      rm -f .mutual_error
+    fi
+    echo m >> $FACRI_DONE_CALL
+  fi
+  
+  if [ ${parallelize} == false ]; then
+    echo -e $message
   fi
 }

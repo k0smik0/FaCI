@@ -51,7 +51,11 @@
   FbcmdIncludeAddCommand('FNAMES','Display all your friend\'s names');
   FbcmdIncludeAddCommand('MYNOTES','Display all of your notes');
   FbcmdIncludeAddCommand('SINGLE','Display all of your single friends');
-  FbcmdIncludeAddCommand('FLSTREAM','flist~Get last 150 post from your friend wallpaper');
+
+
+
+#  FbcmdIncludeAddCommand('EFRIENDS','retrieve your friends list with infos and pic url');
+  FbcmdIncludeAddCommand('FLSTREAM','flist [from] [to]~Get last n to m post from your friend wallpaper [default:1,150]');
   FbcmdIncludeAddCommand('PCOMMENTS','postid~Get last 150 comments from specified postid');
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -85,17 +89,35 @@
     }
   }
 
+   if ($fbcmdCommand == 'EFRIENDS') {
+    ValidateParamCount(0,1);
+    SetDefaultParam(1,$fbcmdPrefs['default_friends_flist']);
+    GetFlistIds($fbcmdParams[1], true, true, true);
+#    PrintHeader(array('ID','NAME'));
+    foreach ($flistMatchArray as $id) {
+#      PrintRow($id,ProfileName($id));      
+    }
+  }
+
   // use: fbcmd FLSTREAM a_user_id
   if ($fbcmdCommand == 'FLSTREAM' ) {
-    ValidateParamCount(1,2);
-    SetDefaultParam(1,$fbcmdPrefs['default_finfo_flist']);
-//    SetDefaultParam(2,$fbcmdPrefs['default_finfo_count']);
-    GetFlistIds($fbcmdParams[1],true);
-    $count = 1;
+    ValidateParamCount(1,3);
+    SetDefaultParam(2,$fbcmdPrefs['default_finfo_flist']);
+    //    SetDefaultParam(2,$fbcmdPrefs['default_finfo_count']);
+    $fl = $fbcmdParams[1];
+//     print "$fl"."\n";
+       #    GetFlistIds($fbcmdParams[1],true);
+//     print $fbcmdParams[2];
+    $countMin = 1;
     if ( $fbcmdParams[2] != null ) {
-      $count = $fbcmdParams[2];
+      $countMin = $fbcmdParams[2];
     }
-    $fql = "SELECT actor_id,post_id,comment_info,created_time,is_popular,likes,permalink,privacy,share_count,source_id,tagged_ids,type,updated_time,with_tags FROM stream WHERE source_id IN ({$fbcmdParams[1]}) LIMIT 1,{$count}";
+    $countMax = 1;
+    if ( $fbcmdParams[3] != null ) {
+      $countMax = $fbcmdParams[3];
+    }
+//     print $countMax;
+    $fql = "SELECT actor_id,post_id,comment_info,created_time,is_popular,likes,permalink,privacy,share_count,source_id,tagged_ids,type,updated_time,with_tags FROM stream WHERE source_id IN ({$fl}) LIMIT {$countMin},{$countMax}";
 //     print $fql."\n";
      try {
         $fbReturn = $fbObject->api_client->fql_query($fql);

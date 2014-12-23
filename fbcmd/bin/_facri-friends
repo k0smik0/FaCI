@@ -1,15 +1,19 @@
 [ -f etc/facri.conf ] && source etc/facri.conf
 
 function getFriends() {
-  local out_file=${FACRI_OUTPUT}/friends_ids.txt
+  local out_file=${FACRI_OUTPUT}/friends.txt
+  local out_ids_file=${FACRI_OUTPUT}/friends_ids.txt
 
   local friends_ids
-  if [ -f ${out_file} ]
+  
+  if [ -f ${out_ids_file} ]
   then
-    friends_ids=$(cat ${out_file}) 
+    friends_ids=$(cat ${out_ids_file})
   else
-    friends_ids=$($FBCMD friends | awk '{print $1}' | grep -v ID | sort -n)
-    echo $friends_ids > ${out_file}
+    $FBCMD FINFO -id=1 friend_count,mutual_friend_count,pic_small,profile_url,sex,significant_other_id =all  > $out_file
+#   friends_ids=$($FBCMD friends | awk '{print $1}' | grep -v ID | sort -n)
+    friends_ids=$(cat $out_file | grep -v UID | awk -F"," '{print $1}')
+    echo $friends_ids > ${out_ids_file}
   fi
 
   echo ${friends_ids}

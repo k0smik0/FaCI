@@ -1,0 +1,6 @@
+NAME              FRIEND_NAME          FRIEND_UID
+Bentivoglio Club  Fienile Fluò        1628360351
+                  Massimo Di Stefano   1629302317
+                  Mrnomoney Bluesband  1643448655
+                  Il Barattolo         100000437562594
+                  Meryxm Fioravanti    100002815756523

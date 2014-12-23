@@ -1,0 +1,14 @@
+NAME                 FRIEND_NAME                 FRIEND_UID
+Ilaria Dragmetohell  Marianna De Maio            544919127
+                     Charlotte Bichet            781138749
+                     Va Le                       1405480620
+                     Teresa Claudia Gallo Wolli  1449108101
+                     Fra Poco                    1548840395
+                     Giuseppe Altamura           1558260213
+                     Carlo Paolino               1565629094
+                     Flavia P'Chan               1747910245
+                     Lisa Vampi                  100000019652923
+                     Marco IU Toscano            100000914628671
+                     Alessandro Cassano          100001032716895
+                     Federica Riggi              100001652030919
+                     Fiamm Etta                  100002888949752

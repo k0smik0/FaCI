@@ -1,0 +1,6 @@
+NAME                   FRIEND_NAME                 FRIEND_UID
+Osteria Broccaindosso  Planimetrie Culturali       1340266499
+                       Red Ip                      1579172220
+                       Libreria Ubik Irnerio       100000642204643
+                       Bologna Magica Mutus Liber  100002748805974
+                       Marco Carnevali             100003463030895

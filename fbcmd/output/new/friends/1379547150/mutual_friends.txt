@@ -1,0 +1,17 @@
+NAME                FRIEND_NAME                  FRIEND_UID
+Stefano Beccaletto  Federico Barocci             1041832045
+                    Davide HumptyDumpty Berardi  1288360510
+                    Claudia Carpineti            1318986142
+                    Ziyed Van Az                 1330866241
+                    Antonio Notarangelo          1357590223
+                    Gianluca Crimi               1529169343
+                    Mario Taddei                 1529441651
+                    Vincenzo Lomonaco            1557184819
+                    Duma Ron                     1659609863
+                    Lorenzo Valerio Vinci        100000048381511
+                    Ivan Heibi                   100002081767299
+                    Giacomo Jack Bergami         100002269884346
+                    Pierpaolo Del Coco           100003784913934
+                    Luca Pompei                  100004490670042
+                    Giuseppe Cairo               100007032030521
+                    Antonello Antonacci          100008302000551

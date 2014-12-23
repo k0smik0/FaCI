@@ -1,0 +1,8 @@
+NAME               FRIEND_NAME                FRIEND_UID
+Vincenzo Caminiti  Silvia Cereda              572102924
+                   Francesco Di Cintio        590651024
+                   Cristian Iannuzzi          669584808
+                   Davide Bellettini          1187093618
+                   Francesco Azzardo Luchena  1355864057
+                   Matteo Fazi                1462203855
+                   Nicola Ticca               1500995833

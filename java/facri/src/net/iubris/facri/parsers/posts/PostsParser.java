@@ -35,7 +35,7 @@ public class PostsParser implements Parser {
 			PostParser postParser,
 			CommentsParser commentsParser) {
 				this.feedsDirFilenameFilter = feedsDirFilenameFilter;
-				postFilesFilenameFilter = postFilenameFilter;
+				this.postFilesFilenameFilter = postFilenameFilter;
 				this.postsMapper = postsMapper;
 				this.postParser = postParser;
 				this.commentsParser = commentsParser;
@@ -55,7 +55,9 @@ public class PostsParser implements Parser {
 				@Override
 				public void accept(File userFeedsJsonFile) {
 					try {
+						
 						String owningWallUserId = userDir.getName();
+//						System.out.println(owningWallUserId);
 						
 						Posts posts = postsMapper.readObject(new FileReader(userFeedsJsonFile));
 						
@@ -65,6 +67,7 @@ public class PostsParser implements Parser {
 						.forEach( new Consumer<Post>() {
 							@Override
 							public void accept(Post post) {
+//								System.out.println("post: "+post.getPostId());
 								postParser.parse(post, owningWallUserId);
 								commentsParser.parse(userDir, owningWallUserId, post);
 //								System.out.println( post.getLikesInfo() );

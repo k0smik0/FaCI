@@ -1,0 +1,6 @@
+NAME                FRIEND_NAME          FRIEND_UID
+Osteria BoccaBuona  Carlos La Bandera    673119112
+                    Zerocinquantuno Bar  1306021650
+                    Oscar Serio          1577119215
+                    Il Barattolo         100000437562594
+                    Viola Violet         100001693022196

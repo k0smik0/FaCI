@@ -1,37 +1,88 @@
 function getComments() {
   local user=$1
+  local parallelize=$2
   cd ${FACRI_OUTPUT}/friends/$user/feeds
   # posts_ids with non-zero comments
+  if [ ${parallelize} == false ]; then
+    echo -e -n "\t$user's posts comments: "
+  fi
   if [ -z "$(ls posts*json 2>/dev/null)" ]; then
-    echo -e "\t$user's posts comments: no posts data found, unable to get comments"
+    result="no posts data found, unable to get comments."
+    if [ ${parallelize} == false ]; then
+      echo -e $result
+    fi
     return
   fi
-  [ -f .comments ] && [ "${FACRI_COMMENTS_RETRY}" == "false" ] && echo -e "\tskip comments grab, agreeing configuration." && return
+  if [ -f .comments ] && [ ${FACRI_COMMENTS_RETRY} == false ]; then
+    message="skip comments grab, agreeing configuration."
+    if [ ${parallelize} == false ]; then
+      echo -e $message
+    fi
+#     rm -f $FACRI_DONE_CALL
+    return
+  fi
   local posts_ids=$(cat posts*.json | jq '.posts[] | select((.comment_info | .comment_count != "0") or (.likes | .count !="0") or (.share_count!="0")) | .post_id')
   #   echo posts_ids $posts_ids
   local tot_post_ids=$(echo $posts_ids | wc -w)
-  echo -e -n "\t$user's posts comments found: ${tot_post_ids}"
+#   found="\t$user's posts comments found: ${tot_post_ids}"
+  if [ ${parallelize} == false ]; then
+    echo -e -n "${tot_post_ids} found"
+  fi
+
   if [ ${tot_post_ids} -eq 0 ]; then
-    echo " , go further"
+    found="${found}, go further"
+    if [ ${parallelize} == false ]; then
+#       echo -e $found
+      echo ", go further"
+    fi
   else
-    echo ", grab comments:"
+    found="${found}, grab comments: "
   #   echo $tot_post_ids posts
-    echo -n -e "\t\t"
+#     echo -n -e "\t\t"
+    if [ ${parallelize} == false ]; then
+#       echo -e $found
+	echo -e -n ", grab comments: "
+    fi
     for post_id in ${posts_ids}; do
       local post_id=$(echo $post_id | cut -d"_" -f2 | sed 's/"//g')
-      echo -n "$post_id"
+#       echo -n ${parallelize}
+      if [ ${parallelize} == false ]; then
+	echo -n "$post_id"
+      fi
+#       found="${found}${post_id}"
       if [ -f "${post_id}_comments.json" ]; then
-	echo "existant, skip." 
+	if [ ${parallelize} == false ]; then
+# 	  echo -n "[existant, skip] " 
+	  echo -n "[s] "
+	fi
+# 	found="${found}[existant,skip]"
 	continue
       fi
-      local s=$($FBCMD PCOMMENTS $post_id 150) &
+      if [ ${FACRI_COMMENTS_RETRY} == true ]; then
+	local s=$($FBCMD PCOMMENTS $post_id 150 > .comments_log 2>&1)
 #       local pid=$!
 #       wait $pid
 #       local s=$?
 #       [ $s -eq 0 ] && echo "ok." || echo "empty."
-      echo -n " "
+#      echo -n " "
+	if [ ${parallelize} == false ]; then
+# 	found=${found}" "
+	  echo -n " "
+	fi
+	touch ${post_id}_comments.json
+# 	sleep 0.5
+	echo c >> $FACRI_DONE_CALL
+      fi
     done
-    echo
+#     echo " ok"
+    if [ ${parallelize} == false ]; then
+#       found=${found}" ok"
+      echo "."
+    fi
   fi
+#   if [ "${parallelize}" == "false" ]; then
+#     echo -e $found
+#   fi
   touch .comments
+  
 }

@@ -1,0 +1,11 @@
+NAME                 FRIEND_NAME               FRIEND_UID
+Francesco Apollonio  Robertina Wednesday       695477887
+                     Davide Bellettini         1187093618
+                     Francesca Api             1249174445
+                     Carlo Maiorano            1264640018
+                     Fabio Bombi               1267867050
+                     Giorgio De Solda          1314048809
+                     Pasquale Cautela          1333568317
+                     Marcelo Baumann Gonzales  1461082972
+                     Nicola Ticca              1500995833
+                     Mirko Mìnìmo Di Paolo   1663040691

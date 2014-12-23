@@ -1,0 +1,7 @@
+NAME                   FRIEND_NAME        FRIEND_UID
+Benedetta Dal Signore  Martina Romanelli  692951915
+                       Elena Romanelli    694285876
+                       Giorgio Leone      1311855495
+                       Andrea Leonzi      1321023144
+                       Coccagna Anna      1439750394
+                       Tommi Se           1584002040

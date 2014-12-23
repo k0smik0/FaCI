@@ -23,7 +23,7 @@ public class ParsingUtils {
 
 	public User isExistentFriendUserOrCreateEmpty(String userId/*, Map<String,User> useridToUserMap*/) {
 		Ego myUser = world.getMyUser();
-		if (myUser.getId().equals(userId))
+		if (myUser.getUId().equals(userId))
 			return myUser;
 		
 		FriendOrAlike user = null;

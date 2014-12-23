@@ -1081,26 +1081,36 @@
       $fields = explode(',',$fbcmdParams[1]);
       if (in_array('uid',$fields)) {
         $fbcmdPrefs['uid'] = 1;
-        $fbcmdPrefs['print_blanks'] = 1;
+        $fbcmdPrefs['print_blanks'] = 0;
       }
       $headerFields = array();
+      #      if ($fbcmdPrefs['uid'] == 1) {
+#      print implode(",",$fbcmdPrefs);
+#      if ($fbcmdPrefs['uid']) {
+         $headerFields[] = "UID";
+#      }
+      $headerFields[] = "NAME";
       foreach ($fields as $f) {
         $headerFields[] = strtoupper($f);
       }
-      PrintHeader(PrintIfPref('show_id','UID'),'NAME',$headerFields);
+      #      PrintHeader(PrintIfPref('show_id','UID'),'NAME',$headerFields);
+      print(implode(",",$headerFields)."\n");
       foreach ($fbReturn as $user) {
         $outputFields = array();
         $isEmptyRow = true;
         foreach ($user as $key=>$value) {
           if ($key != 'uid') {
-            $outputFields[] = DisplayField($value);
+             //             $outputFields[] = DisplayField($value);
+ #            print $value;
+             $outputFields[] = $value;
             if (!IsEmpty($value)) {
               $isEmptyRow = false;
             }
           }
         }
         if ((!$isEmptyRow)||($fbcmdPrefs['print_blanks'])) {
-          PrintRow(PrintIfPref('show_id',$user['uid']),ProfileName($user['uid']),$outputFields);
+#           PrintRow(PrintIfPref('show_id',$user['uid']),ProfileName($user['uid']),$outputFields);
+           print(PrintIfPref('show_id',$user['uid']).",".ProfileName($user['uid']).",".implode(",",$outputFields))."\n";
         }
       }
     }

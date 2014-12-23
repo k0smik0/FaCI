@@ -1,0 +1,7 @@
+NAME                      FRIEND_NAME           FRIEND_UID
+Ludovica Luda D'Archivio  Valentina Mancinelli  505001217
+                          Giovanni D'Onofrio    734901842
+                          Luca Sozio ヅ        780892602
+                          Marina Antonucci      1216442611
+                          Lorenzo Marchegiani   1540549221
+                          Giulio Voto           1622738773

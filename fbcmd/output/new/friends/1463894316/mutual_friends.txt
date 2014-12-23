@@ -1,0 +1,7 @@
+NAME                           FRIEND_NAME             FRIEND_UID
+Veronica ScemadiGuerra Crispi  Francesca Api           1249174445
+                               Nancy Pelusi            1368124899
+                               Sonia Antigone Zavatta  1586461351
+                               Stefano Petraccia       1628266188
+                               Janis J. Winter         100001573443229
+                               Christian Zizzi         100002744942683

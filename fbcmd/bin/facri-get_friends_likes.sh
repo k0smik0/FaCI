@@ -12,7 +12,7 @@ echo TO_SYSTEM
 for friend_id in ${friends_idsA};
 do
   target=$output/${friend_id}/likes
-  [ -d $target] || mkdir $target
+  [ -d $target] || mkdir -p $target
   cd $target
   echo $FBCMD flikes $friend_id
 done

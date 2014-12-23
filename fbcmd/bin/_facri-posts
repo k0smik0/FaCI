@@ -1,19 +1,35 @@
 function getPosts() {
   local user=$1
+  local parallelize=$2
   local target_dir=${FACRI_OUTPUT}/friends/$user/feeds
   [ -d ${target_dir} ] || mkdir -p ${target_dir}
   cd $target_dir
-  echo -n -e "\t${user}'s posts: "
-  if [ ! -z "$(ls posts*json 2>/dev/null)" ]; then
-    echo "found, skipping"
+  result="\t${user}'s posts: "
+#  [ ${parallelize} == false ] && echo -e -n "\t${user}'s posts: "
+  if [ ! -z "$(ls posts*json 2>/dev/null)" ]; then    
+    result=${result}"found, skipping"
   else
-    [ -f .posts_error ] && [ "${FACRI_POSTS_RETRY}" == "false" ] && echo "no retry for old posts error" && return
-    $FBCMD FLSTREAM $user 150 >/dev/null
+    if [ -f .posts_error ] && [ "${FACRI_POSTS_RETRY}" == "false" ]; then
+      if [ ${parallelize} != true ]; then 
+	result=${result}"no retry for old posts error";
+	echo -e $result
+      fi
+#       rm -f $FACRI_DONE_CALL
+      return
+    fi
+#    $FBCMD FLSTREAM $user 150 >/dev/null
+    $FBCMD FLSTREAM $user 1 150 > .posts_log 2>&1
+    $FBCMD FLSTREAM $user 151 300 >> .posts_log 2>&1
     if [ $(find . -type f -iname "posts*.json" | wc -l) -gt 0 ];then
-      echo "ok"
+      result=${result}"ok"
     else
-      echo "error"
+      result=${result}"error"
       touch .posts_error
     fi
+    echo p >> $FACRI_DONE_CALL
+  fi
+  
+  if [ ${parallelize} == false ]; then
+    echo -e $result
   fi
 }

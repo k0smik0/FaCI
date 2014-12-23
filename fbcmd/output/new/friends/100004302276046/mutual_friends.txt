@@ -1,0 +1,5 @@
+NAME            FRIEND_NAME         FRIEND_UID
+Walter Bosello  Ezra M. Pryor       5817531
+                Giuseppe Ricciardi  100000192180901
+                Viola Violet        100001693022196
+                Nada Frastor        100007603953907

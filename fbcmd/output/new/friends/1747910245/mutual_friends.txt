@@ -1,0 +1,2 @@
+fbcmd [v1.1] ERROR: MUTUAL
+[4] Application request limit reached

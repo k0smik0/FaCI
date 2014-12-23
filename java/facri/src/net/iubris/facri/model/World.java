@@ -59,16 +59,22 @@ public class World implements Serializable {
 	 */
 	public User isExistentUserOrCreateNew(String userId) {
 		
-		if (myUser.getId().equals(userId))
+		String type = "";
+//		
+		if (myUser.getUId().equals(userId)) {
+//			System.out.println("found me");
 			return myUser;
+		}
 		
 		FriendOrAlike user = null;
+		System.out.println("checking "+userId);
 		if (myUser.isMyFriendById(userId)) {
 			if (myFriendsMap.containsKey(userId)) {
 				user = myFriendsMap.get(userId);
 			} else {
 				user = new FriendOrAlike(userId);
 				myFriendsMap.put(userId, user);
+				type = "friend";
 			}
 		} else {
 			if (otherUsersMap.containsKey(userId)) {
@@ -76,8 +82,12 @@ public class World implements Serializable {
 			} else {
 				user = new FriendOrAlike(userId);
 				otherUsersMap.put(userId, user);
+				type = "other";
 			}
 		}
+		
+		if (type.equals("friend"))
+			System.out.println("added: "+userId+" "+type);
 		
 		int updatedOwnPostsCount = user.getOwnPostsCount();
 		postsCountRange.add(updatedOwnPostsCount);
@@ -108,13 +118,13 @@ public class World implements Serializable {
 				if (u instanceof FriendOrAlike) {
 					FriendOrAlike f = (FriendOrAlike) u;
 					if (f.getMutualFriends().size() >0)
-						System.out.println(u.getId()+" "+u.getOwnPostsCount()+","+u.getUserInteractionsCount()+","+f.getMutualFriends().size());
+						System.out.println(u.getUId()+" "+u.getOwnPostsCount()+","+u.getUserInteractionsCount()+","+f.getMutualFriends().size());
 				}
 			}
 		};
 		
 		Ego ego = getMyUser();
-		System.out.println(ego.getId()+" "+ego.getOwnPostsCount()+","
+		System.out.println(ego.getUId()+" "+ego.getOwnPostsCount()+","
 				+ego.getUserInteractionsCount()+","+ego.getFriendsIds().size());
 		System.out.println("");
 

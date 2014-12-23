@@ -2,6 +2,7 @@ package net.iubris.facri.parsers.posts;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import javax.inject.Inject;
 
@@ -21,13 +22,22 @@ public class PostParser {
 
 	public void parse(Post post, String owningWallUserId) {
 		// always owning wall user
-		world.isExistentUserOrCreateNew(owningWallUserId);
-		
+		if (owningWallUserId.isEmpty())
+			System.out.println("NO_A");
+//		User existentUserOrCreateNew = 
+				world.isExistentUserOrCreateNew(owningWallUserId);
+//		System.out.println(existentUserOrCreateNew.getUId()+" "+existentUserOrCreateNew.getClass() );
+//		System.out.println(world.getMyFriendsMap().size());
+		if (world.getMyFriendsMap().containsKey(owningWallUserId))
+			System.out.println(owningWallUserId+": friend");
+
 		// the actorId is the post author id
 		String actorPostId = post.getActorId();
 		
 		// we use actorId because a wall contains both posts
 		// from owner (actorId == userDir) or other users (actorId != userDir)
+		if (actorPostId.isEmpty())
+			System.out.println("NO_B");
 		User actorUser = world.isExistentUserOrCreateNew(actorPostId);
 		// always add post to its author
 		actorUser.addOwnPost(post);
@@ -75,27 +85,37 @@ public class PostParser {
 	 * @param likingUsersIds
 	 * @param wallOwnerId
 	 */
-	private void handleLikes(LikesInfo likesInfo,/*Set<String> likingUsersIds,*/ User actorUser, String wallOwnerId) {
+	private void handleLikes(LikesInfo likesInfo, User actorUser, String wallOwnerId) {
 		// interactingUsersIds could be friends of user owning wall - it depends on wall privacy		
 		int howLikes = likesInfo.getCount();
 		actorUser.incrementOwnLikedPosts(howLikes);
 //				likingUsersIds.size();
 		Set<String> friendsUserIDs = likesInfo.getFriendsUserIDs();
 		Set<String> samplesUserIDs = likesInfo.getSamplesUserIDs();
-		Set<String> allUser = new HashSet<>();
-		allUser.addAll(friendsUserIDs);
-		allUser.addAll(samplesUserIDs);
+		Set<String> allUsers = new HashSet<>();
+		allUsers.addAll(friendsUserIDs);
+		allUsers.addAll(samplesUserIDs);
 //		if (howLikes > 0) {
-			for (String interactingUserId: allUser) {
+//		for (String interactingUserId: allUsers) {
+		allUsers.forEach( 
+				new Consumer<String>() {
+					public void accept(String interactingUserId) {
+			
 				// create owner user if it doesn't exist
+				if (wallOwnerId.isEmpty())
+					System.out.println("NO");
 				world.isExistentUserOrCreateNew(wallOwnerId);
 				
 				// create interacting user if it doesn't exist
-				world
-					.isExistentUserOrCreateNew(interactingUserId)
-						// then use for its likes, that is a link attribute
-						.getToOtherUserInteractions(wallOwnerId).incrementLikes();
+				if (!interactingUserId.isEmpty()) {
+//					System.out.println("NO2");
+					world
+						.isExistentUserOrCreateNew(interactingUserId)
+							// then use for its likes, that is a link attribute
+							.getToOtherUserInteractions(wallOwnerId).incrementLikes();
+				}
 			}
+				});
 			actorUser.incrementOwnLikedPosts(howLikes); // node attribute
 //		}
 	}
