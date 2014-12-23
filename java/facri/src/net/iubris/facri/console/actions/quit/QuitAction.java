@@ -1,4 +1,4 @@
-package net.iubris.facri.console.actions;
+package net.iubris.facri.console.actions.quit;
 
 import java.io.Console;
 

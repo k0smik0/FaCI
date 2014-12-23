@@ -11,7 +11,7 @@
 	<key id="attr0005" for="edge" attr.name="ui.size" attr.type="float"/>
 	<graph id="Interactions" edgedefault="undirected">
 		<node id="836460098">
-			<data key="attr0000">0.03091239</data>
+			<data key="attr0000">0.031102296</data>
 			<data key="attr0001">ego</data>
 			<data key="attr0002">2.1531532gu</data>
 		</node>
@@ -740,11 +740,6 @@
 			<data key="attr0001">friend, all</data>
 			<data key="attr0002">0.22522523gu</data>
 		</node>
-		<node id="1554340672">
-			<data key="attr0000">4.6421337E-4</data>
-			<data key="attr0001">friend, all</data>
-			<data key="attr0002">0.35585585gu</data>
-		</node>
 		<node id="100001032716895">
 			<data key="attr0000">0.013040176</data>
 			<data key="attr0001">friend, all</data>
@@ -759,6 +754,11 @@
 			<data key="attr0000">0.0</data>
 			<data key="attr0001">friend, all</data>
 			<data key="attr0002">0.0045045046gu</data>
+		</node>
+		<node id="1554340672">
+			<data key="attr0000">4.6421337E-4</data>
+			<data key="attr0001">friend, all</data>
+			<data key="attr0002">0.35585585gu</data>
 		</node>
 		<node id="1668550495">
 			<data key="attr0000">0.03566003</data>
@@ -1361,9 +1361,14 @@
 			<data key="attr0002">0.6351351gu</data>
 		</node>
 		<node id="100002291200916">
-			<data key="attr0000">0.012913572</data>
+			<data key="attr0000">0.01282917</data>
 			<data key="attr0001">friend, all</data>
 			<data key="attr0002">0.5gu</data>
+		</node>
+		<node id="100002361611588">
+			<data key="attr0000">0.0030806886</data>
+			<data key="attr0001">friend, all</data>
+			<data key="attr0002">0.509009gu</data>
 		</node>
 		<node id="1430711411">
 			<data key="attr0000">0.027304186</data>
@@ -1374,11 +1379,6 @@
 			<data key="attr0000">0.008482444</data>
 			<data key="attr0001">friend, all</data>
 			<data key="attr0002">0.3963964gu</data>
-		</node>
-		<node id="100002361611588">
-			<data key="attr0000">0.0030806886</data>
-			<data key="attr0001">friend, all</data>
-			<data key="attr0002">0.509009gu</data>
 		</node>
 		<node id="100003829702779">
 			<data key="attr0000">0.006034774</data>
@@ -2750,16 +2750,6 @@
 			<data key="attr0004">myfriendwithmutualfriend</data>
 			<data key="attr0005">1.9801419</data>
 		</edge>
-		<edge id="1003742112_to_1512397688" source="1003742112" target="1512397688" directed="true">
-			<data key="attr0003">0.014184397</data>
-			<data key="attr0004">myfriendwithmutualfriend</data>
-			<data key="attr0005">1.9716312</data>
-		</edge>
-		<edge id="1512397688_to_1003742112" source="1512397688" target="1003742112" directed="true">
-			<data key="attr0003">7.0921984E-4</data>
-			<data key="attr0004">myfriendwithmutualfriend</data>
-			<data key="attr0005">1.9985815</data>
-		</edge>
 		<edge id="1003742112_to_1475837888" source="1003742112" target="1475837888" directed="true">
 			<data key="attr0003">0.0</data>
 			<data key="attr0004">myfriendwithmutualfriend</data>
@@ -2769,6 +2759,16 @@
 			<data key="attr0003">0.0</data>
 			<data key="attr0004">myfriendwithmutualfriend</data>
 			<data key="attr0005">2.0</data>
+		</edge>
+		<edge id="1003742112_to_1512397688" source="1003742112" target="1512397688" directed="true">
+			<data key="attr0003">0.014184397</data>
+			<data key="attr0004">myfriendwithmutualfriend</data>
+			<data key="attr0005">1.9716312</data>
+		</edge>
+		<edge id="1512397688_to_1003742112" source="1512397688" target="1003742112" directed="true">
+			<data key="attr0003">7.0921984E-4</data>
+			<data key="attr0004">myfriendwithmutualfriend</data>
+			<data key="attr0005">1.9985815</data>
 		</edge>
 		<edge id="1003742112_to_1246760058" source="1003742112" target="1246760058" directed="true">
 			<data key="attr0003">0.0</data>
@@ -4230,16 +4230,6 @@
 			<data key="attr0004">myfriendwithmutualfriend</data>
 			<data key="attr0005">2.0</data>
 		</edge>
-		<edge id="836460098_to_1554340672" source="836460098" target="1554340672" directed="true">
-			<data key="attr0003">0.012765957</data>
-			<data key="attr0004">metomyfriend</data>
-			<data key="attr0005">1.9744681</data>
-		</edge>
-		<edge id="1554340672_to_836460098" source="1554340672" target="836460098" directed="true">
-			<data key="attr0003">0.0</data>
-			<data key="attr0004">myfriendtome</data>
-			<data key="attr0005">2.0</data>
-		</edge>
 		<edge id="836460098_to_100001032716895" source="836460098" target="100001032716895" directed="true">
 			<data key="attr0003">0.0</data>
 			<data key="attr0004">metomyfriend</data>
@@ -4279,6 +4269,16 @@
 			<data key="attr0003">7.0921984E-4</data>
 			<data key="attr0004">myfriendwithmutualfriend</data>
 			<data key="attr0005">1.9985815</data>
+		</edge>
+		<edge id="836460098_to_1554340672" source="836460098" target="1554340672" directed="true">
+			<data key="attr0003">0.012765957</data>
+			<data key="attr0004">metomyfriend</data>
+			<data key="attr0005">1.9744681</data>
+		</edge>
+		<edge id="1554340672_to_836460098" source="1554340672" target="836460098" directed="true">
+			<data key="attr0003">0.0</data>
+			<data key="attr0004">myfriendtome</data>
+			<data key="attr0005">2.0</data>
 		</edge>
 		<edge id="1377861809_to_100000460797181" source="1377861809" target="100000460797181" directed="true">
 			<data key="attr0003">0.0</data>
@@ -7160,36 +7160,6 @@
 			<data key="attr0004">myfriendwithmutualfriend</data>
 			<data key="attr0005">1.9964539</data>
 		</edge>
-		<edge id="836460098_to_1430711411" source="836460098" target="1430711411" directed="true">
-			<data key="attr0003">0.0</data>
-			<data key="attr0004">metomyfriend</data>
-			<data key="attr0005">2.0</data>
-		</edge>
-		<edge id="1430711411_to_836460098" source="1430711411" target="836460098" directed="true">
-			<data key="attr0003">0.0</data>
-			<data key="attr0004">myfriendtome</data>
-			<data key="attr0005">2.0</data>
-		</edge>
-		<edge id="1430711411_to_628783466" source="1430711411" target="628783466" directed="true">
-			<data key="attr0003">0.0</data>
-			<data key="attr0004">myfriendwithmutualfriend</data>
-			<data key="attr0005">2.0</data>
-		</edge>
-		<edge id="628783466_to_1430711411" source="628783466" target="1430711411" directed="true">
-			<data key="attr0003">0.0</data>
-			<data key="attr0004">myfriendwithmutualfriend</data>
-			<data key="attr0005">2.0</data>
-		</edge>
-		<edge id="1430711411_to_1048221446" source="1430711411" target="1048221446" directed="true">
-			<data key="attr0003">7.0921984E-4</data>
-			<data key="attr0004">myfriendwithmutualfriend</data>
-			<data key="attr0005">1.9985815</data>
-		</edge>
-		<edge id="1048221446_to_1430711411" source="1048221446" target="1430711411" directed="true">
-			<data key="attr0003">0.0</data>
-			<data key="attr0004">myfriendwithmutualfriend</data>
-			<data key="attr0005">2.0</data>
-		</edge>
 		<edge id="1340266499_to_1556264029" source="1340266499" target="1556264029" directed="true">
 			<data key="attr0003">0.0</data>
 			<data key="attr0004">myfriendwithmutualfriend</data>
@@ -7406,6 +7376,36 @@
 			<data key="attr0005">2.0</data>
 		</edge>
 		<edge id="100000642204643_to_1340266499" source="100000642204643" target="1340266499" directed="true">
+			<data key="attr0003">0.0</data>
+			<data key="attr0004">myfriendwithmutualfriend</data>
+			<data key="attr0005">2.0</data>
+		</edge>
+		<edge id="836460098_to_1430711411" source="836460098" target="1430711411" directed="true">
+			<data key="attr0003">0.0</data>
+			<data key="attr0004">metomyfriend</data>
+			<data key="attr0005">2.0</data>
+		</edge>
+		<edge id="1430711411_to_836460098" source="1430711411" target="836460098" directed="true">
+			<data key="attr0003">0.0</data>
+			<data key="attr0004">myfriendtome</data>
+			<data key="attr0005">2.0</data>
+		</edge>
+		<edge id="1430711411_to_628783466" source="1430711411" target="628783466" directed="true">
+			<data key="attr0003">0.0</data>
+			<data key="attr0004">myfriendwithmutualfriend</data>
+			<data key="attr0005">2.0</data>
+		</edge>
+		<edge id="628783466_to_1430711411" source="628783466" target="1430711411" directed="true">
+			<data key="attr0003">0.0</data>
+			<data key="attr0004">myfriendwithmutualfriend</data>
+			<data key="attr0005">2.0</data>
+		</edge>
+		<edge id="1430711411_to_1048221446" source="1430711411" target="1048221446" directed="true">
+			<data key="attr0003">7.0921984E-4</data>
+			<data key="attr0004">myfriendwithmutualfriend</data>
+			<data key="attr0005">1.9985815</data>
+		</edge>
+		<edge id="1048221446_to_1430711411" source="1048221446" target="1430711411" directed="true">
 			<data key="attr0003">0.0</data>
 			<data key="attr0004">myfriendwithmutualfriend</data>
 			<data key="attr0005">2.0</data>
@@ -8856,9 +8856,9 @@
 			<data key="attr0005">1.9971632</data>
 		</edge>
 		<edge id="626229190_to_100000829985107" source="626229190" target="100000829985107" directed="true">
-			<data key="attr0003">0.035460994</data>
+			<data key="attr0003">0.034751773</data>
 			<data key="attr0004">myfriendwithmutualfriend</data>
-			<data key="attr0005">1.929078</data>
+			<data key="attr0005">1.9304965</data>
 		</edge>
 		<edge id="100000829985107_to_1428844694" source="100000829985107" target="1428844694" directed="true">
 			<data key="attr0003">0.004964539</data>
@@ -14590,16 +14590,6 @@
 			<data key="attr0004">myfriendwithmutualfriend</data>
 			<data key="attr0005">1.9957447</data>
 		</edge>
-		<edge id="1357590223_to_702751883" source="1357590223" target="702751883" directed="true">
-			<data key="attr0003">0.004255319</data>
-			<data key="attr0004">myfriendwithmutualfriend</data>
-			<data key="attr0005">1.9914894</data>
-		</edge>
-		<edge id="702751883_to_1357590223" source="702751883" target="1357590223" directed="true">
-			<data key="attr0003">0.004255319</data>
-			<data key="attr0004">myfriendwithmutualfriend</data>
-			<data key="attr0005">1.9914894</data>
-		</edge>
 		<edge id="1357590223_to_100002269884346" source="1357590223" target="100002269884346" directed="true">
 			<data key="attr0003">0.0</data>
 			<data key="attr0004">myfriendwithmutualfriend</data>
@@ -14609,6 +14599,16 @@
 			<data key="attr0003">0.009929078</data>
 			<data key="attr0004">myfriendwithmutualfriend</data>
 			<data key="attr0005">1.9801419</data>
+		</edge>
+		<edge id="1357590223_to_702751883" source="1357590223" target="702751883" directed="true">
+			<data key="attr0003">0.004255319</data>
+			<data key="attr0004">myfriendwithmutualfriend</data>
+			<data key="attr0005">1.9914894</data>
+		</edge>
+		<edge id="702751883_to_1357590223" source="702751883" target="1357590223" directed="true">
+			<data key="attr0003">0.004255319</data>
+			<data key="attr0004">myfriendwithmutualfriend</data>
+			<data key="attr0005">1.9914894</data>
 		</edge>
 		<edge id="1357590223_to_1627000464" source="1357590223" target="1627000464" directed="true">
 			<data key="attr0003">7.0921984E-4</data>
