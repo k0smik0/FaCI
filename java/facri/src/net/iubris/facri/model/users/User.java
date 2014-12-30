@@ -7,8 +7,8 @@ import net.iubris.facri.model.posts.Post;
 
 public interface User {
 	
-	public void setId(String userId);
-	public String getId();
+	public void setUid(String userId);
+	public String getUid();
 	
 	public boolean addOwnPost(Post post);	
 	public List<Post> getOwnPosts();	

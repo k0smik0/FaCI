@@ -1,4 +1,4 @@
-package net.iubris.facri.console.actions.graph;
+package net.iubris.facri.console.actions.graph.grapher;
 
 import java.io.IOException;
 import java.util.EnumMap;
@@ -6,10 +6,10 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import net.iubris.facri.console.actions.graph.GrapherAction.UseCache;
+import net.iubris.facri.console.actions.graph.grapher.GrapherAction.UseCache;
 import net.iubris.facri.graph.generators.graphstream.GraphstreamGraphGenerator;
 import net.iubris.facri.graph.generators.graphstream.GraphstreamInteractionsGraphGenerator;
-import net.iubris.facri.model.graph.GraphHolder;
+import net.iubris.facri.model.graph.GraphsHolder;
 import net.iubris.heimdall.command.ConsoleCommand;
 
 import org.graphstream.graph.Graph;
@@ -27,29 +27,33 @@ public class Grapher {
 		graphgeneratorsMap.put(WorldTarget.interactions, graphstreamInteractionsGraphGenerator);
 	}
 	
-	public void execute(WorldTarget worldTarget, GraphType analysisType, UseCache useCache, String filenamePrefix) throws IOException {
-		GraphstreamGraphGenerator graphstreamGraphGenerator = graphgeneratorsMap.get(worldTarget);
-		analysisType.makeAnalysis(graphstreamGraphGenerator, useCache, filenamePrefix);
+	public void execute(WorldTarget worldTarget, GraphType graphType, UseCache useCache, String filenamePrefix) throws IOException {
+//		GraphstreamGraphGenerator graphstreamGraphGenerator = graphgeneratorsMap.get(worldTarget);
+		graphType.makeGraph( graphgeneratorsMap.get(worldTarget), useCache, filenamePrefix );
 	}
+	
+//	public GraphstreamGraphGenerator getGraphgenerator(WorldTarget worldTarget) {
+//		return graphgeneratorsMap.get(worldTarget);
+//	}
 	
 	public enum WorldTarget {
 		friendships {
 			@Override
-			public Graph prepareGraph(GraphHolder graphHolder, UseCache useCache) throws IOException {
+			public Graph prepareGraph(GraphsHolder graphHolder, UseCache useCache) throws IOException {
 				// TODO Auto-generated method stub
 				return null;
 			}
 		},
 		interactions {
 			@Override
-			public Graph prepareGraph(GraphHolder graphHolder, UseCache useCache) throws IOException {
+			public Graph prepareGraph(GraphsHolder graphHolder, UseCache useCache) throws IOException {
 				graphHolder.prepareForDisplayInteractions();
 //				graphHolder.hideInteractionsGraph();
 				Graph graph = graphHolder.getInteractionsGraph();
 				return graph;
 			}			
 		};
-		public abstract Graph prepareGraph(GraphHolder graphHolder, UseCache useCache) throws IOException;
+		public abstract Graph prepareGraph(GraphsHolder graphHolder, UseCache useCache) throws IOException;
 	}
 	public enum WorldTargetChar implements ConsoleCommand {
 		f("graphs friendships 'world'") {
@@ -78,7 +82,7 @@ public class Grapher {
 	public enum GraphType {
 		me_and_my_friends {
 			@Override
-			public void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException {
+			public void makeGraph(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException {
 				String filename = getFilename(filenamePrefix, name());
 				Graph graph = graphstreamGraphGenerator.getGraph();
 				if ( ! handleReadingFromCache(useCache, graph, filename) )
@@ -88,7 +92,7 @@ public class Grapher {
 		}
 		,my_friends {
 			@Override
-			public void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException {
+			public void makeGraph(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException {
 				String filename = getFilename(filenamePrefix, name());
 				Graph graph = graphstreamGraphGenerator.getGraph();
 				if ( ! handleReadingFromCache(useCache, graph, filename) )
@@ -98,7 +102,7 @@ public class Grapher {
 		}
 		,my_friends_with_their_friends {
 			@Override
-			public void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException {
+			public void makeGraph(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException {
 				String filename = getFilename(filenamePrefix, name());
 				Graph graph = graphstreamGraphGenerator.getGraph();
 //				graph.display().getDefaultView().setVisible(false);
@@ -109,7 +113,7 @@ public class Grapher {
 		}
 		,friends_of_my_friends {
 			@Override
-			public void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException {
+			public void makeGraph(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException {
 				String filename = getFilename(filenamePrefix, name());
 				Graph graph = graphstreamGraphGenerator.getGraph();
 				if ( ! handleReadingFromCache(useCache, graph, filename) )
@@ -119,21 +123,64 @@ public class Grapher {
 		}
 		,me_and_my_friends_and_friends_of_my_friends {
 			@Override
-			public void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException {
+			public void makeGraph(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException {
 				String filename = getFilename(filenamePrefix, name());
 				Graph graph = graphstreamGraphGenerator.getGraph();
 				if ( ! handleReadingFromCache(useCache, graph, filename) ) {
-//					try {
 					graphstreamGraphGenerator.generateMeWithMyFriendsAndTheirFriends();
-//					} catch(IllegalArgumentException e) {
-//						System.out.println(e);
-//					}
 				}
 				handleWritingToCache(useCache, graph, filename);
 			}
 		};
+
+		/*me_and_my_friends {
+			@Override
+			public void makeGraph() throws IOException {
+				
+			} 
+		}
+		,my_friends { 
+			@Override
+			public void makeGraph() throws IOException {
+				
+			}
+		}
+		,my_friends_with_their_friends { 
+			@Override
+			public void makeGraph() throws IOException {
+				
+			}
+		}
+		,friends_of_my_friends { 
+			@Override
+			public void makeGraph() throws IOException {
+				
+			}
+		}
+		,me_and_my_friends_and_friends_of_my_friends { 
+			@Override
+			public void makeGraph() {
+				Graph graph = graphstreamGraphGenerator.getGraph();
+//				if ( ! handleReadingFromCache( graph ) )
+//					graphstreamGraphGenerator.generateMeWithMyFriendsAndTheirFriends();
+//				handleWritingToCache(graph);
+			}
+		};*/
 		
-		public abstract void makeAnalysis(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException;
+		
+		public abstract void makeGraph(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String filenamePrefix) throws IOException;
+		
+		/*public abstract void makeGraph() throws Exception;
+		
+		private String cacheFilename;
+		private UseCache useCache;
+		private GraphstreamGraphGenerator graphstreamGraphGenerator;
+		
+		public void setDependencies(GraphstreamGraphGenerator graphstreamGraphGenerator, UseCache useCache, String cacheFilenamePrefix) {
+			this.graphstreamGraphGenerator = graphstreamGraphGenerator;
+			this.useCache = useCache;
+			this.cacheFilename = cacheFilenamePrefix+"_-_"+name();
+		}*/
 		
 		private static String getFilename(String prefix, String core) {
 			String filename = prefix+"_-_"+core;
@@ -147,9 +194,9 @@ public class Grapher {
 			}
 			return false;
 		}
-		private static void handleWritingToCache(UseCache useCache, Graph graph, String filename) throws IOException {
+		private static void handleWritingToCache(UseCache useCache, Graph graph, String cacheFilename) throws IOException {
 			if (useCache.write)
-				useCache.write(filename+"."+useCache.getCacheFileExtension(), graph);
+				useCache.write(cacheFilename+"."+useCache.getCacheFileExtension(), graph);
 		}
 	}
 	public enum GrapherTypeChar implements ConsoleCommand {

@@ -1,4 +1,4 @@
-package net.iubris.facri._test;
+package net.iubris.facri.console.actions.graph.grapher;
 
 import java.io.Console;
 

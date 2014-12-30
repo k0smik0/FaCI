@@ -1,4 +1,4 @@
-package net.iubris.facri.console.actions.graph;
+package net.iubris.facri.console.actions.graph.grapher;
 
 import java.io.Console;
 import java.io.File;
@@ -8,9 +8,7 @@ import javax.inject.Inject;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
-import net.iubris.facri.console.actions.graph.Grapher.GraphType;
-import net.iubris.facri.console.actions.graph.Grapher.WorldTarget;
-import net.iubris.facri.model.graph.GraphHolder;
+import net.iubris.facri.model.graph.GraphsHolder;
 import net.iubris.facri.parsers.DataParser;
 import net.iubris.heimdall.actions.CommandAction;
 import net.iubris.heimdall.actions.HelpAction;
@@ -29,14 +27,14 @@ public class GrapherAction implements CommandAction {
 	
 	
 	private final DataParser dataParser;
-	private final GraphHolder graphHolder;
-	private Grapher grapher;
+	private final GraphsHolder graphHolder;
+	private final Grapher grapher;
 
 	@Inject
 	public GrapherAction(
 			DataParser dataParser,
 			// missing friendships generator
-			GraphHolder graphHolder,
+			GraphsHolder graphHolder,
 			Grapher grapher
 			) {
 		this.dataParser = dataParser;
@@ -56,18 +54,18 @@ public class GrapherAction implements CommandAction {
 			
 			try {
 				String worldTargetParam = params[0];
-				WorldTarget worldTarget = Enum.valueOf(Grapher.WorldTargetChar.class, worldTargetParam).getWorldTarget();
+				Grapher.WorldTarget worldTarget = Enum.valueOf(Grapher.WorldTargetChar.class, worldTargetParam).getWorldTarget();
 				
 //				Graph graph = 
 						worldTarget.prepareGraph(graphHolder, useCache);
 
-				String analysisTypeParam = params[1];
-				GraphType analysisType = Enum.valueOf(Grapher.GrapherTypeChar.class, analysisTypeParam).getAnalysisType();
+				String graphTypeParam = params[1];
+				Grapher.GraphType graphType = Enum.valueOf(Grapher.GrapherTypeChar.class, graphTypeParam).getAnalysisType();
+//				graphType.setDependencies(grapher.getGraphgenerator(worldTarget), useCache, worldTarget.name());
 						
-				grapher.execute(worldTarget, analysisType, useCache, worldTarget.name());
+				grapher.execute( worldTarget, graphType, useCache, worldTarget.name() );
+//				graphType.makeGraph();
 				
-//				graphHolder.
-//				graph.getNodeIterator().next().get
 			
 			} catch(IllegalArgumentException e) {
 				console.printf(WRONG_ARGUMENT);
@@ -149,19 +147,19 @@ public class GrapherAction implements CommandAction {
 		console.printf(WRONG_ARGUMENTS_NUMBER);
 	}
 	
-	public enum AnalyzeCommand implements ConsoleCommand {
+	public enum GrapherCommand implements ConsoleCommand {
 		G;
 		@Override
 		public String getHelpMessage() {
 			return message;
 		}
 		private String message =  
-				"graph [world] [analysis type] [use_cache]\n"
+				"graph [world] [actors] [use_cache]\n"
 			+HelpAction.tab(2)+"'graph' command needs two arguments:\n"
-			+HelpAction.tab(2)+"first argument select 'world' to analyze:\n"
+			+HelpAction.tab(2)+"first argument select 'world' to graph:\n"
 			+Grapher.WorldTargetChar.f.getHelpMessage()
 			+Grapher.WorldTargetChar.i.getHelpMessage()
-			+HelpAction.tab(2)+"second argument select analysis type:\n"
+			+HelpAction.tab(2)+"second argument select 'actors' type:\n"
 			+Grapher.GrapherTypeChar.mf.getHelpMessage()
 			+Grapher.GrapherTypeChar.f.getHelpMessage()
 			+Grapher.GrapherTypeChar.ft.getHelpMessage()

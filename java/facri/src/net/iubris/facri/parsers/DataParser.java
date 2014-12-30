@@ -1,6 +1,6 @@
 package net.iubris.facri.parsers;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -30,11 +30,12 @@ private boolean parsed = false;
 				this.world = world;
 	}
 
-	public void parse() throws JAXBException, FileNotFoundException, XMLStreamException {
+	public void parse() throws JAXBException, XMLStreamException, IOException {
 		if (!parsed) {
 			egoDataParser.parse();
 			friendsDataParser.parse();
 			parsed = true;
+			world.isParsingDone(true);
 		}
 	}
 	

@@ -16,17 +16,17 @@ node {
 node.marked {
 	stroke-width: 3px;
 }
-/*node.selected {
+node.selected {
 	text-visibility-mode:normal;
 	text-mode:normal;
 	text-size:50px;
-}*/
+}
 /*
 node.nottexted {
 	text-visibility-mode:hidden;	
 }*/
 node.ego {
-	fill-color: #ff8888, #880000;
+	fill-color: #ffddcc, #880000;
    /*size-mode: normal;
    size: 200px;*/
 }
@@ -34,7 +34,7 @@ node.ego {
 node.friend { 
 /*	fill-color: #ddffaa, #008800;*/
    /*fill-color: #ddeeaa, #008800;*/
-   fill-color: #aaff99, #008800;   
+   fill-color: #ddffcc, #008800;   
 }
 node.friendof {
 	fill-color: #3355ff, #000088;
@@ -52,17 +52,18 @@ edge {
 /* light red to dark red */
 edge.metomyfriend {
 /*	fill-color: #ffeebb, #FF0000; */
-	fill-color: #FFaadd, #880000;
+	fill-color: #bb000044, #bb0000ff;
 }
 /* light yellow to orange */
 edge.myfriendtome {
- fill-color: #ffee00, #FF3300;
+ /*fill-color: #ffee00, #FF2200;*/
+ fill-color: #ffbb0077, #FFbb00ff;
 }
 edge.myfriendwithmutualfriend {
  /* yellow-green range */
 	/*fill-color: #white, #FFFFDD, #FFFF99, #FFFF00, #FFCC00, #FF9900;*/
 	/*fill-color: #F7E98E, #DFFF00, #A7FC00, #00FF00;*/
-	fill-color: #aaff99, #008800;
+	fill-color: #ddffcc, #008800;
 }
 edge.friendofmyfriendwithmyfriend {
 /*   size-mode:normal;

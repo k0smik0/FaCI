@@ -14,7 +14,7 @@ import javax.inject.Singleton;
 import net.iubris.facri.graph.generators.InteractionsGraphGenerator;
 import net.iubris.facri.graph.generators.InteractionsWeigths;
 import net.iubris.facri.model.World;
-import net.iubris.facri.model.graph.GraphHolder;
+import net.iubris.facri.model.graph.GraphsHolder;
 import net.iubris.facri.model.users.Ego;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.Interactions;
@@ -71,7 +71,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 	
 
 	@Inject
-	public GraphstreamInteractionsGraphGenerator(World world, GraphHolder graphHolder) {
+	public GraphstreamInteractionsGraphGenerator(World world, GraphsHolder graphHolder) {
 		this.graph = 
 //				new MultiGraph("Interactions",false,true);
 				graphHolder.getInteractionsGraph();
@@ -318,7 +318,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 		if (includeMyuserNode) {
    		myFriendNode = createAndMaintainOrRetrieveFriendNodeAndEdgesWithMe(myFriend);
    	} else {
-   		myFriendNode = getOrCreateFriendNode(myFriend.getId());
+   		myFriendNode = getOrCreateFriendNode(myFriend.getUid());
    	}
 		return myFriendNode;
 	}
@@ -334,7 +334,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 	}
 	
 	private Node createAndMaintainOrRetrieveFriendNodeAndEdgesWithMe(User myFriend) {
-		String myFriendId = myFriend.getId();
+		String myFriendId = myFriend.getUid();
 		Node myFriendNode = graph.getNode(myFriendId);
 		if (myFriendNode!=null)
 			return myFriendNode;
@@ -349,7 +349,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 	      float mineToMyFriendNormalizedInteractions = ((float)meToFriendInteractionsAsWeight-interactionsMin)/interactionsDenominator;
 	      Edge meToMyfriendEdge = createEdge(egoNode, myFriendNode, mineToMyFriendNormalizedInteractions, meToMyfriendEdgeUiClass);
 	      
-	      Interactions myfriendToMeInteractions = myFriend.getToOtherUserInteractions(ego.getId());
+	      Interactions myfriendToMeInteractions = myFriend.getToOtherUserInteractions(ego.getUid());
 	      float myfriendToMeInteractionsAsWeight = 
 //	      		myFriend.getToOtherUserInteractionsCount(myFriendId);
 	      		getWeightedInteractions(myfriendToMeInteractions);
@@ -360,7 +360,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 //	      graph.removeEdge(meToMyfriendEdge);
 //	      graph.removeEdge(myFriendToMeEdge);
 	      
-	      String egoId = ego.getId();
+	      String egoId = ego.getUid();
 	      myFriendsWithMeEdgesAndViceversaTable.put(egoId, myFriendId, meToMyfriendEdge);
 	      myFriendsWithMeEdgesAndViceversaTable.put(myFriendId, egoId, myFriendToMeEdge);
 	      
@@ -379,7 +379,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 	}
 	
 	private Node createNode(User user) {
-		String id = user.getId();
+		String id = user.getUid();
 		Node node = graph.addNode(id);
 		
 		float normalizedSize = ((float)user.getOwnPostsCount()-postsCountMin)/postsCountDenominator;
@@ -409,7 +409,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 //		float size = Math.abs(weight);
 //		System.out.print(size+" ");
 		// the higher weight, the longer and larger, so we complement
-		createdEdge.setAttribute("ui.size", 2*(1-normalizedWeight));
+		createdEdge.setAttribute("ui.size", /*2**/(1-normalizedWeight));
 //		createdEdge.setAttribute("ui.arrow-size", normalizedWeight);
 //		System.out.print(createdEdge.getId()+" ");
 		
@@ -459,7 +459,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 	}
 	
 	public void clear() {
-//		garbageUseless();		
+//		garbageUseless();
 //		graph.clear();
 //		egoNode = null;
 	}

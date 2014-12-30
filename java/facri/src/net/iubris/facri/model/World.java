@@ -2,6 +2,7 @@ package net.iubris.facri.model;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -27,6 +28,8 @@ public class World implements Serializable {
 	private final Set<Integer> interactionsRange = new ConcurrentSkipListSet<Integer>();
 	
 	private Ego myUser;
+
+	private boolean parsingDone;
 	
 	public Ego getMyUser() {
 		return myUser;
@@ -58,8 +61,7 @@ public class World implements Serializable {
 	 * @return
 	 */
 	public User isExistentUserOrCreateNew(String userId) {
-		
-		if (myUser.getId().equals(userId))
+		if (myUser.getUid().equals(userId))
 			return myUser;
 		
 		FriendOrAlike user = null;
@@ -91,6 +93,37 @@ public class World implements Serializable {
 		return user;
 	}
 	
+	public Optional<FriendOrAlike> searchUserByName(String name) {
+		Optional<FriendOrAlike> friend = myFriendsMap.values().parallelStream().filter(f->f.getName().equals(name)).findFirst();
+		if (friend.isPresent())
+			return friend;
+		else
+			return otherUsersMap.values().parallelStream().filter(f->f.getName().equals(name)).findFirst();
+	}
+	public Optional<FriendOrAlike> searchUserById(String uid) {
+		if (myFriendsMap.containsKey(uid)) {
+			FriendOrAlike friendOrAlike = myFriendsMap.get(uid);
+//			System.out.println(friendOrAlike);
+			return Optional.of( friendOrAlike );
+		}
+		if (otherUsersMap.containsKey(uid)) {
+			FriendOrAlike friendOrAlike = otherUsersMap.get(uid);
+//			System.out.println(friendOrAlike);
+			return Optional.of( friendOrAlike );
+		}
+		return Optional.empty();
+	}
+	public Ego searchMe() {
+		return myUser;
+	}
+	public Optional<Ego> searchMe(String uid) {
+//		System.out.println(myUser);
+		if (uid.equals(myUser.getUid()))
+			return Optional.of(myUser);
+		return Optional.empty();
+	}
+	
+	
 	public Set<Integer> getAppreciationsRange() {
 		return appreciationsRange;
 	}
@@ -108,13 +141,13 @@ public class World implements Serializable {
 				if (u instanceof FriendOrAlike) {
 					FriendOrAlike f = (FriendOrAlike) u;
 					if (f.getMutualFriends().size() >0)
-						System.out.println(u.getId()+" "+u.getOwnPostsCount()+","+u.getUserInteractionsCount()+","+f.getMutualFriends().size());
+						System.out.println(u.getUid()+" "+u.getOwnPostsCount()+","+u.getUserInteractionsCount()+","+f.getMutualFriends().size());
 				}
 			}
 		};
 		
 		Ego ego = getMyUser();
-		System.out.println(ego.getId()+" "+ego.getOwnPostsCount()+","
+		System.out.println(ego.getUid()+" "+ego.getOwnPostsCount()+","
 				+ego.getUserInteractionsCount()+","+ego.getFriendsIds().size());
 		System.out.println("");
 
@@ -125,4 +158,11 @@ public class World implements Serializable {
 		getOtherUsersMap()
 			.forEach( friendConsumer );
 	}
+	
+	public void isParsingDone(boolean parsingDone) {
+		this.parsingDone = parsingDone;
+	}
+	public boolean isParsingDone() {
+		return parsingDone;
+	};
 }

@@ -1,16 +1,29 @@
 package net.iubris.facri.model.users;
 
-import java.util.HashSet;
+import java.net.URL;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class Ego extends AbstractUser {
 
 	private static final long serialVersionUID = -7587672566751011500L;
 
-	final private Set<String> friends = new HashSet<>();
+	final private Set<String> friends = new ConcurrentSkipListSet<>();
+
+	public Ego(String uid) {
+		super(uid);
+	}
 	
-	public Ego(String userId) {
-		super(userId);
+	public Ego() {}
+	
+	public Ego(String uid, String name, int friendsCount, URL picSmall, URL profileURL, Sex sex, String significantOtherId) {
+		this.uid = uid;
+		this.name = name;
+		this.friendsCount = friendsCount;
+		this.picSmall = picSmall;
+		this.profileURL = profileURL;
+		this.sex = sex;
+		this.significantOtherId = significantOtherId;
 	}
 	
 	public Set<String> getFriendsIds() {
@@ -23,5 +36,19 @@ public class Ego extends AbstractUser {
 	
 	public boolean isMyFriendById(String userId) {
 		return friends.contains(userId);
+	}
+	
+//	@MapToColumn(column=2,type=Integer.class)
+//	private int friendsCount;
+	
+//	public int getFriendsCount() {
+//		return friendsCount;
+//	}
+	
+	@Override
+	public String toString() {
+		return "---"+super.toString()
+				+"\nfriends count: "+friendsCount+"|"+friends.size()
+				+"\n---";
 	}
 }

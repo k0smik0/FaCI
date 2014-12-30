@@ -80,7 +80,7 @@ public class GephiFriendshipsGraphGenerator implements FriendshipsGraphGenerator
 	
 	private Node createMe() {
 		Ego ego = world.getMyUser();
-		String egoId = ego.getId();
+		String egoId = ego.getUid();
       this.egoNode = createNode(egoId);
       return egoNode;
 	}

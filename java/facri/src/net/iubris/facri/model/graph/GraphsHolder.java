@@ -7,12 +7,20 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Optional;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+import javax.xml.bind.JAXBException;
+import javax.xml.stream.XMLStreamException;
+
+import net.iubris.facri.model.World;
+import net.iubris.facri.model.users.Ego;
+import net.iubris.facri.parsers.DataParser;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -26,13 +34,15 @@ import org.graphstream.ui.swingViewer.util.DefaultMouseManager;
 import org.graphstream.ui.swingViewer.util.DefaultShortcutManager;
 
 @Singleton
-public class GraphHolder {
+public class GraphsHolder {
 	
 	private final Graph friendshipsGraph;
 	private final Graph interactionsGraph;
 	private final Viewer friendshipsGraphViewer;
 	private final Viewer interactionsGraphViewer;
 //	private ViewerPipe fromViewerInteractions;
+	private final World world;
+	private final DataParser dataParser;
 	
 	
 	/*private class NodeViewerListener implements ViewerListener {
@@ -60,14 +70,17 @@ public class GraphHolder {
 //		}
 	};*/
 	
-	public GraphHolder() {
+	// TODO: refactor constructor
+	@Inject
+	public GraphsHolder(World world, DataParser dataParser) {
+		this.world = world;
+		this.dataParser = dataParser;
 		this.friendshipsGraph = new MultiGraph("Friendships",false,true);
 		this.friendshipsGraphViewer = prepareForDisplay(friendshipsGraph);
 		this.interactionsGraph = new MultiGraph("Interactions",false,true);
-//		System.out.println(interactionsGraph);
 		this.interactionsGraphViewer = prepareForDisplay(interactionsGraph);
 		
-//		System.out.print("[");		
+//		System.out.print("[");
 		System.setProperty("sun.java2d.opengl", "True");
 //		System.out.println("]");
 		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");		
@@ -93,29 +106,38 @@ public class GraphHolder {
 //		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
 		viewer.enableAutoLayout();
 		
-		
-		
 		return viewer;
 	}
 	
 	
 	public void prepareForDisplayFriendships() {
-		friendshipsGraphViewer.close();
-//		friendshipsGraphViewer.getDefaultView().setVisible(true);
+//		friendshipsGraphViewer.close();
+		View view = friendshipsGraphViewer.getDefaultView();
+		if (view==null) {
+			view = friendshipsGraphViewer.addDefaultView(true);
+		}
+		view.setVisible(true);
+		
+		view.setMouseManager(new InternalMouseManager(friendshipsGraphViewer));
+		view.setShortcutManager(new InternalShortcutManager(friendshipsGraphViewer));
 	}
 	
 	public void prepareForDisplayInteractions() {
 		View view = interactionsGraphViewer.getDefaultView();
 		if (view==null) {
-//			System.out.println("defaultView "+defaultView);
-//			defaultView.setVisible(false);
 			view = interactionsGraphViewer.addDefaultView(true);
-//			System.out.println("defaultView "+defaultView);
 		}
 		view.setVisible(true);
 		
 		view.setMouseManager(new InternalMouseManager(interactionsGraphViewer));
 		view.setShortcutManager(new InternalShortcutManager(interactionsGraphViewer));
+	}
+	
+	public Viewer getInteractionsGraphViewer() {
+		return interactionsGraphViewer;
+	}
+	public Viewer getFriendshipsGraphViewer() {
+		return friendshipsGraphViewer;
 	}
 	
 	class InternalMouseManager extends DefaultMouseManager {
@@ -150,27 +172,58 @@ public class GraphHolder {
 //						
 //					}
 //				});
-			elements.parallelStream()
-							.forEach(e->e.removeAttribute("ui.label"));
+			elements
+					.parallelStream()
+					.forEach(e -> e.removeAttribute("ui.label"));
 		}
 		
-		@Override
-		public void mouseEntered(MouseEvent event) {
-			// TODO Auto-generated method stub
-			super.mouseEntered(event);
-//			camera.setViewPercent(zoom);
-		}
+//		@Override
+//		public void mouseEntered(MouseEvent event) {
+//			// TODO Auto-generated method stub
+//			super.mouseEntered(event);
+////			camera.setViewPercent(zoom);
+//		}
 		
 
 		@Override
 		protected void mouseButtonPressOnElement(GraphicElement element, MouseEvent event) {
 			super.mouseButtonPressOnElement(element, event);
  
-			if (event.getButton()==3 && element instanceof GraphicNode) {
-				element.setAttribute("ui.label",element.getId());
+			if (event.getButton()==1 && event.isControlDown() && element instanceof GraphicNode) {
+//				element.addAttribute("ui.label",element.getId());
+//				element.addAttribute("ui.class","marked");
+//				System.out.println("button 1");
+//				System.out.println("\n"+element.getAttribute("ui.label"));
+//				System.out.println("\n"+element.getAttribute("ui.marked"));
+				
+//				element.setAttribute("ui.label",element.getId());
+				
+				if (!world.isParsingDone()) {
+					System.out.println("Graphs was generated from cache and there are no data for user, so parsing...");
+					try {
+						dataParser.parse();
+					} catch (JAXBException | XMLStreamException | IOException e) {
+						e.printStackTrace();
+					}
+					System.out.println("done.");
+				}
+				
+				String uid = element.getId();
+//				System.out.println(uid);
+				
+				Optional<Ego> searchMe = world.searchMe(uid);
+				
+				if (searchMe.isPresent())
+					System.out.println(searchMe.get());
+				else {
+					world.searchUserById(uid).ifPresent(u->System.out.println(u)); 
+				}
+				return;
 			}
-			if (event.getButton()==3 && event.isShiftDown() && element instanceof GraphicNode) {
+			if (event.getButton()==3 && element instanceof GraphicNode) {
 				element.removeAttribute("ui.label");
+				element.removeAttribute("ui.marked");
+				return;
 			}
 			
 			if (event.getButton()==1 && event.isShiftDown() && /*focusOnClick &&*/ element instanceof GraphicNode) {
@@ -185,15 +238,17 @@ public class GraphHolder {
 				String nodeId = element.getId();
 				Node node = viewer.getGraphicGraph().getNode(nodeId);
 				String nodeInfo = "in-degree: "+node.getInDegree()+"<br/>out-degree: "+node.getOutDegree()+"<br/>url: <a href='"+profileUrl+"'>"+profileUrl+"</a>";
-				JEditorPane ep = new JEditorPane("text/html", nodeInfo);
-				buildJEditorPane(ep);
+				JEditorPane editorPane = new JEditorPane("text/html", nodeInfo);
+				buildJEditorPane(editorPane);
 				JOptionPane.showMessageDialog(view, 
 //						"You click on " + element.getId()
-						ep
+						editorPane
 						);
+				return;
 			}
 		}
 	}
+	
 	class InternalShortcutManager extends DefaultShortcutManager {
 		public InternalShortcutManager(Viewer viewer) {
 		}
