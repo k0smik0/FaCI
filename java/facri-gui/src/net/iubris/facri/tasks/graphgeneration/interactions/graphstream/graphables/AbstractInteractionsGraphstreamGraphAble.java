@@ -1,6 +1,6 @@
 package net.iubris.facri.tasks.graphgeneration.interactions.graphstream.graphables;
 
-import net.iubris.facri.graph.generators.graphstream.GraphstreamInteractionsGraphGenerator;
+import net.iubris.facri.grapher.generators.interactions.graphstream.GraphstreamInteractionsGraphGenerator;
 import net.iubris.ishtaran.task.phasable.AbstractPhasable;
 
 import org.graphstream.graph.Graph;

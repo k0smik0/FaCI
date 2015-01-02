@@ -7,5 +7,5 @@ classpath=$(echo $classpath_to_build| sed 's/ /:/g' | sed 's/:$//'):bin
 
 #opengl="-Dsun.java2d.opengl=True"
 #echo \
-java $opengl -classpath ${classpath} net.iubris.facri.main.TestConsoleMain $@
+java $opengl -classpath ${classpath} net.iubris.facri.main.ConsoleMain $@
 
