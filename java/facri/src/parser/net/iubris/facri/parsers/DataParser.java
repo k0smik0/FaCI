@@ -35,7 +35,7 @@ private boolean parsed = false;
 			egoDataParser.parse();
 			friendsDataParser.parse();
 			parsed = true;
-			world.isParsingDone(true);
+			world.setParsingDone(true);
 		}
 	}
 	

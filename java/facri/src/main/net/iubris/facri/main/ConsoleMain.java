@@ -2,7 +2,7 @@ package net.iubris.facri.main;
 
 import java.io.Console;
 
-import net.iubris.facri._di.guice.module.parser.FacriParserModule;
+import net.iubris.facri._di.guice.module.main.FacriModule;
 import net.iubris.heimdall.InteractiveConsole;
 
 import com.google.inject.Guice;
@@ -18,10 +18,11 @@ public class ConsoleMain {
 		Console console = System.console();
 		if (console != null) {
 //			new HelpAction().exec(console, TITLE);
-			
-			injector = Guice.createInjector( new FacriParserModule() );
+			console.printf("loading...");
+			injector = Guice.createInjector( new FacriModule() );
 			
 			InteractiveConsole interactiveConsole = injector.getInstance(InteractiveConsole.class);
+			console.printf(" done\n");
 			interactiveConsole.execCommandLoop(console);
 		}
 		else {

@@ -4,4 +4,5 @@ import org.graphstream.graph.Graph;
 
 public interface GraphstreamGraphGenerator extends GraphGenerator {
 	Graph getGraph();
+	void doneGraphGeneration();
 }

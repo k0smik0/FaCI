@@ -69,10 +69,13 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 	private final String myfriendToMeEdgeUiClass = "myfriendtome";
 	private final String myfriendWithMutualFriendEdgeUiClass = "myfriendwithmutualfriend";
 	private final String friendofmyfriendWithmyfriendEdgeUiClass = "friendofmyfriendwithmyfriend";
+
+	private final GraphsHolder graphsHolder;
 	
 
 	@Inject
 	public GraphstreamInteractionsGraphGenerator(World world, GraphsHolder graphHolder) {
+		this.graphsHolder = graphHolder;
 		this.graph = 
 //				new MultiGraph("Interactions",false,true);
 				graphHolder.getInteractionsGraph();
@@ -119,13 +122,13 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 		return graph;
 	}
 	
-	public void reparseGraphCSS() {
-		
-		graph.setAttribute("ui.stylesheet", "");
-		graph.setAttribute("ui.stylesheet", "url('interactions.css')");
-//		Viewer viewer = graph.display();
-//		viewer.enableAutoLayout();
-	}
+//	public void reparseGraphCSS() {
+//		
+//		graph.setAttribute("ui.stylesheet", "");
+//		graph.setAttribute("ui.stylesheet", "url('interactions.css')");
+////		Viewer viewer = graph.display();
+////		viewer.enableAutoLayout();
+//	}
 	
 	public Node getEgoNode() {
 		return egoNode;
@@ -406,11 +409,12 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 		createdEdge.setAttribute("ui.class", uiClass);
 //		createdEdge.setAttribute("ui.arrow-size", weight);
 //		float color = Math.abs(weight*1);
-		createdEdge.setAttribute("ui.color", normalizedWeight);
-//		float size = Math.abs(weight);
-//		System.out.print(size+" ");
-		// the higher weight, the longer and larger, so we complement
-		createdEdge.setAttribute("ui.size", /*2**/(1-normalizedWeight));
+		
+	// the higher weight, the longer/larger/coloured, so we complement
+		float complementarWeight = 1-normalizedWeight;
+		createdEdge.setAttribute("ui.color", complementarWeight);
+		createdEdge.setAttribute("ui.size", /*2**/complementarWeight);
+		createdEdge.setAttribute("interactions", complementarWeight);
 //		createdEdge.setAttribute("ui.arrow-size", normalizedWeight);
 //		System.out.print(createdEdge.getId()+" ");
 		
@@ -469,7 +473,8 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 //		long checkMemoryPre = Memory.checkMemory();
 		friendOfFriendNodeMap.clear();
 		friendsOfFriendsWithFriendsEdgesTable.clear();
-		long checkMemoryAfter = Memory.checkMemory();
+//		long checkMemoryAfter = 
+				Memory.checkMemory();
 //		System.out.println("released: "+(checkMemoryPre-checkMemoryAfter)+"Mb");
 	}
 	
@@ -478,7 +483,8 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 		myFriendsNodesMap.clear();
 		myFriendsToMutualFriendsEdgesTable.clear();
 		myFriendsWithMeEdgesAndViceversaTable.clear();
-		long checkMemoryAfter = Memory.checkMemory();
+//		long checkMemoryAfter = 
+				Memory.checkMemory();
 //		System.out.println("released: "+(checkMemoryPre-checkMemoryAfter)+"Mb");
 	}
 	
@@ -486,10 +492,16 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 		garbageUselessFriends();
 		garbageUselessFriendsOfFriends();
 
-		long checkMemoryPre = Memory.checkMemory();
+//		long checkMemoryPre = 
+				Memory.checkMemory();
 		graphNodesCount=0;
 		graphEdgesCount=0;
-		long checkMemoryAfter = Memory.checkMemory();
+//		long checkMemoryAfter = Memory.checkMemory();
 //		System.out.println("released: "+(checkMemoryAfter-checkMemoryPre)+"Mb");
+	}
+	
+	@Override
+	public void doneGraphGeneration() {
+		graphsHolder.setInteractionsGraphsCreated(true);
 	}
 }

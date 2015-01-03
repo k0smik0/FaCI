@@ -43,7 +43,8 @@ public class GraphsHolder {
 //	private ViewerPipe fromViewerInteractions;
 	private final World world;
 	private final DataParser dataParser;
-	
+	private boolean interactionsGraphCreated = false;
+	private boolean friendshipsGraphCreated = false;
 	
 	/*private class NodeViewerListener implements ViewerListener {
 		private final Graph graph;
@@ -90,6 +91,23 @@ public class GraphsHolder {
 			e.printStackTrace();
 		}
 //		System.out.print("\n");
+	}
+	
+	public World getWorld() {
+		return world;
+	}
+	
+	public void reparseCSS() {
+		if (friendshipsGraph!=null) {
+			friendshipsGraph.setAttribute("ui.stylesheet", "");
+			friendshipsGraph.setAttribute("ui.stylesheet", "url('friendships.css')");
+//			Viewer viewer = graph.display();
+//			viewer.enableAutoLayout();
+		}
+		if (interactionsGraph!=null) {
+			interactionsGraph.setAttribute("ui.stylesheet", "");
+			interactionsGraph.setAttribute("ui.stylesheet", "url('interactions.css')");
+		}
 	}
 	
 	private Viewer prepareForDisplay(Graph graph) {
@@ -179,7 +197,6 @@ public class GraphsHolder {
 		
 //		@Override
 //		public void mouseEntered(MouseEvent event) {
-//			// TODO Auto-generated method stub
 //			super.mouseEntered(event);
 ////			camera.setViewPercent(zoom);
 //		}
@@ -190,7 +207,7 @@ public class GraphsHolder {
 			super.mouseButtonPressOnElement(element, event);
  
 			// clicked node with ctrl+shift+alt+meta
-			if (event.getButton()==1 && event.isControlDown() && event.isAltDown() && event.isShiftDown() && event.isMetaDown() && element instanceof GraphicNode) {
+			if (event.getButton()==1 && event.isControlDown() && event.isAltDown() && event.isShiftDown() /*&& event.isMetaDown()*/ && element instanceof GraphicNode) {
 //				element.addAttribute("ui.label",element.getId());
 //				element.addAttribute("ui.class","marked");
 //				System.out.println("button 1");
@@ -241,12 +258,24 @@ public class GraphsHolder {
 		}
 	}
 	
-	
-	
-	public void hideInteractionsGraph() {
-		interactionsGraphViewer.getDefaultView().setVisible(false);
-//		interactionsGraph.
+
+	public void setInteractionsGraphsCreated(boolean isCreated) {
+		interactionsGraphCreated = isCreated;
 	}
+	public boolean isInteractionsGraphsCreated() {
+		return interactionsGraphCreated;
+	}
+	public void setFriendshipsGraphsCreated(boolean isCreated) {
+		friendshipsGraphCreated = isCreated;
+	}
+	public boolean isFriendshipsGraphCreated() {
+		return friendshipsGraphCreated;
+	}
+	
+//	public void hideInteractionsGraph() {
+//		interactionsGraphViewer.getDefaultView().setVisible(false);
+////		interactionsGraph.
+//	}
 
 	public Graph getInteractionsGraph() {
 		return interactionsGraph;

@@ -14,12 +14,20 @@ node {
 	 
 }
 node.marked {
-	stroke-width: 3px;
+	stroke-width: 1px;
 }
 node.selected {
 	text-visibility-mode:normal;
 	text-mode:normal;
 	text-size:50px;
+}
+node.giantcomponent {
+	stroke-width: 1px;
+	stroke-color: red;
+}
+node.maxclique {
+	stroke-width: 1px;
+	stroke-color: blue;
 }
 /*
 node.nottexted {

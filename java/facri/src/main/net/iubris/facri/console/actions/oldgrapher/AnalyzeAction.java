@@ -1,4 +1,4 @@
-package net.iubris.facri.console.actions;
+package net.iubris.facri.console.actions.oldgrapher;
 
 import java.io.Console;
 import java.io.File;

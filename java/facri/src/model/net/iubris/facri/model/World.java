@@ -29,7 +29,7 @@ public class World implements Serializable {
 	
 	private Ego myUser;
 
-	private boolean parsingDone;
+	private boolean parsingDone = false;
 	
 	public Ego getMyUser() {
 		return myUser;
@@ -134,6 +134,13 @@ public class World implements Serializable {
 		return interactionsRange;
 	}
 	
+	public void setParsingDone(boolean parsingDone) {
+		this.parsingDone = parsingDone;
+	}
+	public boolean isParsingDone() {
+		return parsingDone;
+	};
+	
 	public void testData() {
 		BiConsumer<String, User> friendConsumer = new BiConsumer<String, User>() {
 			@Override
@@ -158,11 +165,4 @@ public class World implements Serializable {
 		getOtherUsersMap()
 			.forEach( friendConsumer );
 	}
-	
-	public void isParsingDone(boolean parsingDone) {
-		this.parsingDone = parsingDone;
-	}
-	public boolean isParsingDone() {
-		return parsingDone;
-	};
 }

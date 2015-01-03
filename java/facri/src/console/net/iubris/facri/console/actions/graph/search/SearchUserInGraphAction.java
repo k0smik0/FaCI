@@ -14,39 +14,58 @@ public class SearchUserInGraphAction implements CommandAction {
 	
 	private final GraphsHolder graphHolder;
 	private final World world;
+	
+	private static String WRONG = "wrong arguments";
 
 	@Inject
-	public SearchUserInGraphAction(GraphsHolder graphHolder, World world) {
-		this.graphHolder = graphHolder;
+	public SearchUserInGraphAction(GraphsHolder graphsHolder, World world) {
+		this.graphHolder = graphsHolder;
 		this.world = world;
 	}
 
 	@Override
 	public void exec(Console console, String... params) throws Exception {
-		// TODO Auto-generated method stub
-		if (params==null || (params!=null && params.length<1)) {
-			console.printf("wrong arguments");
-			return;
+		if (params==null || (params.length<1)) {
+			console.printf(WRONG);
+		} else {
+			try {
+				SearchArg cmd = SearchArg.valueOf(params[0]);
+				switch (cmd) {
+				case uid:
+					if (notEnoughArgs(params, console)) break;
+					String userId = params[1];
+					doWhenUserFound(world.searchUserById(userId).get());
+					break;
+				case name:
+					if (notEnoughArgs(params, console)) break;
+					String name = params[1];
+					doWhenUserFound(world.searchUserByName(name).get());
+					break;
+				case me:
+					doWhenUserFound(world.searchMe());
+					break;
+				// default:
+				// System.out.println( SearchUserInGraphCommand.S.getHelpMessage() );
+				}
+			} catch(IllegalArgumentException e) {
+				System.out.println( SearchUserInGraphCommand.S.getHelpMessage() );
+			}
 		}
-		
-		String cmd = params[0];
-		switch (cmd) {
-		case "uid":
-			String userId = params[1];
-			doWhenUserFound( world.searchUserById(userId).get() );
-			break;
-		case "name":
-			String name = params[1];
-			doWhenUserFound( world.searchUserByName(name).get() );
-			break;
-		case "me":
-			doWhenUserFound( world.searchMe() );
-			break;
-		default:
-			System.out.println( SearchUserInGraphCommand.S.getHelpMessage() );
-		}
-
 //		100004559771088
+	}
+	
+	enum SearchArg {
+		uid,
+		name,
+		me;
+	}
+	
+	private boolean notEnoughArgs(String[] params, Console console) {
+		if (params.length < 2) {
+			console.printf(WRONG);
+			return true;
+		}
+		return false;
 	}
 	
 	private void doWhenUserFound(User user) {
@@ -65,8 +84,10 @@ public class SearchUserInGraphAction implements CommandAction {
 		}
 	}*/
 	private void markUser(String userId) {
-		graphHolder.getFriendshipsGraph().getNode(userId).setAttribute("ui.class","marked");
-		graphHolder.getInteractionsGraph().getNode(userId).setAttribute("ui.class","marked");
+		if (graphHolder.isFriendshipsGraphCreated())
+			graphHolder.getFriendshipsGraph().getNode(userId).setAttribute("ui.class","marked");
+		if (graphHolder.isInteractionsGraphsCreated())
+			graphHolder.getInteractionsGraph().getNode(userId).setAttribute("ui.class","marked");
 	}
 	
 	public enum SearchUserInGraphCommand implements ConsoleCommand {

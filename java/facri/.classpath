@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="net/iubris/facri/console/actions/AnalyzeAction.java|net/iubris/facri/console/actions/Analyzer.java|net/iubris/facri/main/Main.java" kind="src" path="src/main"/>
+	<classpathentry excluding="net/iubris/facri/console/actions/AnalyzeAction.java|net/iubris/facri/console/actions/Analyzer.java|net/iubris/facri/main/Main.java|net/iubris/facri/console/actions/oldgrapher/AnalyzeAction.java|net/iubris/facri/console/actions/oldgrapher/Analyzer.java" kind="src" path="src/main"/>
 	<classpathentry kind="src" path="src/console"/>
+	<classpathentry excluding="net/iubris/facri/grapher/analyzer/graphstream/FunctionalAnalyzer.java|net/iubris/facri/grapher/analyzer/graphstream/Printer.java" kind="src" path="src/analyzer"/>
 	<classpathentry excluding="net/iubris/facri/grapher/generators/graphstream/GraphstreamGeneratorsHolder.java|net/iubris/facri/grapher/generators/interactions/graphstream/GraphstreamGeneratorsHolder.java" kind="src" path="src/grapher"/>
 	<classpathentry kind="src" path="src/parser"/>
 	<classpathentry excluding="net/iubris/facri/model/graph/BlockingViewerPipe.java" kind="src" path="src/model"/>
