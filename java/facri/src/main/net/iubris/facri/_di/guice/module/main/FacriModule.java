@@ -1,6 +1,7 @@
 package net.iubris.facri._di.guice.module.main;
 
 import net.iubris.facri._di.guice.module.console.InteractiveConsoleModule;
+import net.iubris.facri._di.guice.module.grapher.graphgenerators.graphstream.GraphstreamModule;
 import net.iubris.facri._di.guice.module.parser.FacriParserModule;
 
 import com.google.inject.AbstractModule;
@@ -12,6 +13,8 @@ public class FacriModule extends AbstractModule {
 		install( new FacriParserModule());
 		
 		install( new InteractiveConsoleModule());
+		
+		install( new GraphstreamModule() );
 	}
 
 }

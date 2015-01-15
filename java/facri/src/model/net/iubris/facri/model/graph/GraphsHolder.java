@@ -18,8 +18,8 @@ import javax.swing.event.HyperlinkListener;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
-import net.iubris.facri.model.World;
 import net.iubris.facri.model.users.Ego;
+import net.iubris.facri.model.world.World;
 import net.iubris.facri.parsers.DataParser;
 
 import org.graphstream.graph.Graph;
@@ -262,7 +262,7 @@ public class GraphsHolder {
 	public void setInteractionsGraphsCreated(boolean isCreated) {
 		interactionsGraphCreated = isCreated;
 	}
-	public boolean isInteractionsGraphsCreated() {
+	public boolean isInteractionsGraphCreated() {
 		return interactionsGraphCreated;
 	}
 	public void setFriendshipsGraphsCreated(boolean isCreated) {

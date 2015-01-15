@@ -1,6 +1,10 @@
 package net.iubris.facri.grapher.analyzer.graphstream;
 
+import grph.Grph;
+import grph.io.ParseException;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
@@ -10,12 +14,16 @@ import org.graphstream.algorithm.ConnectedComponents;
 import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.xml.sax.SAXException;
+
+import toools.set.IntSet;
 
 public class GraphstreamAnalyzer {
 	
 	private final Graph graph;
 	private final Node egoNode;
 	private Node firstNodeWithMaximumDegreeExceptEgo;
+	private int intsetCounter;
 	
 //	@Inj
 	public GraphstreamAnalyzer(Graph graph, Node egoNode) {
@@ -24,8 +32,8 @@ public class GraphstreamAnalyzer {
 	}
 	
 	public void clusteringCoefficient() {
-		double[] clusteringCoefficients = Toolkit.clusteringCoefficients(graph);
 		System.out.print("Clustering coefficients:\n\t");
+		double[] clusteringCoefficients = Toolkit.clusteringCoefficients(graph);
 		for (double cc: clusteringCoefficients) {
 			System.out.print(cc+" ");
 		}
@@ -33,8 +41,8 @@ public class GraphstreamAnalyzer {
 	}
 	
 	public void degree() {
-		int[] degreeDistribution = Toolkit.degreeDistribution(graph);
 		System.out.print("Degree distribution:\n\t");
+		int[] degreeDistribution = Toolkit.degreeDistribution(graph);
 		for (int d: degreeDistribution) {
 			System.out.print(d+" ");
 		}
@@ -42,8 +50,8 @@ public class GraphstreamAnalyzer {
 //				degreeDistribution, false);
 		System.out.println("");
 		
-		ArrayList<Node> degreeMap = Toolkit.degreeMap(graph);
 		System.out.println("Nodes degree list:");
+		ArrayList<Node> degreeMap = Toolkit.degreeMap(graph);
 		degreeMap.stream().forEach( n->System.out.println("\t"+n.getId()+": "+n.getDegree()) );
 		firstNodeWithMaximumDegreeExceptEgo = degreeMap.get(1);
 		
@@ -51,24 +59,28 @@ public class GraphstreamAnalyzer {
 	}
 	
 	public void density() {
+		System.out.print("Density: ");
 		double density = Toolkit.density(graph);
-		System.out.println("Density: "+density+"\n");
+		System.out.println(density+"\n");
 	}
 	
 	public void diameter(String weightAttributeName, boolean directed) {
+		System.out.print("Diameter: ");
 		double diameter = Toolkit.diameter(graph, weightAttributeName, directed);
-		System.out.println("Diameter: "+diameter+"\n");
+		System.out.println(diameter+"\n");
 	}
 	
 	public void cliques() {
+		System.out.print("Maximal Cliques: ");
 		Iterable<List<Node>> maximalCliques = Toolkit.getMaximalCliques(graph);
-		final List<Node> maximumClique = new ArrayList<Node>(0);
 		
+		final List<Node> maximumClique = new ArrayList<Node>(0);
 		//naive
 		/*for (List<Node> clique : maximalCliques)
 			if (clique.size() > tempMaximumClique.size())
 				tempMaximumClique = clique;*/
 		
+		System.out.print("Maximum Clique: ");
 		Spliterator<List<Node>> maximalCliquesSpliterator = maximalCliques.spliterator();
 		StreamSupport.stream(maximalCliquesSpliterator, true).parallel()
 		.forEach( new Consumer<List<Node>>() {
@@ -80,7 +92,7 @@ public class GraphstreamAnalyzer {
 				}
 			}
 		});
-		System.out.print("Maximum Clique: "+maximumClique.size()+" nodes\n\t");
+		System.out.print(maximumClique.size()+" nodes\n\t");
 		maximumClique.forEach( new Consumer<Node>() {
 			@Override
 			public void accept(Node t) {
@@ -89,6 +101,20 @@ public class GraphstreamAnalyzer {
 			}
 		});
 		System.out.println("");
+	}
+	
+	public void cliquer() throws ParseException, SAXException {
+		Grph fromGraphML = Grph.fromGraphML("graphmls/836460098_-_interactions_graph_-_me_with_friends.graphml");
+		System.out.print("Cliques (cliquer): ");
+		intsetCounter=0;
+		Collection<IntSet> cliques = fromGraphML.getCliques();
+		System.out.println( cliques.size() );
+		cliques.stream().forEach( is-> {
+			System.out.println("\t"+(++intsetCounter)+": ");
+			System.out.println("\t\tgreatest: "+is.getGreatest() );
+			System.out.println("\t\tdensity: "+is.getDensity() );
+			is.forEach(ic->{ System.out.println("\t\t\t"+ic.index+": "+ic.value); });
+		});
 	}
 
 	public void connected() {
@@ -118,6 +144,12 @@ public class GraphstreamAnalyzer {
 	
 	public void graphicalAnalysis() {
 		cliques();
+		try {
+			cliquer();
+		} catch (ParseException | SAXException e) {
+			e.printStackTrace();
+			return;
+		}
 		connected();
 	}
 	

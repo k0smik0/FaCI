@@ -5,11 +5,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
 
-import com.googlecode.jcsv.annotations.internal.ValueProcessorProvider;
-import com.googlecode.jcsv.reader.CSVEntryParser;
-import com.googlecode.jcsv.reader.CSVReader;
-import com.googlecode.jcsv.reader.internal.AnnotationEntryParser;
-import com.googlecode.jcsv.reader.internal.CSVReaderBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 
 public class UserCSVParserJCSV<T> {
 	

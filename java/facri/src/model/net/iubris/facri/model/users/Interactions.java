@@ -4,8 +4,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.sleepycat.persist.model.Persistent;
+
 import net.iubris.facri.model.posts.Post;
 
+@Persistent
 public class Interactions implements Serializable {
 
 	private static final long serialVersionUID = -2972638634494988995L;

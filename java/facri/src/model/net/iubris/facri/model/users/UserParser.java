@@ -10,7 +10,6 @@ import java.util.function.Consumer;
 
 import net.iubris.facri.model.users.AbstractUser.Sex;
 
-import com.googlecode.jcsv.annotations.ValueProcessor;
 import com.opencsv.CSVReader;
 
 public class UserParser<T extends User> {
@@ -128,7 +127,8 @@ public class UserParser<T extends User> {
 		return sex;
 	}
 	
-	static public class SexProcessor implements ValueProcessor<Sex> {
+	// jcsv
+	/*static public class SexProcessor implements ValueProcessor<Sex> {
       @Override
       public Sex processValue(String value) {
       	System.out.println(value);
@@ -149,5 +149,5 @@ public class UserParser<T extends User> {
 				return null;
 			}        
       }
-	}
+	}*/
 }

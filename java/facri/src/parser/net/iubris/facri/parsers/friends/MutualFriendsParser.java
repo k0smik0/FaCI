@@ -14,8 +14,8 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.iubris.facri.model.World;
 import net.iubris.facri.model.users.FriendOrAlike;
+import net.iubris.facri.model.world.World;
 import net.iubris.facri.parsers.Parser;
 
 public class MutualFriendsParser implements Parser {

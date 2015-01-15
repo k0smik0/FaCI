@@ -5,8 +5,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.googlecode.jcsv.annotations.MapToColumn;
+import com.sleepycat.persist.model.Entity;
 
+@Entity
 public class FriendOrAlike extends AbstractUser {
 
 	private static final long serialVersionUID = 6593382542268675220L;
@@ -45,7 +46,7 @@ public class FriendOrAlike extends AbstractUser {
 	}
 	
 	
-	@MapToColumn(column=3,type=Integer.class)
+//	@MapToColumn(column=3,type=Integer.class)
 	private int mutualFriendsCount;
 	
 	public void setMutualFriendsCount(int mutualFriendsCount) {
@@ -57,7 +58,7 @@ public class FriendOrAlike extends AbstractUser {
 	
 	@Override
 	public String toString() {
-		return "---"+super.toString()
+		return "---\n"+super.toString()
 				+"\nfriends count: "+friendsCount
 				+"\nmutual friends count: "+mutualFriendsCount+"|"+mutualFriends.size()
 				+"\n---";

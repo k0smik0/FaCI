@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
-import net.iubris.facri.model.World;
+import net.iubris.facri.model.world.World;
 import net.iubris.facri.parsers.ego.EgoDataParser;
 import net.iubris.facri.parsers.friends.FriendsDataParser;
 

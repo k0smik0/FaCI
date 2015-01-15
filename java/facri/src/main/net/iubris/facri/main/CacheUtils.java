@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 
 import javax.inject.Inject;
 
-import net.iubris.facri.model.World;
+import net.iubris.facri.model.world.World;
 
 public class CacheUtils {
 	
@@ -25,8 +25,8 @@ public class CacheUtils {
 		ObjectInputStream ois = new ObjectInputStream( new FileInputStream(cacheFilenameToRead) );
 		World worldFromcache = (World) ois.readObject();
 		world.setMyUser(worldFromcache.getMyUser());
-		world.setMyFriendsMap(worldFromcache.getMyFriendsMap());
-		world.setOtherUsersMap(worldFromcache.getOtherUsersMap());
+		world.populateMyFriendsMap(worldFromcache.getMyFriendsMap());
+		world.populateOtherUsersMap(worldFromcache.getOtherUsersMap());
 		worldFromcache = null;
 		ois.close();
 	}

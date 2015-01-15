@@ -53,14 +53,14 @@ public class AnalyzeAction implements CommandAction {
 					friendshipsGraphstreamAnalyzer.graphicalAnalysis();
 					break;
 				case i:
-					if (!graphsHolder.isInteractionsGraphsCreated()) {
+					if (!graphsHolder.isInteractionsGraphCreated()) {
 						console.printf("graph not existant; create it first using 'g'\n");
 						break;
 					}
 					graph = graphsHolder.getInteractionsGraph();
 					Node egoNodeInInteractions = graph.getNode(meUid);
 					GraphstreamAnalyzer interactionsGraphstreamAnalyzer = new GraphstreamAnalyzer( graphsHolder.getInteractionsGraph(), egoNodeInInteractions );
-					interactionsGraphstreamAnalyzer.numericalAnalysis(true,"interactions");
+//					interactionsGraphstreamAnalyzer.numericalAnalysis(true,"interactions");
 					interactionsGraphstreamAnalyzer.graphicalAnalysis();
 					
 					Camera camera = graphsHolder.getInteractionsGraphViewer().getDefaultView().getCamera();

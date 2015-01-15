@@ -10,6 +10,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import net.iubris.facri.model.adapters.DateAdapter;
 
+import com.sleepycat.persist.model.Persistent;
+
+@Persistent
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Comment implements Serializable {
 

@@ -1,12 +1,14 @@
 package net.iubris.facri.console.actions.graph.search;
 
 import java.io.Console;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
-import net.iubris.facri.model.World;
 import net.iubris.facri.model.graph.GraphsHolder;
+import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.User;
+import net.iubris.facri.model.world.World;
 import net.iubris.heimdall.actions.CommandAction;
 import net.iubris.heimdall.command.ConsoleCommand;
 
@@ -31,18 +33,44 @@ public class SearchUserInGraphAction implements CommandAction {
 			try {
 				SearchArg cmd = SearchArg.valueOf(params[0]);
 				switch (cmd) {
-				case uid:
+				case u:
 					if (notEnoughArgs(params, console)) break;
 					String userId = params[1];
-					doWhenUserFound(world.searchUserById(userId).get());
+					
+					Optional<FriendOrAlike> user = world.searchUserById(userId);
+					if (user.isPresent())
+						doWhenUserFound( user.get() );
+					else
+						System.out.println("no user found");
+					
+//					doWithOptional(user);
+					
+//					world.searchUserById(userId)
+//					.map(u->doWhenUserFound(u))
+//					.orElse(Optional.empty());
 					break;
-				case name:
+				case n:
 					if (notEnoughArgs(params, console)) break;
-					String name = params[1];
-					doWhenUserFound(world.searchUserByName(name).get());
+					
+					String fullName = "";
+					for (int i=1; i<params.length;i++) {
+						fullName += params[i]+" "; 
+					}
+					int lastIndexOf = fullName.lastIndexOf(" ");
+					fullName = fullName.subSequence(0, lastIndexOf).toString();
+
+//					world.searchUserByName(fullName)
+//					.map( m->doWhenUserFound(m) );
+					
+					Optional<FriendOrAlike> friendOrAlikeByName = world.searchUserByName(fullName);
+					if (friendOrAlikeByName.isPresent())
+						doWhenUserFound( friendOrAlikeByName.get() );
+					else
+						System.out.println("no user found");
+
 					break;
-				case me:
-					doWhenUserFound(world.searchMe());
+				case m:
+					doWhenUserFound( world.searchMe() );
 					break;
 				// default:
 				// System.out.println( SearchUserInGraphCommand.S.getHelpMessage() );
@@ -55,9 +83,9 @@ public class SearchUserInGraphAction implements CommandAction {
 	}
 	
 	enum SearchArg {
-		uid,
-		name,
-		me;
+		u,
+		n,
+		m;
 	}
 	
 	private boolean notEnoughArgs(String[] params, Console console) {
@@ -68,10 +96,19 @@ public class SearchUserInGraphAction implements CommandAction {
 		return false;
 	}
 	
-	private void doWhenUserFound(User user) {
+	/*private void doWithOptional(Optional<User> optionalUser) {
+		if (optionalUser.isPresent())
+			doWhenUserFound( optionalUser.get() );
+		else
+			System.out.println("no user found");
+	}*/
+	
+	private Optional<User> doWhenUserFound(User user) {
 //		markUser( graphHolder.getInteractionsGraph(), user.getUid() );
 		markUser( user.getUid() );
 		System.out.println( user );
+		
+		return Optional.empty();
 	}
 	
 	/*private void markUser(Graph graph, String userId) {
@@ -86,15 +123,16 @@ public class SearchUserInGraphAction implements CommandAction {
 	private void markUser(String userId) {
 		if (graphHolder.isFriendshipsGraphCreated())
 			graphHolder.getFriendshipsGraph().getNode(userId).setAttribute("ui.class","marked");
-		if (graphHolder.isInteractionsGraphsCreated())
+		if (graphHolder.isInteractionsGraphCreated())
 			graphHolder.getInteractionsGraph().getNode(userId).setAttribute("ui.class","marked");
 	}
 	
 	public enum SearchUserInGraphCommand implements ConsoleCommand {
 		S;
+		private final String helpMessage = "search [m] | [u <user_id>] | [n <user_full_name>]\n\t\t[m = me; u = uid; n = name]";
 		@Override
 		public String getHelpMessage() {
-			return "search [me] | [uid <user_id>] | [name <user_full_name>] ";
+			return helpMessage;
 		}
 	}
 

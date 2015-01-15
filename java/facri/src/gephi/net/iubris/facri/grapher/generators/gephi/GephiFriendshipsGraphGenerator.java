@@ -10,9 +10,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Inject;
 
 import net.iubris.facri.grapher.generators.friendships.FriendshipsGraphGenerator;
-import net.iubris.facri.model.World;
 import net.iubris.facri.model.users.Ego;
 import net.iubris.facri.model.users.FriendOrAlike;
+import net.iubris.facri.model.world.World;
 
 import org.gephi.graph.api.Edge;
 import org.gephi.graph.api.GraphFactory;

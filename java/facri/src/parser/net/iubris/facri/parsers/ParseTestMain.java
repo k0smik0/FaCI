@@ -10,6 +10,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import net.iubris.facri._di.guice.module.parser.FacriParserModule;
+import net.iubris.facri.model.world.World;
 import net.iubris.facri.parsers.DataParser;
 
 public class ParseTestMain {
@@ -23,6 +24,8 @@ public class ParseTestMain {
 
 	private void parse() throws JAXBException, XMLStreamException, IOException {
 		dataParser.parse();
+		World world = dataParser.getResult();
+		world.testData();
 	}
 
 

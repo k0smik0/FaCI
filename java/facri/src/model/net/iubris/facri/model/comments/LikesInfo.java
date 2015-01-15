@@ -9,9 +9,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.sleepycat.persist.model.Persistent;
+
 import net.iubris.facri.model.adapters.URLAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@Persistent
 public class LikesInfo implements Serializable {
 
 	private static final long serialVersionUID = 6999503471597138387L;

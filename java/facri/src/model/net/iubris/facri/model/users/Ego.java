@@ -4,6 +4,9 @@ import java.net.URL;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
+import com.sleepycat.persist.model.Entity;
+
+@Entity
 public class Ego extends AbstractUser {
 
 	private static final long serialVersionUID = -7587672566751011500L;
@@ -47,7 +50,7 @@ public class Ego extends AbstractUser {
 	
 	@Override
 	public String toString() {
-		return "---"+super.toString()
+		return "---\n"+super.toString()
 				+"\nfriends count: "+friendsCount+"|"+friends.size()
 				+"\n---";
 	}

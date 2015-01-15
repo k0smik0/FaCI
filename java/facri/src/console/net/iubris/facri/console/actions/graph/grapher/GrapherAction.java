@@ -7,10 +7,12 @@ import javax.inject.Inject;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
-import net.iubris.facri.console.actions.graph.utils.UseCache;
-import net.iubris.facri.console.actions.graph.utils.UseCache.UseCacheArguments;
+import net.iubris.facri._di.guice.grapher.factories.CacheHandlerFactory;
+import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor.GraphTypeCommand;
+import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor.WorldTypeCommand;
+import net.iubris.facri.console.actions.graph.utils.cache.CacheHandler;
+import net.iubris.facri.console.actions.graph.utils.cache.CacheHandler.UseCacheArguments;
 import net.iubris.facri.model.graph.GraphsHolder;
-import net.iubris.facri.parsers.DataParser;
 import net.iubris.heimdall.actions.CommandAction;
 import net.iubris.heimdall.actions.HelpAction;
 import net.iubris.heimdall.command.ConsoleCommand;
@@ -20,20 +22,23 @@ public class GrapherAction implements CommandAction {
 //	private final static String WRONG_ARGUMENTS_NUMBER = "analyzer needs two arguments; type 'h' for help\n";
 //	private final static String WRONG_ARGUMENT = "wrong arguments for analysis: type 'h' for help\n";
 	
-	private final DataParser dataParser;
-	private final GraphsHolder graphHolder;
-	private final GrapherExecutor grapher;
+//	private final DataParser dataParser;
+	private final GraphsHolder graphsHolder;
+	private final GrapherExecutor grapherExecutor;
+	private final CacheHandlerFactory useCacheFactory;
 
 	@Inject
 	public GrapherAction(
-			DataParser dataParser,
+//			DataParser dataParser,
 			// missing friendships generator
 			GraphsHolder graphHolder,
-			GrapherExecutor grapher
+			GrapherExecutor grapherExecutor
+			, CacheHandlerFactory useCacheFactory
 			) {
-		this.dataParser = dataParser;
-		this.graphHolder = graphHolder;
-		this.grapher = grapher;
+//		this.dataParser = dataParser;
+		this.graphsHolder = graphHolder;
+		this.grapherExecutor = grapherExecutor;
+		this.useCacheFactory = useCacheFactory;
 	}
 
 	@Override
@@ -44,31 +49,23 @@ public class GrapherAction implements CommandAction {
 				return;
 			}
 			
-//			UseCache useCache = null;
-//			if (params.length==3)
-//				useCache = UseCache.handleUseCache(params[2], dataParser);
-//			else {
-//				useCache = UseCache.noCache();
-//				dataParser.parse();
-//			}
 			
-			UseCache useCache = UseCache.handleUseCache(params, dataParser);
+//			UseCache useCache = UseCache.isUsingCache(params, dataParser);
+			CacheHandler useCache = useCacheFactory.create(params);
 			
 			try {
-				String worldTargetParam = params[0];
-				GrapherExecutor.GraphType worldTarget = Enum.valueOf(GrapherExecutor.GraphTypeCommand.class, worldTargetParam).getWorldTarget();
+				String graphTypeParam = params[0];
+				String worldTypeParam = params[1];
 				
-//				Graph graph = 
-						worldTarget.prepareGraph(graphHolder, useCache);
-
-				String graphTypeParam = params[1];
-				GrapherExecutor.WorldType graphType = Enum.valueOf(GrapherExecutor.WorldTypeCommand.class, graphTypeParam).getAnalysisType();
-//				graphType.setDependencies(grapher.getGraphgenerator(worldTarget), useCache, worldTarget.name());
-						
-				grapher.execute( worldTarget, graphType, useCache, worldTarget.name() );
-//				graphType.makeGraph();
+				grapherExecutor.execute(
+					// graph type
+					Enum.valueOf(GraphTypeCommand.class, graphTypeParam).getGraphType().prepareGraph(graphsHolder),
+					// world type
+					Enum.valueOf(WorldTypeCommand.class, worldTypeParam).getWorldType(),
+					useCache
+				);
 				
-			
+				fixCSS();
 			} catch(IllegalArgumentException e) {
 				console.printf(WRONG_ARGUMENT);
 			}
@@ -124,6 +121,15 @@ public class GrapherAction implements CommandAction {
 //		}
 	}
 	
+	private void fixCSS() {
+		if (graphsHolder.isFriendshipsGraphCreated()) {
+			graphsHolder.getFriendshipsGraph().setAttribute("ui.stylesheet", "url('friendships.css')");
+		}
+		if (graphsHolder.isInteractionsGraphCreated()) {
+			graphsHolder.getInteractionsGraph().setAttribute("ui.stylesheet", "url('interactions.css')");
+		}		
+	}
+
 	/*private UseCache handleUseCache(String[] params) throws JAXBException, XMLStreamException, IOException {
 		boolean cacheRead = false, cacheWrite = false;
 		// bad, but working

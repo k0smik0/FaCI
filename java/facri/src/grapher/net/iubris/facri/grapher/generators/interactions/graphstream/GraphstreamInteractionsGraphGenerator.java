@@ -14,12 +14,12 @@ import javax.inject.Singleton;
 import net.iubris.facri.grapher.generators.GraphstreamGraphGenerator;
 import net.iubris.facri.grapher.generators.interactions.InteractionsGraphGenerator;
 import net.iubris.facri.grapher.generators.interactions.InteractionsWeigths;
-import net.iubris.facri.model.World;
 import net.iubris.facri.model.graph.GraphsHolder;
 import net.iubris.facri.model.users.Ego;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.Interactions;
 import net.iubris.facri.model.users.User;
+import net.iubris.facri.model.world.World;
 import net.iubris.facri.utils.Memory;
 
 import org.graphstream.graph.Edge;

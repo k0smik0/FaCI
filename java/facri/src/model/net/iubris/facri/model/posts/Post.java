@@ -11,6 +11,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.sleepycat.persist.model.Persistent;
+
 import net.iubris.facri.model.adapters.DateAdapter;
 import net.iubris.facri.model.adapters.TypeAdapter;
 import net.iubris.facri.model.adapters.URLAdapter;
@@ -24,6 +26,7 @@ import net.iubris.facri.model.comments.LikesInfo;
  * {@link https://developers.facebook.com/docs/reference/fql/stream/}
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@Persistent
 public class Post implements Serializable {
 
 	private static final long serialVersionUID = -7310605935366057489L;

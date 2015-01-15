@@ -1,6 +1,8 @@
-package net.iubris.facri.model;
+package net.iubris.facri.model.world;
 
 import java.io.Serializable;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -10,12 +12,16 @@ import java.util.function.BiConsumer;
 
 import javax.inject.Singleton;
 
+import com.sleepycat.persist.model.Entity;
+
 import net.iubris.facri.grapher.generators.interactions.InteractionsWeigths;
+import net.iubris.facri.model.posts.Post;
 import net.iubris.facri.model.users.Ego;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.User;
 
 @Singleton
+@Entity
 public class World implements Serializable {
 
 	private static final long serialVersionUID = -7112902990753202438L;
@@ -38,14 +44,14 @@ public class World implements Serializable {
 		this.myUser = myUser;
 	}
 	
-	public void setMyFriendsMap(Map<String, FriendOrAlike> myFriendsMap) {
+	public void populateMyFriendsMap(Map<String, FriendOrAlike> myFriendsMap) {
 		this.myFriendsMap.putAll(myFriendsMap);
 	}
 	public Map<String, FriendOrAlike> getMyFriendsMap() {
 		return myFriendsMap;
 	}
 	
-	public void setOtherUsersMap(Map<String, FriendOrAlike> otherUsersMap) {
+	public void populateOtherUsersMap(Map<String, FriendOrAlike> otherUsersMap) {
 		this.otherUsersMap.putAll(otherUsersMap);
 	}
 	public Map<String, FriendOrAlike> getOtherUsersMap() {
@@ -97,7 +103,7 @@ public class World implements Serializable {
 		Optional<FriendOrAlike> friend = myFriendsMap.values().parallelStream().filter(f->f.getName().equals(name)).findFirst();
 		if (friend.isPresent())
 			return friend;
-		else
+		else 
 			return otherUsersMap.values().parallelStream().filter(f->f.getName().equals(name)).findFirst();
 	}
 	public Optional<FriendOrAlike> searchUserById(String uid) {
@@ -142,27 +148,85 @@ public class World implements Serializable {
 	};
 	
 	public void testData() {
-		BiConsumer<String, User> friendConsumer = new BiConsumer<String, User>() {
+		DataTester dataTester = new DataTester(this);
+		dataTester.test();
+	}
+	
+	
+}
+
+class DataTester {
+//	private int friendsCounter;
+//	private int friendsoffriendsCounter;
+	
+	private final World world;
+	
+	private int userCounter = 0;
+
+	private final Ego ego;
+	
+	DataTester(World world) {
+		this.world = world;
+		ego = world.getMyUser();
+	}
+	
+	public void test() {
+		System.out.println( ego.getUid()+":\n"
+				+"\tfriends: "+ego.getFriendsCount()+"|"+ego.getFriendsIds().size()
+				);
+		printSomeUserInformations(ego);
+		System.out.println("");
+		
+		world.getMyFriendsMap()
+			.forEach( friendoralikeConsumer );
+		System.out.println("");
+		
+//		resetCounter();
+//		world.getOtherUsersMap()
+//			.forEach( friendoralikeConsumer );
+	}
+	
+	void resetCounter() {
+		userCounter = 0;
+	}
+	
+	private final BiConsumer<String, FriendOrAlike> friendoralikeConsumer = new BiConsumer<String, FriendOrAlike>() {
+//		private int userCounter = 0;
+		@Override
+		public void accept(String t, FriendOrAlike foa) {
+//			if (foa.getMutualFriends().size() >0) {
+				String uid = foa.getUid();
+				System.out.println( "["+userCounter+"] "+uid+( ego.isMyFriendById(uid)? " (friend): ":" (friend of friend):") 
+					+"\n\tmutual friends: "+foa.getMutualFriends().size()
+					);
+				printSomeUserInformations(foa);
+				userCounter++;
+//			}
+		}
+	};
+	
+	private void printSomeUserInformations(User user) {
+		List<Post> posts = user.getOwnPosts();
+		Comparator<Post> postTimeComparator = new Comparator<Post>() {
 			@Override
-			public void accept(String t, User u) {
-				if (u instanceof FriendOrAlike) {
-					FriendOrAlike f = (FriendOrAlike) u;
-					if (f.getMutualFriends().size() >0)
-						System.out.println(u.getUid()+" "+u.getOwnPostsCount()+","+u.getUserInteractionsCount()+","+f.getMutualFriends().size());
-				}
+			public int compare(Post o1, Post o2) {
+				return (o1.getCreatedTime().compareTo(o2.getCreatedTime()));
 			}
 		};
-		
-		Ego ego = getMyUser();
-		System.out.println(ego.getUid()+" "+ego.getOwnPostsCount()+","
-				+ego.getUserInteractionsCount()+","+ego.getFriendsIds().size());
-		System.out.println("");
-
-		getMyFriendsMap()
-			.forEach( friendConsumer );
-		System.out.println("");
-		
-		getOtherUsersMap()
-			.forEach( friendConsumer );
+		Optional<Post> eagerPost = posts.stream().parallel().min(postTimeComparator);
+		Optional<Post> youngerPost = posts.stream().parallel().max(postTimeComparator);
+		System.out.println(
+				"\tposts: "+user.getOwnPostsCount()+"/"+posts.size()
+				);
+		System.out.print("\t\teager: ");
+				eagerPost.ifPresent(	 c->System.out.print(c.getCreatedTime()) );
+		System.out.print("\n\t\tyounger: ");
+				youngerPost.ifPresent(c->System.out.print(c.getCreatedTime()) );
+		System.out.println(
+				 "\n\t\treceived likes: "+user.getOwnLikedPostsCount()
+				+"\n\t\treshared: "+user.getOwnPostsResharingCount()
+				
+				+"\n\tinteractions: "+user.getUserInteractionsCount()
+				);
 	}
 }

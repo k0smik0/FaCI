@@ -9,8 +9,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.iubris.facri.model.posts.Post;
 
-import com.googlecode.jcsv.annotations.MapToColumn;
+import com.sleepycat.persist.model.Persistent;
+import com.sleepycat.persist.model.PrimaryKey;
 
+@Persistent
 public abstract class AbstractUser implements User,Serializable {
 
 	private static final long serialVersionUID = -1400614535955943141L;
@@ -18,27 +20,28 @@ public abstract class AbstractUser implements User,Serializable {
 	final private List<Post> ownPosts = new CopyOnWriteArrayList<>();
 	final private Map<String,Interactions> interactionsMap = new ConcurrentHashMap<>();
 	
-   @MapToColumn(column=0,type=String.class)
+//   @MapToColumn(column=0,type=String.class)
+   @PrimaryKey
 	protected String uid;
    
-   @MapToColumn(column=1,type=String.class)
+//   @MapToColumn(column=1,type=String.class)
 	protected String name;
    
-   @MapToColumn(column=2,type=Integer.class)
+//   @MapToColumn(column=2,type=Integer.class)
 	protected int friendsCount;
 	
 //	protected int mutualFriendsCount;
    
-	@MapToColumn(column=4,type=URL.class)
+//	@MapToColumn(column=4,type=URL.class)
 	protected URL picSmall;
    
-	@MapToColumn(column=5,type=URL.class)
+//	@MapToColumn(column=5,type=URL.class)
 	protected URL profileURL;
    
-	@MapToColumn(column=6,type=Sex.class)
+//	@MapToColumn(column=6,type=Sex.class)
 	protected Sex sex;
    
-	@MapToColumn(column=7,type=String.class)
+//	@MapToColumn(column=7,type=String.class)
 	protected String significantOtherId;
 
 	
