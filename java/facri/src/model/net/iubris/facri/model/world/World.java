@@ -2,7 +2,6 @@ package net.iubris.facri.model.world;
 
 import java.io.Serializable;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -12,13 +11,13 @@ import java.util.function.BiConsumer;
 
 import javax.inject.Singleton;
 
-import com.sleepycat.persist.model.Entity;
-
 import net.iubris.facri.grapher.generators.interactions.InteractionsWeigths;
 import net.iubris.facri.model.posts.Post;
 import net.iubris.facri.model.users.Ego;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.User;
+
+import com.sleepycat.persist.model.Entity;
 
 @Singleton
 @Entity
@@ -206,7 +205,7 @@ class DataTester {
 	};
 	
 	private void printSomeUserInformations(User user) {
-		List<Post> posts = user.getOwnPosts();
+		Set<Post> posts = user.getOwnPosts();
 		Comparator<Post> postTimeComparator = new Comparator<Post>() {
 			@Override
 			public int compare(Post o1, Post o2) {

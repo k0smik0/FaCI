@@ -44,13 +44,13 @@ public class UserParser<T extends User> {
 			String[] egoFields = csvRows.get(0);
 //			System.out.println(egoFields[2]);
 			Ego ego = new Ego(
-				egoFields[0], 
-				egoFields[1], 
-				getInt(egoFields[2]),
-				new URL( egoFields[4] ), 
-				new URL( egoFields[5] ), 
-				getSex( egoFields[6] ), 
-				egoFields[7] 
+				egoFields[0], // uid
+				egoFields[1], // name
+				getInt(egoFields[2]), // friendcount 
+				new URL( egoFields[4] ), // picsmall
+				new URL( egoFields[5] ), // profileurl
+				getSex( egoFields[6] ), // sex
+				egoFields[7] // significantotherid
 			);
 			ts.add((T) ego);
 		} else if (FriendOrAlike.class.isAssignableFrom(clazz)) { // FriendOrAlike
@@ -76,14 +76,14 @@ public class UserParser<T extends User> {
 					
 					try {
 						friendOrAlike = new FriendOrAlike(
-								csvRow[0],
-								csvRow[1],
-								getInt(csvRow[2]),
-								getInt(csvRow[3]),
-								new URL(csvRow[4]),
-								new URL(csvRow[5]),
-								getSex(csvRow[6]),
-								csvRow[7]
+								csvRow[0], // uid
+								csvRow[1], // name
+								getInt(csvRow[2]), // friendcount
+								getInt(csvRow[3]), // mutualfriendcount
+								new URL(csvRow[4]), // picsmall
+								new URL(csvRow[5]), // profileurl
+								getSex(csvRow[6]), // sex
+								csvRow[7] // significantotherid
 								);
 					} catch (NumberFormatException | MalformedURLException e) {
 						e.printStackTrace();

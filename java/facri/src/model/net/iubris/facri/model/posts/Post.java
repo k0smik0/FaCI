@@ -27,7 +27,7 @@ import net.iubris.facri.model.comments.LikesInfo;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @Persistent
-public class Post implements Serializable {
+public class Post implements Serializable, Comparable<Post> {
 
 	private static final long serialVersionUID = -7310605935366057489L;
 
@@ -210,5 +210,9 @@ public class Post implements Serializable {
 	public List<Comment> getComments() {
 		return comments;
 	}
-	
+
+	@Override
+	public int compareTo(Post post) {
+		return (post.getPostId().hashCode()>postId.hashCode()? 1: -1);
+	}	
 }

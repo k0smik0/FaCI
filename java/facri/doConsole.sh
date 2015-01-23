@@ -12,7 +12,7 @@ function getPath() {
 }
 
 function getGuice() {
-   echo $(find libs/guice libs/guava -iname *.jar |grep -v sisu)
+   echo $(find libs/guice libs/guava -iname *.jar |egrep -v "sisu|guice-3.0.jar|aopalliance")
 }
 
 function getHeimdall() {
@@ -43,15 +43,10 @@ function getOthers() {
    echo $(find libs -type f -iname *.jar | egrep -v "guice|guava")
 }
 
-#classpath_to_build=$(getGuice):$(getHeimdall):$(getBerkeleyPersister):$(getGrph):$(getGraphstream):$(getStaxon):$(getOpencsv)
-classpath_to_build=$(getGuice):$(getHeimdall):$(getGrph):$(getGraphstream):$(getStaxon):$(getOpencsv)
-#getHeimdall
-#classpath_to_build=$(find ../../../Heimdall/bin):$(find ../../../BerkeleyPersister/bin):$(find libs/guice libs/guava -type f -iname *jar):$(find libs -type f -iname *jar | egrep -v "guice|guava" | sort)
-#others=$(getJars libs | egrep -v "guice|guava|NO" | sort)
-#echo others $others
-#echo $classpath_to_build
+classpath_to_build=$(getGuice):$(getHeimdall):$(getBerkeleyPersister):$(getGrph):$(getGraphstream):$(getStaxon):$(getOpencsv)
+#classpath_to_build=$(getGuice):$(getHeimdall):$(getGrph):$(getGraphstream):$(getStaxon):$(getOpencsv)
 classpath=$(echo $classpath_to_build| sed 's/ /:/g' | sed 's/:$//'):bin
-echo $classpath
+#echo $classpath
 
 #opengl="-Dsun.java2d.opengl=True"
 #echo \

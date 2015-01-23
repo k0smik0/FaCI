@@ -17,7 +17,9 @@ import net.iubris.facri.parsers.Parser;
 
 public class MyFriendsParser implements Parser {
 	
-	private final Set<String> friendsIds = new ConcurrentSkipListSet<String>();
+	private final Set<String> friendsIds = 
+			new ConcurrentSkipListSet<String>();
+//			new CopyOnWriteArraySet<String>();
 	private final String friendsFileRelativePath;
 	private List<FriendOrAlike> friends;
 //	private final String friendsIdsFileRelativePath;

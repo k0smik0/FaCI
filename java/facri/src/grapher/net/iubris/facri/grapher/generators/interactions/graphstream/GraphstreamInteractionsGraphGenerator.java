@@ -6,84 +6,77 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import net.iubris.facri.grapher.generators.GraphstreamGraphGenerator;
+import net.iubris.facri.grapher.generators.AbstractGraphstreamGraphGenerator;
 import net.iubris.facri.grapher.generators.interactions.InteractionsGraphGenerator;
 import net.iubris.facri.grapher.generators.interactions.InteractionsWeigths;
 import net.iubris.facri.model.graph.GraphsHolder;
-import net.iubris.facri.model.users.Ego;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.Interactions;
 import net.iubris.facri.model.users.User;
 import net.iubris.facri.model.world.World;
-import net.iubris.facri.utils.Memory;
 
 import org.graphstream.graph.Edge;
-import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
-
 @Singleton
-public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphGenerator, GraphstreamGraphGenerator {
+public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGraphGenerator implements InteractionsGraphGenerator {
 	
-	private final World world;
-	
-	private final Map<String, FriendOrAlike> myFriendsFromWorldMap;
-	private final Map<String, Node> myFriendsNodesMap = new ConcurrentHashMap<>();
-	private final Table<String, String, Edge> myFriendsWithMeEdgesAndViceversaTable = HashBasedTable.create();
-	private final Table<String, String, Edge> myFriendsToMutualFriendsEdgesTable = HashBasedTable.create();
-
-	private final Map<String, FriendOrAlike> friendOfFriendFromWorldMap;
-	private final Map<String, Node> friendOfFriendNodeMap = new ConcurrentHashMap<>();
-	private final Table<String, String, Edge> friendsOfFriendsWithFriendsEdgesTable = HashBasedTable.create();
-	
-	private final Graph graph;
-
-	
-	private Ego ego;
-	private Node egoNode;
-	
+//	private final World world;
+//	
+//	private final Map<String, FriendOrAlike> myFriendsFromWorldMap;
+//	private final Map<String, Node> myFriendsNodesMap = new ConcurrentHashMap<>();
+//	private final Table<String, String, Edge> myFriendsWithMeEdgesAndViceversaTable = HashBasedTable.create();
+//	private final Table<String, String, Edge> myFriendsToMutualFriendsEdgesTable = HashBasedTable.create();
+//
+//	private final Map<String, FriendOrAlike> friendOfFriendFromWorldMap;
+//	private final Map<String, Node> friendOfFriendNodeMap = new ConcurrentHashMap<>();
+//	private final Table<String, String, Edge> friendsOfFriendsWithFriendsEdgesTable = HashBasedTable.create();
+//	
+//	private final Graph graph;
+//
+//	
+//	private Ego ego;
+//	private Node egoNode;
+//	
 	private int appreciationsMin;
 	private int appreciationsDenominator;
 	private int postsCountMin;
 	private int postsCountDenominator;
 	
-	private int graphNodesCount;
-	private int graphEdgesCount;
 	private int interactionsMin;
 	private int interactionsDenominator;
-	
-	private int graphSpeed = 3; //ms
-	
-	private final String egoNodeUiClass = "ego";
-	private final String friendNodeUiClass = "friend, all";
-	private final String friendOfFriendNodeUiClass = "friendof";
-	
-	private final String meToMyfriendEdgeUiClass = "metomyfriend";
-	private final String myfriendToMeEdgeUiClass = "myfriendtome";
-	private final String myfriendWithMutualFriendEdgeUiClass = "myfriendwithmutualfriend";
-	private final String friendofmyfriendWithmyfriendEdgeUiClass = "friendofmyfriendwithmyfriend";
-
-	private final GraphsHolder graphsHolder;
+//	
+//	private int graphSpeed = 3; //ms
+//	
+//	private final String egoNodeUiClass = "ego";
+//	private final String friendNodeUiClass = "friend, all";
+//	private final String friendOfFriendNodeUiClass = "friendof";
+//	
+//	private final String meToMyfriendEdgeUiClass = "metomyfriend";
+//	private final String myfriendToMeEdgeUiClass = "myfriendtome";
+//	private final String myfriendWithMutualFriendEdgeUiClass = "myfriendwithmutualfriend";
+//	private final String friendofmyfriendWithmyfriendEdgeUiClass = "friendofmyfriendwithmyfriend";
+//
+//	private final GraphsHolder graphsHolder;
 	
 
 	@Inject
-	public GraphstreamInteractionsGraphGenerator(World world, GraphsHolder graphHolder) {
-		this.graphsHolder = graphHolder;
-		this.graph = 
-//				new MultiGraph("Interactions",false,true);
-				graphHolder.getInteractionsGraph();
+	public GraphstreamInteractionsGraphGenerator(GraphsHolder graphsHolder, World world) {
+		super(graphsHolder, graphsHolder.getInteractionsGraph(), world);
 		graph.setAttribute("ui.stylesheet", "url('interactions.css')");
-//		MultiGraph multiGraph = new MultiGraph("a");
-		this.world = world;
-		this.myFriendsFromWorldMap = world.getMyFriendsMap();
-		this.friendOfFriendFromWorldMap = world.getOtherUsersMap();
+//		this.graphsHolder = graphsHolder;
+//		this.graph = 
+////				new MultiGraph("Interactions",false,true);
+//				graphsHolder.getInteractionsGraph();
+//		graph.setAttribute("ui.stylesheet", "url('interactions.css')");
+////		MultiGraph multiGraph = new MultiGraph("a");
+//		this.world = world;
+//		this.myFriendsFromWorldMap = world.getMyFriendsMap();
+//		this.friendOfFriendFromWorldMap = world.getOtherUsersMap();
 	}	
 
 	private void retrieveDataForNormalizations() {
@@ -105,7 +98,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 //System.out.print("["+interactionsMin+", "+interactionsDenominator+"] ");
 	}
 	
-	public void prepareForDisplay() {
+//	public void prepareForDisplay() {
 //		graph.addAttribute("ui.quality");
 //		graph.addAttribute("ui.antialias");
 //		graph.display();
@@ -115,12 +108,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 ////		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
 //		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
 //		viewer.enableAutoLayout();
-	}
-	
-	@Override
-	public Graph getGraph() {
-		return graph;
-	}
+//	}
 	
 //	public void reparseGraphCSS() {
 //		
@@ -130,31 +118,32 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 ////		viewer.enableAutoLayout();
 //	}
 	
-	public Node getEgoNode() {
-		return egoNode;
-	}
-	
 	@Override
 	public void generateMyFriends() {
 		retrieveDataForNormalizations();
-		createMyFriendsOnly();
+		super.generateMyFriends();
 	}
 	
 	@Override
 	public void generateMeWithMyFriends() {
 		retrieveDataForNormalizations();
-		this.egoNode = createMe();
-		createMyFriendsWithMe(egoNode);
-		testGraph();
+		super.generateMeWithMyFriends();
+//		testGraph();
 //		garbageUselessFriendsOfFriends();
 	}
 	
 	@Override
 	public void generateMyFriendsAndFriendOfFriends() {
 		retrieveDataForNormalizations();
-		createMyFriendsOnly();
-		createFriendsOfFriendsWithMyFriends();
+		super.generateMyFriendsAndFriendOfFriends();
 	}
+	
+	// TODO inherit from abstractEtc, inserting retrieveDataEtc
+//	@Override
+//	public void generateFriendOfFriends() {
+//		retrieveDataForNormalizations();
+//		super.generateFriendOfFriends();
+//	}
 	
 	@Override
 	public void generateFriendOfFriends() {
@@ -164,38 +153,15 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 			graph.removeNode(myfriendNode);
 	}
 	
+	// TODO inherit from abstractEtc, inserting retrieveDataEtc
 	@Override
 	public void generateMeWithMyFriendsAndTheirFriends() {
 		retrieveDataForNormalizations();
-		this.egoNode = createMe();
-		createMyFriendsWithMe(egoNode);
-		createFriendsOfFriendsWithMyFriends();
+		super.generateMeWithMyFriendsAndTheirFriends();
 	}
 
-	
-	private Node createMe() {
-		this.ego = world.getMyUser();
-      this.egoNode = createNode(ego);
-      this.egoNode.addAttribute("ui.class", egoNodeUiClass);
-      return egoNode;
-	}
-	
-	/**
-	 * create my friends graph not including my node
-	 */
-	private void createMyFriendsOnly() {
-		createMyFriends(false);
-	}
-	
-	/**
-	 * create my friends graph including my node and relative edges
-	 * @param egoNode
-	 */
-	private void createMyFriendsWithMe(Node egoNode) {
-		createMyFriends(true);
-	}
-	
-	private void createMyFriends(boolean includeMyuserNode) {
+	@Override
+	protected void createMyFriends(boolean includeMyuserNode) {
 		Map<String, FriendOrAlike> myFriendsMap = world.getMyFriendsMap();
 		Iterator<Entry<String, FriendOrAlike>> myFriendsMapIterator = myFriendsMap.entrySet().iterator();
 		while (myFriendsMapIterator.hasNext()) {
@@ -208,8 +174,8 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
       	FriendOrAlike myFriend = myFriendEntry.getValue();
 
       	// eventually, creates edges with me 
-      	final Node myFriendNode = getOrCreateFriendNode(myFriend, includeMyuserNode);
-      	myFriendNode.addAttribute("ui.class", friendNodeUiClass);
+      	final Node myFriendNode = getOrCreateFriendNodeAndEventuallyEdgesWithMe(myFriend, includeMyuserNode);
+//      	myFriendNode.addAttribute("ui.class", friendNodeUiClass);
 //      	myFriendNode.addAttribute("stroke-width","10px");
 	         
          Set<String> mutualFriendsIds = myFriend.getMutualFriends();
@@ -221,17 +187,19 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 //         	// that is: a cell in myFriendsToMutualFriendsTable contains edges between these my friends 
          	if (areMutualFriendsAlreadyComputed(myFriendId, myOtherFriendAlsoMutualWithMeId)) {
          		continue;
-//         		return;
          	}
          	
-         	// this creation below could be decrease outer while iterations ?
-         	Node myOtherFriendAlsoMutualNode = getOrCreateFriendNode(myOtherFriendAlsoMutualWithMeId);
-         	if (includeMyuserNode) {
-         		// my mutual friend to me and viceversa
-         		FriendOrAlike myOtherFriendAlsoMutual = myFriendsMap.get(myOtherFriendAlsoMutualWithMeId);
-         		createAndMaintainOrRetrieveFriendNodeAndEdgesWithMe(myOtherFriendAlsoMutual);
-         	}
-         	myOtherFriendAlsoMutualNode.addAttribute("ui.class", friendNodeUiClass);
+         	// this below could be minimize outer while iterations
+//         	Node myOtherFriendAlsoMutualFriendNode = getOrCreateFriendNode(myOtherFriendAlsoMutualWithMeId);
+//         	if (includeMyuserNode) {
+//         		// my mutual friend to me and viceversa
+//         		FriendOrAlike myOtherFriendAlsoMutual = myFriendsMap.get(myOtherFriendAlsoMutualWithMeId);
+//         		getOrCreateFriendNodeAndEdgesWithMe(myOtherFriendAlsoMutual);
+//         	}
+//         	myOtherFriendAlsoMutualFriendNode.addAttribute("ui.class", friendNodeUiClass);
+         	
+         	FriendOrAlike myOtherFriendAlsoMutual = myFriendsMap.get(myOtherFriendAlsoMutualWithMeId);
+         	Node myOtherFriendAlsoMutualFriendNode = getOrCreateFriendNodeAndEventuallyEdgesWithMe(myOtherFriendAlsoMutual, includeMyuserNode);
          	
          	
          	Interactions myFriendToMutualFriendInteractions = myFriend.getToOtherUserInteractions(myOtherFriendAlsoMutualWithMeId);
@@ -242,7 +210,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
          	float myFriendToMytualFriendNormalizedInteractionsValue = ((float)myFriendToMytualFriendInteractions-interactionsMin)/interactionsDenominator;
 //         	float myFriendToMytualFriendNormalizedInteractions = (myFriendToMytualFriendInteractions>0) ? s(float)myFriendToMytualFriendInteractions : 0;
 //         	System.out.println(myFriendToMytualFriendInteractions+" -> "+myFriendToMytualFriendNormalizedInteractions);
-         	Edge myFriendWithOtherMutualFriendEdge = createEdge(myFriendNode, myOtherFriendAlsoMutualNode, myFriendToMytualFriendNormalizedInteractionsValue, myfriendWithMutualFriendEdgeUiClass);
+         	Edge myFriendWithOtherMutualFriendEdge = createEdge(myFriendNode, myOtherFriendAlsoMutualFriendNode, myFriendToMytualFriendNormalizedInteractionsValue, myfriendWithMutualFriendEdgeUiClass);
          	myFriendsToMutualFriendsEdgesTable.put(myFriendId, myOtherFriendAlsoMutualWithMeId, myFriendWithOtherMutualFriendEdge);
          	
          	
@@ -251,7 +219,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 //         			myFriendsMap.get(myOtherFriendAlsoMutualWithMeId).getToOtherUserInteractionsCount(myFriendId);
          			getWeightedInteractions(mutualFriendToMyFriendInteractions);
          	float myOtherFriendAlsoMutualWithMeToMyFriendSubjectNormalizedInteractionsValue = ((float)myOtherFriendAlsoMutualWithMeToMyFriendSubjectInteractionsValue-interactionsMin)/interactionsDenominator;
-         	Edge myOtherFriendAlsoMutualWithMeToMyFriendSubjectEdge = createEdge(myOtherFriendAlsoMutualNode, myFriendNode, myOtherFriendAlsoMutualWithMeToMyFriendSubjectNormalizedInteractionsValue, myfriendWithMutualFriendEdgeUiClass);
+         	Edge myOtherFriendAlsoMutualWithMeToMyFriendSubjectEdge = createEdge(myOtherFriendAlsoMutualFriendNode, myFriendNode, myOtherFriendAlsoMutualWithMeToMyFriendSubjectNormalizedInteractionsValue, myfriendWithMutualFriendEdgeUiClass);
          	myFriendsToMutualFriendsEdgesTable.put(myOtherFriendAlsoMutualWithMeId, myFriendId, myOtherFriendAlsoMutualWithMeToMyFriendSubjectEdge);
          	
          	
@@ -276,8 +244,8 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 		+toOtherUserInteractions.getPostsCount()*InteractionsWeigths.POST_TO;
 	}
 	
-	
-	private void createFriendsOfFriendsWithMyFriends() {
+	@Override
+	protected void createFriendsOfFriendsWithMyFriends() {
 		Map<String, FriendOrAlike> otherUsersMap = world.getOtherUsersMap();
 		Iterator<Entry<String, FriendOrAlike>> friendsOfMyFriendsIterator = otherUsersMap.entrySet().iterator();
 		while (friendsOfMyFriendsIterator.hasNext()) {
@@ -317,6 +285,7 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 		}
 	}
 	
+/*	// inherit from AbstractEtc
 	private Node getOrCreateFriendNode(User myFriend, boolean includeMyuserNode) {
 		Node myFriendNode = null;
 		if (includeMyuserNode) {
@@ -326,7 +295,8 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
    	}
 		return myFriendNode;
 	}
-	
+
+	// inherit from AbstractEtc
 	private Node getOrCreateFriendNode(String myFriendId) {
 		FriendOrAlike myFriend = myFriendsFromWorldMap.get(myFriendId);
 		Node myFriendNode = graph.getNode(myFriendId); 
@@ -335,9 +305,10 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 			myFriendsNodesMap.put(myFriendId, myFriendNode);
 		}
 		return myFriendNode;
-	}
+	}*/
 	
-	private Node createAndMaintainOrRetrieveFriendNodeAndEdgesWithMe(User myFriend) {
+	@Override
+	protected Node getOrCreateFriendNodeAndEdgesWithMe(User myFriend) {
 		String myFriendId = myFriend.getUid();
 		Node myFriendNode = graph.getNode(myFriendId);
 		if (myFriendNode!=null)
@@ -382,26 +353,37 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 		}		
 	}
 	
-	private Node createNode(User user) {
+	// implements on AbstractEtc
+	@Override
+	protected Node createNode(User user) {
 		String id = user.getUid();
 		Node node = graph.addNode(id);
 		
-		float normalizedSize = ((float)user.getOwnPostsCount()-postsCountMin)/postsCountDenominator;
-//		System.out.print("("+user.getOwnPostsCount()+"-"+postsCountMin+")/"+postsCountDenominator+" = ");
+		float normalizedSize = ((float)user.getOwnPostsOnOwnWallCount()-postsCountMin)/postsCountDenominator;
+		// use size for posts count
+//		System.out.println(id+" "+normalizedSize);
 		node.setAttribute("ui.size", normalizedSize+"gu");
-//		System.out.print(normalizedSize+" ");
+		// use color for posts count
+//		node.setAttribute("ui.color", normalizedSize);
 		
 		int appreciation = user.getOwnLikedPostsCount() + InteractionsWeigths.RESHARED_OWN_POST*user.getOwnPostsResharingCount();
 		float normalizedAppreciation = ((float)appreciation-appreciationsMin)/appreciationsDenominator;
+		// use color for posts appreciations
 		node.setAttribute("ui.color", normalizedAppreciation);
-//		System.out.println(normalizedAppreciation+" ");
+		// use size for posts appreciations
+//		String s = normalizedAppreciation+"px";
+//		System.out.println(id+" "+s);
+//		node.setAttribute("ui.size", s);
 		
 		pause(graphSpeed );
 
 		return node;
 	}
 	
-	private Edge createEdge(Node firstNode, Node secondNode, float normalizedWeight, String uiClass) {
+	// implements on AbstractEtc
+	@Override
+	protected Edge createEdge(Node firstNode, Node secondNode, boolean directed, float normalizedWeight, String uiClass) {
+		/*
 		String edgeId = firstNode.getId()+"_to_"+secondNode.getId();
 //		Edge createdEdge = graph.addEdge(edgeId, firstNode, secondNode, true);
 		Edge createdEdge = graph.addEdge(edgeId, firstNode.getId(), secondNode.getId(), true);
@@ -409,8 +391,10 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 		createdEdge.setAttribute("ui.class", uiClass);
 //		createdEdge.setAttribute("ui.arrow-size", weight);
 //		float color = Math.abs(weight*1);
+		*/
 		
 	// the higher weight, the longer/larger/coloured, so we complement
+		Edge createdEdge = super.createEdge(firstNode, secondNode, directed, normalizedWeight, uiClass);
 		float complementarWeight = 1-normalizedWeight;
 		createdEdge.setAttribute("ui.color", complementarWeight);
 		createdEdge.setAttribute("ui.size", /*2**/complementarWeight);
@@ -418,90 +402,32 @@ public class GraphstreamInteractionsGraphGenerator implements InteractionsGraphG
 //		createdEdge.setAttribute("ui.arrow-size", normalizedWeight);
 //		System.out.print(createdEdge.getId()+" ");
 		
-		pause(graphSpeed);
+		super.pause();
 		
    	return createdEdge;
 	}
 	
-	private void pause(int ms) {
-		try {
-			Thread.sleep(ms);
-		} catch (InterruptedException e) {
-		}
-	}
 	
-	private boolean areMutualFriendsAlreadyComputed(String firstUserId, String secondUserId) {
-		if ( myFriendsToMutualFriendsEdgesTable.contains(firstUserId, secondUserId) && myFriendsToMutualFriendsEdgesTable.contains(secondUserId, firstUserId) ) {
-   		return true;
-   	}
-		return false;
-	}
-
-	public void testGraph() {
-
-		graphNodesCount = graph.getNodeCount();
-		graphEdgesCount = graph.getEdgeCount();
-		
-		System.out.println( "\tmy friends:\n" 
-				+"\t\tnodes (map): "+ myFriendsFromWorldMap.size()+" = "+myFriendsNodesMap.size()+"\n"
-				+"\t\tedges with me (map): "+myFriendsWithMeEdgesAndViceversaTable.size()+"\n"
-				+"\t\tedges to each others (map): "+myFriendsToMutualFriendsEdgesTable.values().size()+"\n"/*" graph:"+graphEdgesCount+"(friendsToMutualFriends+friendsToMe)\n"*/
-				+"\tfriends of my friends (maps):\n"
-				+"\t\tnodes (map): "+friendOfFriendFromWorldMap.size()+" = "+friendOfFriendNodeMap.size()+"\n"/*+" graph:"+undirectedGraph.getNodeCount()+"(f+fof+me)\n"*/
-				+"\t\tedges to their/my friends (map): "+friendsOfFriendsWithFriendsEdgesTable.size()+"\n"
-				+"\n"
-				+"\tgraph nodes:"+graphNodesCount+"\n"
-				+"\tgraph edges:"+graphEdgesCount+"\n"
-		);
-//		for (Edge edge: myFriendsWithMeEdgesAndViceversaTable.values())
-//			System.out.print(edge.getId()+" ");
-		
-//		garbageUselessFriendsOfFriends();
-//		garbageUselessFriends();
-		
-//		reparseGraphCSS();
-		garbageUseless();
-	}
-	
-	public void clear() {
-//		garbageUseless();
-//		graph.clear();
-//		egoNode = null;
-	}
-	
-	private void garbageUselessFriendsOfFriends() {
-//		long checkMemoryPre = Memory.checkMemory();
-		friendOfFriendNodeMap.clear();
-		friendsOfFriendsWithFriendsEdgesTable.clear();
-//		long checkMemoryAfter = 
-				Memory.checkMemory();
-//		System.out.println("released: "+(checkMemoryPre-checkMemoryAfter)+"Mb");
-	}
-	
-	private void garbageUselessFriends() {
-//		long checkMemoryPre = Memory.checkMemory();
-		myFriendsNodesMap.clear();
-		myFriendsToMutualFriendsEdgesTable.clear();
-		myFriendsWithMeEdgesAndViceversaTable.clear();
-//		long checkMemoryAfter = 
-				Memory.checkMemory();
-//		System.out.println("released: "+(checkMemoryPre-checkMemoryAfter)+"Mb");
-	}
-	
-	private void garbageUseless() {
-		garbageUselessFriends();
-		garbageUselessFriendsOfFriends();
-
-//		long checkMemoryPre = 
-				Memory.checkMemory();
-		graphNodesCount=0;
-		graphEdgesCount=0;
-//		long checkMemoryAfter = Memory.checkMemory();
-//		System.out.println("released: "+(checkMemoryAfter-checkMemoryPre)+"Mb");
+	private Edge createEdge(Node firstNode, Node secondNode, float normalizedWeight, String uiClass) {
+		return createEdge(firstNode, secondNode, true, normalizedWeight,uiClass);
 	}
 	
 	@Override
 	public void doneGraphGeneration() {
 		graphsHolder.setInteractionsGraphsCreated(true);
 	}
+
+	@Override
+	public void testGraph() {
+		super.testGraph();
+	}
+
+	@Override
+	protected boolean areMutualFriendsAlreadyComputed(String firstUserId, String secondUserId) {
+		if ( myFriendsToMutualFriendsEdgesTable.contains(firstUserId, secondUserId) && myFriendsToMutualFriendsEdgesTable.contains(secondUserId, firstUserId) ) {
+   		return true;
+   	}
+		return false;
+	}
+	
 }

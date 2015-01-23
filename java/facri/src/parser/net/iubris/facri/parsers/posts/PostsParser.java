@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 import javax.inject.Inject;
@@ -41,26 +42,27 @@ public class PostsParser implements Parser {
 				this.commentsParser = commentsParser;
 	}
 	
-	public void parse(File... arguments) {
+	public void parse(File... userDirs) {
 		
-		File userDir = arguments[0];
+		File userDir = userDirs[0];
 		
 		File[] feedsFiles = userDir.listFiles(feedsDirFilenameFilter);
 		
 		if (feedsFiles.length>0) {
-			Arrays.asList( feedsFiles[0].listFiles(postFilesFilenameFilter) )
+			File[] listFiles = feedsFiles[0].listFiles(postFilesFilenameFilter);
+//			System.out.println(userDir+": "+listFiles.length);
+			Arrays.asList( listFiles[0] )
 			.stream()
 			.parallel() // parallel on each posts file: 1-2 sec benefit
 			.forEach( new Consumer<File>() {
 				@Override
 				public void accept(File userFeedsJsonFile) {
 					try {
-						String owningWallUserId = userDir.getName();
-						
-						Posts posts = postsMapper.readObject(new FileReader(userFeedsJsonFile));
-						
-						posts.getPosts()
-						.stream()
+						String owningWallUserId = userDir.getName();						
+						Posts posts = postsMapper.readObject(new FileReader(userFeedsJsonFile));						
+						List<Post> postsList = posts.getPosts();
+//						System.out.println(userDir+": "+postsList.size());						
+						postsList.stream()
 						.parallel() // parallel on each post: half-time benefit
 						.forEach( new Consumer<Post>() {
 							@Override

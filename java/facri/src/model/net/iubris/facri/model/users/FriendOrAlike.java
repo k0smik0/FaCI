@@ -14,6 +14,8 @@ public class FriendOrAlike extends AbstractUser {
 
 	final private Set<String> mutualFriends = new HashSet<>();
 	
+	private int mutualFriendsCount;
+	
 	public FriendOrAlike(String uid) {
 		super(uid);
 	}
@@ -32,7 +34,6 @@ public class FriendOrAlike extends AbstractUser {
 	}
 
 	public void addMutualFriend(String friendId) {
-//		System.out.println("adding "+friendId);
 		mutualFriends.add(friendId);		
 	}
 	public void addMutualFriends(Collection<String> friendsIds) {
@@ -45,13 +46,9 @@ public class FriendOrAlike extends AbstractUser {
 		return mutualFriends.contains(userId);
 	}
 	
-	
-//	@MapToColumn(column=3,type=Integer.class)
-	private int mutualFriendsCount;
-	
-	public void setMutualFriendsCount(int mutualFriendsCount) {
-		this.mutualFriendsCount = mutualFriendsCount;
-	}
+//	public void setMutualFriendsCount(int mutualFriendsCount) {
+//		this.mutualFriendsCount = mutualFriendsCount;
+//	}
 	public int getMutualFriendsCount() {
 		return mutualFriendsCount;
 	}

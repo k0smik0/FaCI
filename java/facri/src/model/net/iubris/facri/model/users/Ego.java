@@ -11,7 +11,9 @@ public class Ego extends AbstractUser {
 
 	private static final long serialVersionUID = -7587672566751011500L;
 
-	final private Set<String> friends = new ConcurrentSkipListSet<>();
+	final private Set<String> friends = 
+			new ConcurrentSkipListSet<>();
+//			new CopyOnWriteArraySet<String>();
 
 	public Ego(String uid) {
 		super(uid);
@@ -40,13 +42,6 @@ public class Ego extends AbstractUser {
 	public boolean isMyFriendById(String userId) {
 		return friends.contains(userId);
 	}
-	
-//	@MapToColumn(column=2,type=Integer.class)
-//	private int friendsCount;
-	
-//	public int getFriendsCount() {
-//		return friendsCount;
-//	}
 	
 	@Override
 	public String toString() {

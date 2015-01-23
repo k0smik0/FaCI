@@ -60,18 +60,19 @@ edge {
 /* light red to dark red */
 edge.metomyfriend {
 /*	fill-color: #ffeebb, #FF0000; */
-	fill-color: #bb000044, #bb0000ff;
+  fill-color: #ffeebb11, #bb0000ff;
 }
 /* light yellow to orange */
 edge.myfriendtome {
  /*fill-color: #ffee00, #FF2200;*/
- fill-color: #ffbb0077, #FFbb00ff;
+ /*fill-color: #ffbbee33, #FFbb00ff;*/
+ fill-color: #ffffcc, #FFcc00;
 }
 edge.myfriendwithmutualfriend {
  /* yellow-green range */
 	/*fill-color: #white, #FFFFDD, #FFFF99, #FFFF00, #FFCC00, #FF9900;*/
 	/*fill-color: #F7E98E, #DFFF00, #A7FC00, #00FF00;*/
-	fill-color: #ddffcc, #008800;
+  fill-color: #ddffcc, #66bb66;
 }
 edge.friendofmyfriendwithmyfriend {
 /*   size-mode:normal;

@@ -9,6 +9,7 @@ import javax.xml.stream.XMLStreamException;
 
 import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor.GraphGenerationDoneFunction;
 import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor.GraphGenerationFunction;
+import net.iubris.facri.console.actions.graph.utils.cache.persister.WorldPersisterService;
 import net.iubris.facri.parsers.DataParser;
 import net.iubris.heimdall.command.ConsoleCommand;
 
@@ -35,20 +36,19 @@ public class CacheHandler {
 	private FileSink fileSink;
 	private String fileExtension;
 	
-//	private final FacriBerkleyPersister facriBerkleyPersister;
-//	private final WorldPersisterService worldPersisterService;
+	private final WorldPersisterService worldPersisterService;
 	
 	@AssistedInject
 	public CacheHandler(
 			@Named("cache_type") String cacheType,
 //			@Named("me_id") String meId,
-			DataParser dataParser,
-//			, WorldPersisterService worldPersisterService
-			@Assisted String[] params
+			DataParser dataParser
+			, WorldPersisterService worldPersisterService
+			, @Assisted String[] params
 			) {
 		this.cacheType = cacheType;
 //		this.corpusPrefix = meId;
-//		this.worldPersisterService = worldPersisterService;
+		this.worldPersisterService = worldPersisterService;
 		this.fileExtension = cacheType.toLowerCase();
 		this.dataParser = dataParser;
 		// TODO improve "current" symlink with external parameter
@@ -71,7 +71,6 @@ public class CacheHandler {
 						break;
 					// we want write cache, so parse for new data
 					case cw:
-						// TODO persist
 						write = true;
 						break;
 					default:
@@ -99,8 +98,8 @@ public class CacheHandler {
 	public CacheHandler readIfPresent(Graph graph, String cacheFilename,GraphGenerationFunction graphGeneratorFunction,
 			GraphGenerationDoneFunction graphGeneratorDoneFunction) throws IOException, JAXBException, XMLStreamException {
 		if (readFromCache) {
-			// TODO restore populate
-//			worldPersisterService.populate();
+//			 TODO persister: restore populate()
+			worldPersisterService.populate();
 			readGraph(graph, cacheFilename+"."+getCacheFileExtension());
 		} else {
 			dataParser.parse();
@@ -132,8 +131,8 @@ public class CacheHandler {
 	
 	public void writeIfWanted(Graph graph, String filenameBasename) throws IOException {
 		if (write) {
-			// TODO restore persist
-//			worldPersisterService.persist();
+			// TODO persister: restore persist()
+			worldPersisterService.persist();
 			// write graphs
 			if (fileSink==null) {
 				try {
@@ -180,7 +179,6 @@ public class CacheHandler {
 					// write a cache, so parse for new data
 					case cw:
 						dataParser.parse();
-						// TODO persist
 						cacheWrite = true;
 						break;
 					default:
@@ -217,7 +215,6 @@ public class CacheHandler {
 					// we want write cache, so parse for new data
 					case cw:
 						dataParser.parse();
-						// TODO persist
 						cacheWrite = true;
 						break;
 					default:

@@ -4,5 +4,5 @@ import java.io.File;
 
 public interface Parser {
 
-	void parse(File... userDir/*, Map<String,User> useridToUserMap*/) throws Exception;
+	void parse(File... userDirs) throws Exception;
 }

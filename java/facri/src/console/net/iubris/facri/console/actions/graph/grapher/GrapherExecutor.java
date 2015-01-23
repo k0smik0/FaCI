@@ -10,6 +10,7 @@ import javax.xml.stream.XMLStreamException;
 
 import net.iubris.facri.console.actions.graph.utils.cache.CacheHandler;
 import net.iubris.facri.grapher.generators.GraphstreamGraphGenerator;
+import net.iubris.facri.grapher.generators.friendships.graphstream.GraphstreamFriendshipsGraphGenerator;
 import net.iubris.facri.grapher.generators.interactions.graphstream.GraphstreamInteractionsGraphGenerator;
 import net.iubris.facri.model.graph.GraphsHolder;
 import net.iubris.heimdall.command.ConsoleCommand;
@@ -21,9 +22,8 @@ public class GrapherExecutor {
 	private final Map<GraphType,GraphstreamGraphGenerator> graphgeneratorsMap = new EnumMap<GraphType,GraphstreamGraphGenerator>(GraphType.class);
 	
 	@Inject
-	public GrapherExecutor(GraphstreamInteractionsGraphGenerator graphstreamInteractionsGraphGenerator) {
-		// TODO add friendships generator
-		graphgeneratorsMap.put(GraphType.friendships, null);
+	public GrapherExecutor(GraphstreamFriendshipsGraphGenerator graphstreamFriendshipsGraphGenerator, GraphstreamInteractionsGraphGenerator graphstreamInteractionsGraphGenerator) {
+		graphgeneratorsMap.put(GraphType.friendships, graphstreamFriendshipsGraphGenerator);
 		graphgeneratorsMap.put(GraphType.interactions, graphstreamInteractionsGraphGenerator);
 	}
 	

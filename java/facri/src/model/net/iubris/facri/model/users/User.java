@@ -1,7 +1,7 @@
 package net.iubris.facri.model.users;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.iubris.facri.model.posts.Post;
 
@@ -11,8 +11,12 @@ public interface User {
 	public String getUid();
 	
 	public boolean addOwnPost(Post post);	
-	public List<Post> getOwnPosts();	
+	public Set<Post> getOwnPosts();	
 	public int getOwnPostsCount();
+	
+	public boolean addOwnPostOnOwnWall(Post post);
+	public Set<Post> getOwnPostsOnOwnWall();	
+	public int getOwnPostsOnOwnWallCount();
 	
 	public void incrementOwnPostResharing(int shareCount);	
 	public int getOwnPostsResharingCount();
@@ -24,5 +28,7 @@ public interface User {
 	public int getUserInteractionsCount();
 	
 	public void incrementOwnLikedPosts(int likesCount);	
-	public int getOwnLikedPostsCount();	
+	public int getOwnLikedPostsCount();
+	
+	public int getFriendsCount();
 }

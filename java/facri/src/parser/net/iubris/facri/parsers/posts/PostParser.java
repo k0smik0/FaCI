@@ -32,8 +32,11 @@ public class PostParser {
 		// always add post to its author
 		actorUser.addOwnPost(post);
 
-		if (actorPostId == owningWallUserId) { // post author is the same of the wall owner
+//		System.out.println(owningWallUserId+": "+actorPostId);
+		if (actorPostId.equals(owningWallUserId)) { // post author is the same of the wall owner
+//			System.out.println("the same!");
 			handleAuthorUser(actorUser, post);
+//			actorUser.addOwnPost(post);
 		} else /*if (actorPostId != owningWallUserId)*/ {
 			handleTargetUser(actorUser, post, owningWallUserId);
 		}
@@ -47,6 +50,7 @@ public class PostParser {
 	}
 	
 	private void handleAuthorUser(User actorUser, Post post) {
+		actorUser.addOwnPostOnOwnWall(post);
 		int shareCount = post.getShareCount();
 		if (shareCount>0)
 			actorUser.incrementOwnPostResharing(shareCount); // node attribute

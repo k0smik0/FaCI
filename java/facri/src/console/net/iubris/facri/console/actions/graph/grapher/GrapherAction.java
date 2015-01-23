@@ -74,7 +74,6 @@ public class GrapherAction implements CommandAction {
 //			Graph graph = null;
 			switch (worldTarget) {
 			case friendships:
-				// TODO use friendships generator
 				break;
 			case interactions:
 //				graphHolder.prepareForDisplayInteractions();

@@ -2,10 +2,10 @@ package net.iubris.facri.model.users;
 
 import java.io.Serializable;
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import net.iubris.facri.model.posts.Post;
 
@@ -13,37 +13,35 @@ import com.sleepycat.persist.model.Persistent;
 import com.sleepycat.persist.model.PrimaryKey;
 
 @Persistent
-public abstract class AbstractUser implements User,Serializable {
+public abstract class AbstractUser implements User, Serializable {
 
 	private static final long serialVersionUID = -1400614535955943141L;
 	
-	final private List<Post> ownPosts = new CopyOnWriteArrayList<>();
+	final private Set<Post> ownPosts = 
+//			new CopyOnWriteArraySet<>();
+			new ConcurrentSkipListSet<>();
+	final private Set<Post> ownPostsOnOwnWall = 
+//			new CopyOnWriteArraySet<>();
+			new ConcurrentSkipListSet<>();
+	
 	final private Map<String,Interactions> interactionsMap = new ConcurrentHashMap<>();
 	
-//   @MapToColumn(column=0,type=String.class)
    @PrimaryKey
 	protected String uid;
    
-//   @MapToColumn(column=1,type=String.class)
 	protected String name;
    
-//   @MapToColumn(column=2,type=Integer.class)
 	protected int friendsCount;
 	
 //	protected int mutualFriendsCount;
    
-//	@MapToColumn(column=4,type=URL.class)
 	protected URL picSmall;
    
-//	@MapToColumn(column=5,type=URL.class)
 	protected URL profileURL;
    
-//	@MapToColumn(column=6,type=Sex.class)
 	protected Sex sex;
    
-//	@MapToColumn(column=7,type=String.class)
 	protected String significantOtherId;
-
 	
 	protected int ownPostsResharingCount;
 	protected int ownPostsLiking;
@@ -55,12 +53,10 @@ public abstract class AbstractUser implements User,Serializable {
 
 	@Override
 	public String getUid() {
-//		System.out.println(uid);
 		return uid;
 	}
 	@Override
 	public void setUid(String uid) {
-//		System.out.println(uid);
 		this.uid = uid;	
 	}
 	
@@ -69,17 +65,29 @@ public abstract class AbstractUser implements User,Serializable {
 		return ownPosts.add(post);
 	}
 	@Override
-	public List<Post> getOwnPosts() {
+	public Set<Post> getOwnPosts() {
 		return ownPosts ;
 	}
 	@Override
 	public int getOwnPostsCount() {
 		return ownPosts.size();
 	}
+	
+	@Override
+	public boolean addOwnPostOnOwnWall(Post post) {
+		return ownPostsOnOwnWall.add(post);
+	}
+	@Override
+	public Set<Post> getOwnPostsOnOwnWall() {
+		return ownPostsOnOwnWall;
+	}	
+	@Override
+	public int getOwnPostsOnOwnWallCount() {
+		return ownPostsOnOwnWall.size();
+	};
 
 	@Override
 	public void incrementOwnPostResharing(int reshareCount) {
-//System.out.println(reshareCount);
 		this.ownPostsResharingCount += reshareCount;		
 	}
 	@Override
@@ -113,7 +121,6 @@ public abstract class AbstractUser implements User,Serializable {
 	
 	@Override
 	public void incrementOwnLikedPosts(int likesCount) {
-//System.out.println(likesCount);
 		this.ownPostsLiking += likesCount;
 	}
 	@Override
@@ -124,9 +131,6 @@ public abstract class AbstractUser implements User,Serializable {
 	public String getName() {
 		return name;
 	}
-//	public void setName(String name) {
-//		this.name = name;
-//	}
 	
 	public int getFriendsCount() {
 		return friendsCount;
@@ -135,43 +139,18 @@ public abstract class AbstractUser implements User,Serializable {
 	public URL getPicSmallURL() {
 		return picSmall;
 	}
-//	public void setPicSmall(String picSmall) throws MalformedURLException  {
-//		this.picSmall = new URL(picSmall);
-//	}
-//	public void setPicSmall(URL picSmall)  {
-//		this.picSmall = new URL(picSmall);
-//	}
 	
 	public URL getProfileURL() {
 		return profileURL;
 	}
-//	public void setProfilURL(String profileURL) throws MalformedURLException {
-//		this.profileURL = new URL(profileURL);
-//	}
-//	public void setProfileURL(URL profileURL) {
-//		this.profileURL = profileURL;
-//	}
 	
 	public Sex getSex() {
 		return sex;
 	}
-//	public void setSex(String sex) {
-////		String real = sex.split("\n")[0];
-////		System.out.print(sex);
-////		System.out.println(sex+" o");
-//		this.sex = Sex.valueOf(Sex.class, sex);
-////		System.out.println( Sex.valueOf(Sex.class, sex.split("\n")[1]) );
-//	}
-//	public void setSex(Sex sex) {
-//		this.sex = sex;
-//	}
 	
 	public final String getSignificantOtherId() {
 		return significantOtherId;
 	}
-//	public final void setSignificantOtherId(String significantOtherId) {
-//		this.significantOtherId = significantOtherId;
-//	}
 
 	public enum Sex {
 		male,
@@ -189,6 +168,4 @@ public abstract class AbstractUser implements User,Serializable {
 				+"\nsignificant other id: "+significantOtherId;
 		return toPrint;
 	}
-	
-	
 }
