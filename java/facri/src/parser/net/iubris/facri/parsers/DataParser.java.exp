@@ -39,14 +39,14 @@ private boolean parsed = false;
 			egoDataParser.parse();
 			friendsDataParser.parse();
 			
-			System.out.println("World:");
-			System.out.println("Ego:");
-			System.out.println("\tposts: "+world.getMyUser().getOwnPostsCount() );
+			Printer.println("World:");
+			Printer.println("Ego:");
+			Printer.println("\tposts: "+world.getMyUser().getOwnPostsCount() );
 			world.getMyFriendsMap().forEach(
 					new BiConsumer<String, FriendOrAlike>() {
 						@Override
 						public void accept(String t, FriendOrAlike u) {
-							System.out.println(t+": "+u.getUId());
+							Printer.println(t+": "+u.getUId());
 						}
 					}
 				);

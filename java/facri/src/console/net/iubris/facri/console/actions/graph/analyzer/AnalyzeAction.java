@@ -1,9 +1,11 @@
 package net.iubris.facri.console.actions.graph.analyzer;
 
 import java.io.Console;
+import java.io.IOException;
 
 import javax.inject.Inject;
 
+import net.iubris.facri.console.actions.graph.grapher.GrapherAction.GrapherCommand;
 import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor.GraphTypeCommand;
 import net.iubris.facri.grapher.analyzer.graphstream.GraphstreamAnalyzer;
 import net.iubris.facri.model.graph.GraphsHolder;
@@ -13,6 +15,8 @@ import net.iubris.heimdall.command.ConsoleCommand;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.ui.layout.Layouts;
+import org.graphstream.ui.swingViewer.Viewer;
 import org.graphstream.ui.swingViewer.util.Camera;
 
 public class AnalyzeAction implements CommandAction {
@@ -25,50 +29,36 @@ public class AnalyzeAction implements CommandAction {
 	}
 
 	@Override
-	public void exec(Console console, String... params) {
+	public void exec(Console console, String... params) throws IOException {
 //		analyzer.
 		if (params==null || (params.length<1)) {
 			handleError(console, WRONG_ARGUMENTS_NUMBER);
 			return;
 		}
 		
-//		if (!graphsHolder.isGraphsCreated())
-//			console.printf("graphs not existant; create them first using 'g'\n");
 		try {
 			GraphTypeCommand arg = GraphTypeCommand.valueOf( params[0] );
 			
-//			UseCache.handleUseCache(params, dataParser);
 			String meUid = graphsHolder.getWorld().getMyUser().getUid();
-			Graph graph = null;
 			switch(arg) {
 				case f:
-					if (!graphsHolder.isFriendshipsGraphCreated()) {
-						console.printf("graph not existant; create it first using 'g'\n");
+					/*if (!graphsHolder.isFriendshipsGraphCreated()) {
+						console.printf("graph not existant; create it first using 'f'\n");
 						break;
-					}
-					graph = graphsHolder.getFriendshipsGraph();
-					Node egoNodeInFriendships = graph.getNode(meUid);
-					GraphstreamAnalyzer friendshipsGraphstreamAnalyzer = new GraphstreamAnalyzer( graphsHolder.getFriendshipsGraph(), egoNodeInFriendships );
-					friendshipsGraphstreamAnalyzer.numericalAnalysis(false,null);
-					friendshipsGraphstreamAnalyzer.graphicalAnalysis();
+					}*/
+					
+					Graph friendshipsGraph = graphsHolder.getFriendshipsGraph();
+					analyze(friendshipsGraph, graphsHolder::isFriendshipsGraphCreated, false, null, meUid, graphsHolder.getFriendshipsGraphViewer(), console);
+					
 					break;
 				case i:
-					if (!graphsHolder.isInteractionsGraphCreated()) {
+					/*if (!graphsHolder.isInteractionsGraphCreated()) {
 						console.printf("graph not existant; create it first using 'g'\n");
 						break;
-					}
-					graph = graphsHolder.getInteractionsGraph();
-					Node egoNodeInInteractions = graph.getNode(meUid);
-					GraphstreamAnalyzer interactionsGraphstreamAnalyzer = new GraphstreamAnalyzer( graphsHolder.getInteractionsGraph(), egoNodeInInteractions );
-//					interactionsGraphstreamAnalyzer.numericalAnalysis(true,"interactions");
-					interactionsGraphstreamAnalyzer.graphicalAnalysis();
-					
-					Camera camera = graphsHolder.getInteractionsGraphViewer().getDefaultView().getCamera();
-					camera.setAutoFitView(true);
-					camera.setViewPercent(0.3);
-//					Node firstNodeWithMaximumDegreeExceptEgo = interactionsGraphstreamAnalyzer.getFirstNodeWithMaximumDegreeExceptEgo();
-//					Double[] coordinates = (Double[]) firstNodeWithMaximumDegreeExceptEgo.getArray("xy");
-//					camera.setViewCenter(coordinates[0], coordinates[1], 0);
+					}*/
+						
+					Graph interactionsGraph = graphsHolder.getInteractionsGraph();
+					analyze(interactionsGraph, graphsHolder::isInteractionsGraphCreated, true, "ui.size", meUid, graphsHolder.getInteractionsGraphViewer(), console);
 					break;
 				default:
 					console.printf( arg.getHelpMessage() );
@@ -76,6 +66,30 @@ public class AnalyzeAction implements CommandAction {
 		} catch (IllegalArgumentException e) {
 			handleError(console, WRONG_ARGUMENT);
 		}
+	}
+	
+	@FunctionalInterface
+	interface AnalyzeFunction {
+		boolean check();
+	}
+	
+	private void analyze(Graph graph, AnalyzeFunction existantGraphChecker, boolean isDirected, String weightAttributeName, String meUid, Viewer viewer, Console console) throws IOException {
+//		System.out.println(existantGraphChecker.check());
+		if (!existantGraphChecker.check()) {
+//		if (!graphsHolder.isFriendshipsGraphCreated()) {
+			console.printf("graph not existant; create it first using '"+GrapherCommand.G.name()+"'\n");
+			return;
+		}
+//		Graph graph = graphsHolder.getFriendshipsGraph();
+		Node egoNode = graph.getNode(meUid);
+		GraphstreamAnalyzer graphstreamAnalyzer = new GraphstreamAnalyzer( graph, egoNode );
+		graphstreamAnalyzer.numericalAnalysis(isDirected,weightAttributeName);
+		graphstreamAnalyzer.graphicalAnalysis();
+		
+		Camera camera = viewer.getDefaultView().getCamera();
+		camera.setAutoFitView(true);
+		camera.setViewPercent(0.7);
+		viewer.enableAutoLayout();
 	}
 	
 	public enum AnalyzeCommand implements ConsoleCommand {

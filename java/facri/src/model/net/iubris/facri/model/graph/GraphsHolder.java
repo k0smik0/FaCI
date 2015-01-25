@@ -21,6 +21,7 @@ import javax.xml.stream.XMLStreamException;
 import net.iubris.facri.model.users.Ego;
 import net.iubris.facri.model.world.World;
 import net.iubris.facri.parsers.DataParser;
+import net.iubris.facri.utils.Printer;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -217,13 +218,13 @@ public class GraphsHolder {
 //				element.setAttribute("ui.label",element.getId());
 				
 				if (!world.isParsingDone()) {
-					System.out.println("Graphs was generated from cache and there are no data for user, so parsing...");
+					Printer.println("Graphs was generated from cache and there are no data for user, so parsing...");
 					try {
 						dataParser.parse();
 					} catch (JAXBException | XMLStreamException | IOException e) {
 						e.printStackTrace();
 					}
-					System.out.println("done.");
+					Printer.println("done.");
 				}
 				
 				String uid = element.getId();
@@ -232,9 +233,9 @@ public class GraphsHolder {
 				Optional<Ego> searchMe = world.searchMe(uid);
 				
 				if (searchMe.isPresent())
-					System.out.println(searchMe.get());
+					Printer.println(searchMe.get());
 				else {
-					world.searchUserById(uid).ifPresent(u->System.out.println(u)); 
+					world.searchUserById(uid).ifPresent(u->Printer.println(u)); 
 				}
 				return;
 			}

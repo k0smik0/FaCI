@@ -8,7 +8,6 @@ import javax.inject.Singleton;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
-import net.iubris.facri.model.users.Ego;
 import net.iubris.facri.model.world.World;
 import net.iubris.facri.parsers.ego.EgoDataParser;
 import net.iubris.facri.parsers.friends.FriendsDataParser;
@@ -39,12 +38,12 @@ private boolean parsed = false;
 			friendsDataParser.parse();
 			parsed = true;
 			world.setParsingDone(true);
-			Ego myUser = world.getMyUser();
-			System.out.println( 
-				myUser.getUid()+": "
-				+myUser.getOwnPostsCount()+" + "
-				+myUser.getToOtherUsersInteractions().size()
-			);
+//			Ego myUser = world.getMyUser();
+//			System.out.println( 
+//				myUser.getUid()+": "
+//				+myUser.getOwnPostsCount()+" + "
+//				+myUser.getToOtherUsersInteractions().size()
+//			);
 			/*world.getMyFriendsMap().values().stream().forEach(f->{
 				System.out.println(
 						f.getUid()+": "

@@ -3,16 +3,30 @@ package net.iubris.facri.grapher.analyzer.graphstream;
 import grph.Grph;
 import grph.io.ParseException;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Spliterator;
-import java.util.function.Consumer;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor;
+import net.iubris.facri.utils.Printer;
 
 import org.graphstream.algorithm.ConnectedComponents;
 import org.graphstream.algorithm.Toolkit;
+import org.graphstream.algorithm.measure.ClosenessCentrality;
+import org.graphstream.algorithm.measure.EigenvectorCentrality;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.GraphFactory;
 import org.graphstream.graph.Node;
 import org.xml.sax.SAXException;
 
@@ -21,118 +35,156 @@ import toools.set.IntSet;
 public class GraphstreamAnalyzer {
 	
 	private final Graph graph;
+	private final String graphName;
 	private final Node egoNode;
-	private Node firstNodeWithMaximumDegreeExceptEgo;
+
+	private Node nodeWithMaximumDegreeExcludingEgo;
 	private int intsetCounter;
+	private double[] clusteringCoefficients;
+	private int[] degreeDistribution;
+	private ArrayList<Node> degreeMap;
+	private double density;
+	private double diameter;
+	private ArrayList<Node> maximumClique;
+	private Collection<IntSet> cliques;
+	private List<Node> giantComponent;
+	private ConnectedComponents connectedComponentsWithoutEgo;
 	
-//	@Inj
-	public GraphstreamAnalyzer(Graph graph, Node egoNode) {
+	
+	
+	public GraphstreamAnalyzer(Graph graph, Node egoNode/*, @Named("my_user_id") String myUserId*/) {
 		this.graph = graph;
 		this.egoNode = egoNode;
+		graphName = graph.getAttribute(GrapherExecutor.graph_name);
+		
+		File resultsDir = new File("results");
+		if (!resultsDir.exists())
+			resultsDir.mkdirs();
 	}
 	
-	public void clusteringCoefficient() {
-		System.out.print("Clustering coefficients:\n\t");
-		double[] clusteringCoefficients = Toolkit.clusteringCoefficients(graph);
+	public double[] clusteringCoefficient() {
+		Printer.print("Clustering coefficients:\n\t");
+		clusteringCoefficients = Toolkit.clusteringCoefficients(graph);
 		for (double cc: clusteringCoefficients) {
-			System.out.print(cc+" ");
+			Printer.print(cc+" ");
 		}
-		System.out.println("");
+		Printer.println("");
+		return clusteringCoefficients;
 	}
 	
-	public void degree() {
-		System.out.print("Degree distribution:\n\t");
-		int[] degreeDistribution = Toolkit.degreeDistribution(graph);
+	public int[] degree() {
+		Printer.print("Degree distribution:\n\t");
+		degreeDistribution = Toolkit.degreeDistribution(graph);
 		for (int d: degreeDistribution) {
-			System.out.print(d+" ");
+			Printer.print(d+" ");
 		}
-//		StreamSupport.intStream(Spliterators.spliterator(degreeDistribution, 0, degreeDistribution.length, Spliterator.SIZED), false).forEach(d->System.out.print(d+" "));
+//		StreamSupport.intStream(Spliterators.spliterator(degreeDistribution, 0, degreeDistribution.length, Spliterator.SIZED), false).forEach(d->Printer.print(d+" "));
 //				degreeDistribution, false);
-		System.out.println("");
+		Printer.println("");
 		
-		System.out.println("Nodes degree list:");
-		ArrayList<Node> degreeMap = Toolkit.degreeMap(graph);
-		degreeMap.stream().forEach( n->System.out.println("\t"+n.getId()+": "+n.getDegree()) );
-		firstNodeWithMaximumDegreeExceptEgo = degreeMap.get(1);
+		Printer.println("Nodes degree list:");
+		degreeMap = Toolkit.degreeMap(graph);
+		degreeMap.stream().forEach( n->Printer.println("\t"+n.getId()+": "+n.getDegree()) );
+		nodeWithMaximumDegreeExcludingEgo = degreeMap.get(1);
 		
-		System.out.println("");
+		Printer.println("");
+		return degreeDistribution;
 	}
 	
-	public void density() {
-		System.out.print("Density: ");
-		double density = Toolkit.density(graph);
-		System.out.println(density+"\n");
+	public double density() {
+		Printer.print("Density: ");
+		density = Toolkit.density(graph);
+		Printer.println(density+"\n");
+		return density;
 	}
 	
-	public void diameter(String weightAttributeName, boolean directed) {
-		System.out.print("Diameter: ");
-		double diameter = Toolkit.diameter(graph, weightAttributeName, directed);
-		System.out.println(diameter+"\n");
+	public double diameter(String weightAttributeName, boolean directed) {
+		Printer.print("Diameter: ");
+		diameter = Toolkit.diameter(graph, weightAttributeName, directed);
+		Printer.println(diameter+"\n");
+		
+		return diameter;
 	}
 	
-	public void cliques() {
-		System.out.print("Maximal Cliques: ");
+	public ArrayList<Node> cliques() {
+//		Printer.print("Maximal Cliques: ");
 		Iterable<List<Node>> maximalCliques = Toolkit.getMaximalCliques(graph);
 		
-		final List<Node> maximumClique = new ArrayList<Node>(0);
+		maximumClique = new ArrayList<Node>(0);
 		//naive
 		/*for (List<Node> clique : maximalCliques)
 			if (clique.size() > tempMaximumClique.size())
 				tempMaximumClique = clique;*/
 		
-		System.out.print("Maximum Clique: ");
+		Printer.print("Maximum Clique: ");
 		Spliterator<List<Node>> maximalCliquesSpliterator = maximalCliques.spliterator();
 		StreamSupport.stream(maximalCliquesSpliterator, true).parallel()
-		.forEach( new Consumer<List<Node>>() {
-			@Override
-			public void accept(List<Node> t) {
-				if (t.size() > maximumClique.size()) {
-					maximumClique.clear();
-					maximumClique.addAll(t);
-				}
+		.forEach(nodes -> {
+			if (nodes.size() > maximumClique.size()) {
+				maximumClique.clear();
+				maximumClique.addAll(nodes);
 			}
 		});
-		System.out.print(maximumClique.size()+" nodes\n\t");
-		maximumClique.forEach( new Consumer<Node>() {
-			@Override
-			public void accept(Node t) {
-				System.out.print(t.getId()+" ");
-				t.addAttribute("ui.class", "maxclique");
-			}
+		Printer.print(maximumClique.size()+" nodes\n\t");
+		maximumClique.forEach( node -> {
+			Printer.print(node.getId()+" ");
+			node.addAttribute("ui.class", "maxclique");
 		});
-		System.out.println("");
+		Printer.println("");
+		
+		return maximumClique;
 	}
 	
-	public void cliquer() throws ParseException, SAXException {
-		Grph fromGraphML = Grph.fromGraphML("graphmls/836460098_-_interactions_graph_-_me_with_friends.graphml");
-		System.out.print("Cliques (cliquer): ");
-		intsetCounter=0;
-		Collection<IntSet> cliques = fromGraphML.getCliques();
-		System.out.println( cliques.size() );
-		cliques.stream().forEach( is-> {
-			System.out.println("\t"+(++intsetCounter)+": ");
-			System.out.println("\t\tgreatest: "+is.getGreatest() );
-			System.out.println("\t\tdensity: "+is.getDensity() );
-			is.forEach(ic->{ System.out.println("\t\t\t"+ic.index+": "+ic.value); });
-		});
+	// using grph
+	public Collection<IntSet> cliquer() throws ParseException, SAXException, IOException {
+		String myUserId = graphName.split("_-_")[0];
+		Path dirPath = FileSystems.getDefault().getPath("cache"+File.separator+"graphs"+File.separator+myUserId);
+		Stream<Path> paths = Files.list(dirPath);
+		Optional<Path> file = paths.filter(f->f.startsWith(graphName)).findFirst();
+		paths.close();
+		if (file.isPresent()) {			
+			Grph fromGraphML = Grph.fromGraphML(file.get().toString());
+			Printer.print("Cliques (cliquer): ");
+			intsetCounter=0;
+			cliques = fromGraphML.getCliques();
+			Printer.println( ""+cliques.size() );
+			cliques.stream().forEach( clique-> {
+				Printer.println("\t"+(++intsetCounter)+": ");
+				Printer.println("\t\tgreatest: "+clique.getGreatest() );
+				Printer.println("\t\tdensity: "+clique.getDensity() );
+				clique.forEach(ic->{ Printer.println("\t\t\t"+ic.index+": "+ic.value); });
+			});
+		}
+		return cliques;
 	}
 
 	public void connected() {
 		graph.removeNode(egoNode);
-		ConnectedComponents connectedComponents = new ConnectedComponents(graph);
-		connectedComponents.compute();
-		System.out.println("Connected components without Ego: "+connectedComponents.getConnectedComponentsCount());
+		connectedComponentsWithoutEgo = new ConnectedComponents(graph);
+		connectedComponentsWithoutEgo.compute();
+		Printer.println("Connected components without Ego: "+connectedComponentsWithoutEgo.getConnectedComponentsCount());
 
-		List<Node> giantComponent = connectedComponents.getGiantComponent();
-		System.out.print("Giant component without Ego: "+giantComponent.size()+"\n\t");
+		giantComponent = connectedComponentsWithoutEgo.getGiantComponent();
+		Printer.print("Giant component without Ego: "+giantComponent.size()+"\n\t");
 		giantComponent.stream().parallel().forEach( n-> { 
 			n.setAttribute("ui.class", "giantcomponent");
-			System.out.print(n.getId()+" ");
+			Printer.print(n.getId()+" ");
 			});
-		System.out.println("");
-		
-//		Printer a = s->System.out.println( s );
+		Printer.println("");
 //		connected(a);
+	}
+	
+	public void measures() {
+		ClosenessCentrality closenessCentrality = new ClosenessCentrality();
+		closenessCentrality.init(graph);
+		closenessCentrality.compute();
+		String closenessCentralityAttribute = closenessCentrality.getCentralityAttribute();
+		
+		EigenvectorCentrality eigenvectorCentrality = new EigenvectorCentrality();
+		eigenvectorCentrality.init(graph);
+		eigenvectorCentrality.compute();
+		eigenvectorCentrality.compute();
+		String eigenvectorCentralityAttribute = eigenvectorCentrality.getCentralityAttribute();
 	}
 	
 	public void numericalAnalysis(boolean isDirectedGraph, String weightAttributeName) {
@@ -142,7 +194,7 @@ public class GraphstreamAnalyzer {
 		diameter(weightAttributeName, isDirectedGraph);
 	}
 	
-	public void graphicalAnalysis() {
+	public void graphicalAnalysis() throws IOException {
 		cliques();
 		try {
 			cliquer();
@@ -153,8 +205,40 @@ public class GraphstreamAnalyzer {
 		connected();
 	}
 	
+	public void doCharts() {
+		
+	}
+	
+	public void writeResults() throws IOException {
+//		
+		BufferedWriter ccbw = Files.newBufferedWriter(FileSystems.getDefault().getPath(graphName+"_-_clustering_coefficients"));
+		for (double cc: clusteringCoefficients)
+			ccbw.write(cc+" ");
+		ccbw.close();
+		
+		BufferedWriter ddbw = Files.newBufferedWriter(FileSystems.getDefault().getPath(graphName+"_-_degree_distribution"));
+		for (int dd: degreeDistribution)
+			ccbw.write(dd+" ");
+		ddbw.close();
+		
+		Printer.print("Node with maximum degree (excluding my user): "+nodeWithMaximumDegreeExcludingEgo.getId()+", with in-degree: "+nodeWithMaximumDegreeExcludingEgo.getInDegree()+", and out-degree: "+nodeWithMaximumDegreeExcludingEgo.getOutDegree());
+		BufferedWriter dumbw = Files.newBufferedWriter(FileSystems.getDefault().getPath(graphName+"_-_degree_users_map"));
+		Iterator<Node> iterator = degreeMap.iterator();
+		while (iterator.hasNext()) {
+			Node next = iterator.next();
+			dumbw.write(next.getId()+" "+next.getDegree());
+		}
+		dumbw.close();
+		
+		Printer.println("diameter: "+diameter);
+		Printer.println("density: "+density);
+		
+		
+		
+	}
+	
 	public Node getFirstNodeWithMaximumDegreeExceptEgo() {
-		return firstNodeWithMaximumDegreeExceptEgo;
+		return nodeWithMaximumDegreeExcludingEgo;
 	}
 
 }

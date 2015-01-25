@@ -32,9 +32,7 @@ public class PostParser {
 		// always add post to its author
 		actorUser.addOwnPost(post);
 
-//		System.out.println(owningWallUserId+": "+actorPostId);
 		if (actorPostId.equals(owningWallUserId)) { // post author is the same of the wall owner
-//			System.out.println("the same!");
 			handleAuthorUser(actorUser, post);
 //			actorUser.addOwnPost(post);
 		} else /*if (actorPostId != owningWallUserId)*/ {

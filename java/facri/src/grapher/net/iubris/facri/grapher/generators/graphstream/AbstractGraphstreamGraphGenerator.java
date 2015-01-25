@@ -1,4 +1,4 @@
-package net.iubris.facri.grapher.generators;
+package net.iubris.facri.grapher.generators.graphstream;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

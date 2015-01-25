@@ -11,6 +11,7 @@ import net.iubris.facri.model.users.Ego;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.User;
 import net.iubris.facri.model.world.World;
+import net.iubris.facri.utils.Printer;
 
 public class ParsingUtils {
 	
@@ -61,7 +62,7 @@ public class ParsingUtils {
 		
 		File[] files = userDir.listFiles();
 		if (files.length==0) {
-			System.out.println("empty");
+			Printer.println("empty");
 			return false;
 		}
 		return true;

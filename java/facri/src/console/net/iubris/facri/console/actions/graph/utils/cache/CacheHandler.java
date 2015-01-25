@@ -11,6 +11,7 @@ import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor.GraphGener
 import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor.GraphGenerationFunction;
 import net.iubris.facri.console.actions.graph.utils.cache.persister.WorldPersisterService;
 import net.iubris.facri.parsers.DataParser;
+import net.iubris.facri.utils.Printer;
 import net.iubris.heimdall.command.ConsoleCommand;
 
 import org.graphstream.graph.Graph;
@@ -37,22 +38,23 @@ public class CacheHandler {
 	private String fileExtension;
 	
 	private final WorldPersisterService worldPersisterService;
+//	private final String myUserId;
 	
 	@AssistedInject
 	public CacheHandler(
 			@Named("cache_type") String cacheType,
-//			@Named("me_id") String meId,
+			@Named("my_user_id") String myUserId,
 			DataParser dataParser
 			, WorldPersisterService worldPersisterService
 			, @Assisted String[] params
 			) {
 		this.cacheType = cacheType;
+//		this.myUserId = myUserId;
 //		this.corpusPrefix = meId;
 		this.worldPersisterService = worldPersisterService;
 		this.fileExtension = cacheType.toLowerCase();
 		this.dataParser = dataParser;
-		// TODO improve "current" symlink with external parameter
-		this.dirTree = "cache"+File.separatorChar+"graphs"+File.separatorChar+"current";
+		this.dirTree = "cache"+File.separatorChar+"graphs"+File.separatorChar+myUserId;
 		handlesParams(params);
 //		if (!readFromCache || !write) {
 //			// parse
@@ -63,7 +65,8 @@ public class CacheHandler {
 		if (actionParams.length>2) {
 			String useCacheString = actionParams[2];		
 			UseCacheArguments useCacheArguments = UseCacheArguments.valueOf(useCacheString);
-			try {
+//			System.out.println(useCacheArguments.name());
+//			try {
 				switch(useCacheArguments) {
 					// if read from cache, do not parse
 					case cr:
@@ -74,11 +77,12 @@ public class CacheHandler {
 						write = true;
 						break;
 					default:
+						Printer.println("wrong cache argument");
 						break;
 				}
-			} catch (IllegalArgumentException e) {
-				System.out.println("wrong argument");
-			}
+//			} catch (IllegalArgumentException e) {
+//				Printer.println("wrong cache argument");
+//			}
 		}
 	}
 	
@@ -103,9 +107,9 @@ public class CacheHandler {
 			readGraph(graph, cacheFilename+"."+getCacheFileExtension());
 		} else {
 			dataParser.parse();
-			graphGeneratorFunction.exec();
-			graphGeneratorDoneFunction.exec();
+			graphGeneratorFunction.generate();
 		}
+		graphGeneratorDoneFunction.setGenerated();
 		return this;
 	}
 	
@@ -153,102 +157,13 @@ public class CacheHandler {
 			if (!cacheDir.exists())
 				cacheDir.mkdir();
 			fileSink.writeAll(graph, dirTree+File.separatorChar+filenameBasename+"."+fileExtension);
+//			System.out.println("writed");
 		}
 	}
 	
 	public String getCacheFileExtension() {
 		return fileExtension; //"graphml";
 	}
-	
-	/*private static UseCache isUsingCache(String[] actionParams, DataParser dataParser) throws JAXBException, XMLStreamException, IOException {
-		boolean cacheRead = false, cacheWrite = false;
-
-		// no cache at all
-		if (actionParams.length<3) { 
-			dataParser.parse();
-		}
-		else if (actionParams.length==3) {
-			String useCacheString = actionParams[2];		
-			UseCacheArguments useCacheArguments = UseCacheArguments.valueOf(useCacheString);
-			try {
-				switch(useCacheArguments) {
-					// if read from cache, do not parse
-					case cr:
-						cacheRead = true;
-						break;
-					// write a cache, so parse for new data
-					case cw:
-						dataParser.parse();
-						cacheWrite = true;
-						break;
-					default:
-						break;
-				}
-			} catch (IllegalArgumentException e) {
-				System.out.println("wrong argument");
-			}
-		}
-		
-//		return new UseCache(cacheRead, cacheWrite);
-		return null;
-	}*/
-	
-	
-	
-	/*private static UseCache handleConsoleParamsAndEventuallyParseData(String[] actionParams, DataParser dataParser) throws JAXBException, XMLStreamException, IOException {
-		boolean cacheRead = false;
-		boolean cacheWrite = false;
-
-		// no cache at all
-		if (actionParams.length<3) {
-			dataParser.parse();
-		}
-		else if (actionParams.length==3) {
-			String useCacheString = actionParams[2];		
-			UseCacheArguments useCacheArguments = UseCacheArguments.valueOf(useCacheString);
-			try {
-				switch(useCacheArguments) {
-					// if read from cache, do not parse
-					case cr:
-						cacheRead = true;
-						break;
-					// we want write cache, so parse for new data
-					case cw:
-						dataParser.parse();
-						cacheWrite = true;
-						break;
-					default:
-						break;
-				}
-			} catch (IllegalArgumentException e) {
-				System.out.println("wrong argument");
-			}
-		}
-		
-//		return new UseCache(cacheRead, cacheWrite);
-		return null;
-	}*/
-	
-	
-	/*public boolean readIfPresentOrParse(Graph graph, String cacheFilename) throws IOException {
-		if (readFromCache) {
-			read(graph, cacheFilename+"."+getCacheFileExtension());
-			return true;
-		} 
-//		else 
-//			dataParser.parse();
-		return false;
-//		return this;
-	}*/
-	
-	
-	
-	
-	/*public static void handleWritingToCache(UseCache useCache, Graph graph, String cacheFilename) throws IOException {
-		if (useCache.write)
-			useCache.write(cacheFilename+"."+useCache.getCacheFileExtension(), graph);
-	}*/
-	
 	
 	public enum UseCacheArguments implements ConsoleCommand {
 		cr("cache read: (try to) import previous generated graph from a cached file") {},

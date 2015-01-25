@@ -17,6 +17,7 @@ import javax.inject.Named;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.world.World;
 import net.iubris.facri.parsers.Parser;
+import net.iubris.facri.utils.Printer;
 
 public class MutualFriendsParser implements Parser {
 	
@@ -85,7 +86,7 @@ public class MutualFriendsParser implements Parser {
 						}
 					);
 		} catch (IOException e) {
-			System.out.println("errors on "+mutualFriendsFile.getName());
+			Printer.println("errors on "+mutualFriendsFile.getName());
 			e.printStackTrace();
 		}
 	}

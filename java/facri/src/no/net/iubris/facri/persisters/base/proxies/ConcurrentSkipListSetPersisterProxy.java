@@ -4,8 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
+import com.sleepycat.persist.model.Persistent;
 import com.sleepycat.persist.model.PersistentProxy;
 
+@Persistent(proxyFor=ConcurrentSkipListSet.class)
 public class ConcurrentSkipListSetPersisterProxy<E> implements PersistentProxy<ConcurrentSkipListSet<E>> {
 
 	private final Set<E> set = new HashSet<E>();

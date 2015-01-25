@@ -1,6 +1,7 @@
 package net.iubris.facri.parsers.friends;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -9,6 +10,7 @@ import javax.inject.Named;
 
 import net.iubris.facri.parsers.posts.PostsParser;
 import net.iubris.facri.parsers.utils.ParsingUtils;
+import net.iubris.facri.utils.Printer;
 //import net.iubris.ishtaran.gui._di.annotations.ProgressBarGlobalSize;
 import net.iubris.facri.utils.Timing;
 
@@ -40,7 +42,7 @@ public class FriendsDataParser {
 	public void parse() {
 		List<File> friendsDirectories = ParsingUtils.getDirectories(feedsFriendsDataDir);		
 		setUsersTotal( friendsDirectories.size() );
-System.out.print("Parsing my friends feeds: ");	
+Printer.print("Parsing my friends feeds: ");
 		parseUsersDirs( friendsDirectories );		
 	}
 	private void parseUsersDirs(List<File> usersDirs) {
@@ -121,10 +123,10 @@ System.out.print("Parsing my friends feeds: ");
 //				System.out.println("");
 			}
 		});
-		
-		
+		Printer.println(": ok");		
 		double finish = timing.getTiming();
-System.out.println( "parsed "+usersTotal+" users in: "+finish+"s" );
+		
+Printer.println( "Parsed "+usersTotal+" users in: "+ new DecimalFormat("#.##").format(finish) +"s" );
 		userCounter = 0;
 		percentCounter = 0;
 	}
@@ -135,11 +137,11 @@ System.out.println( "parsed "+usersTotal+" users in: "+finish+"s" );
 			percentCounter++;
 			if (percentCounter==1) {
 				int toPrint = (int)percent;
-				System.out.print(toPrint);					
+				Printer.print(toPrint);					
 				if (toPrint<100) {
-					System.out.print("%... ");					
+					Printer.print("%... ");					
 				} else
-					System.out.println("%");
+					Printer.print("%");
 			}
 			if (percentCounter>9)
 				percentCounter=0;

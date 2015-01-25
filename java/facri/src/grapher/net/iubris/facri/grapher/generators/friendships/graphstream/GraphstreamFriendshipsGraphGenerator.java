@@ -9,12 +9,13 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import net.iubris.facri.grapher.generators.AbstractGraphstreamGraphGenerator;
 import net.iubris.facri.grapher.generators.friendships.FriendshipsGraphGenerator;
+import net.iubris.facri.grapher.generators.graphstream.AbstractGraphstreamGraphGenerator;
 import net.iubris.facri.model.graph.GraphsHolder;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.User;
 import net.iubris.facri.model.world.World;
+import net.iubris.facri.utils.Printer;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
@@ -132,7 +133,7 @@ public class GraphstreamFriendshipsGraphGenerator extends AbstractGraphstreamGra
 		
 		// TODO normalize size using friends number ?
 		float normalizedFriendsCount = normalizeFriendsCount( user.getFriendsCount() );
-		System.out.println(user.getUid()+" "+normalizedFriendsCount);
+		Printer.println(user.getUid()+" "+normalizedFriendsCount);
 		node.setAttribute("ui.size",  normalizedFriendsCount+"gu");
 		
 		pause();
@@ -196,7 +197,7 @@ public class GraphstreamFriendshipsGraphGenerator extends AbstractGraphstreamGra
 	}
 
 	@Override
-	public void doneGraphGeneration() {
+	public void setGraphAsGenerated() {
 		graphsHolder.setFriendshipsGraphsCreated(true);
 	}
 	

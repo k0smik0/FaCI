@@ -9,6 +9,7 @@ import net.iubris.facri.model.graph.GraphsHolder;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.User;
 import net.iubris.facri.model.world.World;
+import net.iubris.facri.utils.Printer;
 import net.iubris.heimdall.actions.CommandAction;
 import net.iubris.heimdall.command.ConsoleCommand;
 
@@ -41,7 +42,7 @@ public class SearchUserInGraphAction implements CommandAction {
 					if (user.isPresent())
 						doWhenUserFound( user.get() );
 					else
-						System.out.println("no user found");
+						Printer.println("no user found");
 					
 //					doWithOptional(user);
 					
@@ -66,7 +67,7 @@ public class SearchUserInGraphAction implements CommandAction {
 					if (friendOrAlikeByName.isPresent())
 						doWhenUserFound( friendOrAlikeByName.get() );
 					else
-						System.out.println("no user found");
+						Printer.println("no user found");
 
 					break;
 				case m:
@@ -76,16 +77,16 @@ public class SearchUserInGraphAction implements CommandAction {
 				// System.out.println( SearchUserInGraphCommand.S.getHelpMessage() );
 				}
 			} catch(IllegalArgumentException e) {
-				System.out.println( SearchUserInGraphCommand.S.getHelpMessage() );
+				Printer.println( SearchUserInGraphCommand.S.getHelpMessage() );
 			}
 		}
 //		100004559771088
 	}
 	
 	enum SearchArg {
-		u,
-		n,
-		m;
+		u, // user by id
+		n, // user by name
+		m; // me
 	}
 	
 	private boolean notEnoughArgs(String[] params, Console console) {
@@ -106,8 +107,6 @@ public class SearchUserInGraphAction implements CommandAction {
 	private Optional<User> doWhenUserFound(User user) {
 //		markUser( graphHolder.getInteractionsGraph(), user.getUid() );
 		markUser( user.getUid() );
-		System.out.println( user );
-		
 		return Optional.empty();
 	}
 	

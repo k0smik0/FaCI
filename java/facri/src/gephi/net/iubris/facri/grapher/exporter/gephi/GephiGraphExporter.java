@@ -7,7 +7,7 @@ import java.io.StringWriter;
 
 import javax.inject.Inject;
 
-import net.iubris.facri._di.annotations.grapher.corpus.CorpusPrefix;
+import net.iubris.facri._di.annotations.grapher.corpus.CorpusPathPrefix;
 import net.iubris.facri.grapher.exporter.AbstractGraphExporter;
 
 import org.gephi.io.exporter.api.ExportController;
@@ -22,7 +22,7 @@ public class GephiGraphExporter extends AbstractGraphExporter {
 
 	@Inject
 	public GephiGraphExporter(Workspace workspace
-			,@CorpusPrefix String corpusPrefixProvider
+			,@CorpusPathPrefix String corpusPrefixProvider
 			) throws IOException {
 		super(corpusPrefixProvider);
 		this.workspace = workspace;

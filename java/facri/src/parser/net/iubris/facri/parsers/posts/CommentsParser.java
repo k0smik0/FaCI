@@ -17,6 +17,7 @@ import net.iubris.facri.model.comments.Comment;
 import net.iubris.facri.model.comments.CommentsHolder;
 import net.iubris.facri.model.posts.Post;
 import net.iubris.facri.model.world.World;
+import net.iubris.facri.utils.Printer;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -54,7 +55,7 @@ public class CommentsParser {
 						.getToOtherUserInteractions(owningWallUserId).incrementComments();				
 				}
 			} catch (FileNotFoundException | JAXBException | XMLStreamException e) {
-				System.out.println("error for file: "+commentsJsonFile.getName());
+				Printer.println("error for file: "+commentsJsonFile.getName());
 				e.printStackTrace();
 			}
 		}		
@@ -80,7 +81,7 @@ public class CommentsParser {
 			for (Comment commentData: commentsData) {
 //	System.out.println(commentData);
 				String commentingUserId = commentData.getFromId();
-	System.out.println("\t\t\tcomment: "+commentingUserId);
+	Printer.println("\t\t\tcomment: "+commentingUserId);
 //	System.out.println("here");
 			}
 	

@@ -12,7 +12,8 @@ function getPath() {
 }
 
 function getGuice() {
-   echo $(find libs/guice libs/guava -iname *.jar |egrep -v "sisu|guice-3.0.jar|aopalliance")
+   local guice=$(find libs/guice libs/guava -iname *.jar |egrep -v "sisu|guice-3.0.jar|aopalliance")
+   echo $guice
 }
 
 function getHeimdall() {
@@ -42,6 +43,7 @@ function getOpencsv() {
 function getOthers() {
    echo $(find libs -type f -iname *.jar | egrep -v "guice|guava")
 }
+
 
 classpath_to_build=$(getGuice):$(getHeimdall):$(getBerkeleyPersister):$(getGrph):$(getGraphstream):$(getStaxon):$(getOpencsv)
 #classpath_to_build=$(getGuice):$(getHeimdall):$(getGrph):$(getGraphstream):$(getStaxon):$(getOpencsv)

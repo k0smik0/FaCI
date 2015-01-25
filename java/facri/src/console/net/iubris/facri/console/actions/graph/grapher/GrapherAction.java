@@ -49,11 +49,9 @@ public class GrapherAction implements CommandAction {
 				return;
 			}
 			
-			
-//			UseCache useCache = UseCache.isUsingCache(params, dataParser);
 			CacheHandler useCache = useCacheFactory.create(params);
 			
-			try {
+//			try {
 				String graphTypeParam = params[0];
 				String worldTypeParam = params[1];
 				
@@ -66,9 +64,9 @@ public class GrapherAction implements CommandAction {
 				);
 				
 				fixCSS();
-			} catch(IllegalArgumentException e) {
-				console.printf(WRONG_ARGUMENT);
-			}
+//			} catch(IllegalArgumentException e) {
+//				console.printf(WRONG_ARGUMENT);
+//			}
 			
 			/*
 //			Graph graph = null;
@@ -128,38 +126,6 @@ public class GrapherAction implements CommandAction {
 			graphsHolder.getInteractionsGraph().setAttribute("ui.stylesheet", "url('interactions.css')");
 		}		
 	}
-
-	/*private UseCache handleUseCache(String[] params) throws JAXBException, XMLStreamException, IOException {
-		boolean cacheRead = false, cacheWrite = false;
-		// bad, but working
-		if (params.length==3) {
-			String useCacheString = params[2];
-			UseCacheArguments useCacheArguments = UseCacheArguments.valueOf(useCacheString);
-			try {
-				switch(useCacheArguments) {
-					// if read from cache, do not parse
-					case cr:
-						cacheRead = true;
-						break;
-					// write a cache, so parse for new data
-					case cw:
-						dataParser.parse();
-						cacheWrite = true;
-						break;
-					default:
-						break;
-				}
-			} catch (IllegalArgumentException e) {
-				System.out.println("wrong argument");
-			}
-
-		} else {
-			// no cache choise at all, so parse
-			dataParser.parse();
-		}
-		return new UseCache(cacheRead, cacheWrite);
-	}*/
-	
 	public enum GrapherCommand implements ConsoleCommand {
 		G;
 		@Override
@@ -183,19 +149,4 @@ public class GrapherAction implements CommandAction {
 			+UseCacheArguments.cw.getHelpMessage()
 			+HelpAction.tab(2)+"example: 'g i mf' -> graphs interactions between me and my friends";
 	}
-	
-	/*public enum UseCacheArguments implements ConsoleCommand {
-		cw("cache read: (try to) import previous generated graph from a cached file") {},
-		cr("cache write: export generated graph on a cache file") {};
-		UseCacheArguments(String helpMessageCore) {
-			this.helpMessage = 
-//					ConsoleCommand.Utils.
-					getPrefix(this,3)+helpMessageCore+"\n";
-		}
-		@Override
-		public String getHelpMessage() {
-			return helpMessage;
-		}
-		private final String helpMessage;
-	}*/
 }

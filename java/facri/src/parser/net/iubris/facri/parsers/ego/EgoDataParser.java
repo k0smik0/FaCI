@@ -13,6 +13,7 @@ import net.iubris.facri.model.world.World;
 import net.iubris.facri.parsers.Parser;
 import net.iubris.facri.parsers.posts.PostsParser;
 import net.iubris.facri.parsers.utils.ParsingUtils;
+import net.iubris.facri.utils.Printer;
 
 public class EgoDataParser implements Parser {
 
@@ -44,7 +45,7 @@ public class EgoDataParser implements Parser {
 	
 	@Override
 	public void parse(File... userDirs) throws IOException {
-System.out.print("Parsing my own feeds:");
+Printer.print("Parsing my own feeds:");
 		List<File> dirs = ParsingUtils.getDirectories(feedsMeDataDir);
 		if (!dirs.isEmpty()) {
 			File myUserDirectory = dirs.get(0);
@@ -64,6 +65,6 @@ System.out.print("Parsing my own feeds:");
 			
 			postsParser.parse(myUserDirectory/*, owningWallUserId*/);
 		}
-		System.out.println(" ok");
+		Printer.println(" ok");
 	}
 }

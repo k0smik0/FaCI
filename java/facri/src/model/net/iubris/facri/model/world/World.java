@@ -16,6 +16,7 @@ import net.iubris.facri.model.posts.Post;
 import net.iubris.facri.model.users.Ego;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.User;
+import net.iubris.facri.utils.Printer;
 
 import com.sleepycat.persist.model.Entity;
 
@@ -195,7 +196,7 @@ class DataTester {
 		public void accept(String t, FriendOrAlike foa) {
 //			if (foa.getMutualFriends().size() >0) {
 				String uid = foa.getUid();
-				System.out.println( "["+userCounter+"] "+uid+( ego.isMyFriendById(uid)? " (friend): ":" (friend of friend):") 
+				Printer.println( "["+userCounter+"] "+uid+( ego.isMyFriendById(uid)? " (friend): ":" (friend of friend):") 
 					+"\n\tmutual friends: "+foa.getMutualFriends().size()
 					);
 				printSomeUserInformations(foa);
@@ -214,14 +215,14 @@ class DataTester {
 		};
 		Optional<Post> eagerPost = posts.stream().parallel().min(postTimeComparator);
 		Optional<Post> youngerPost = posts.stream().parallel().max(postTimeComparator);
-		System.out.println(
+		Printer.println(
 				"\tposts: "+user.getOwnPostsCount()+"/"+posts.size()
 				);
-		System.out.print("\t\teager: ");
-				eagerPost.ifPresent(	 c->System.out.print(c.getCreatedTime()) );
-		System.out.print("\n\t\tyounger: ");
-				youngerPost.ifPresent(c->System.out.print(c.getCreatedTime()) );
-		System.out.println(
+		Printer.print("\t\teager: ");
+				eagerPost.ifPresent(	 c->Printer.print(c.getCreatedTime()) );
+		Printer.print("\n\t\tyounger: ");
+				youngerPost.ifPresent(c->Printer.print(c.getCreatedTime()) );
+		Printer.println(
 				 "\n\t\treceived likes: "+user.getOwnLikedPostsCount()
 				+"\n\t\treshared: "+user.getOwnPostsResharingCount()
 				

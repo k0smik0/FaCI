@@ -17,6 +17,5 @@ public class EgoFacriBerkeleyDBAutoCommittableHelper extends FacriBerkeleyDBAuto
 			EntityModel entityModel,
 			BerkeleyDBHelperManager berkeleyDBHelperManager) {
 		super(corpusName, "ego", entityModel, berkeleyDBHelperManager);
-		System.out.println(corpusName);
 	}
 }

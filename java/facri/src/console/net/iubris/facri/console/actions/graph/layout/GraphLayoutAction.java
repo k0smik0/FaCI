@@ -5,6 +5,7 @@ import java.io.Console;
 import javax.inject.Inject;
 
 import net.iubris.facri.model.graph.GraphsHolder;
+import net.iubris.facri.utils.Printer;
 import net.iubris.heimdall.actions.CommandAction;
 import net.iubris.heimdall.command.ConsoleCommand;
 
@@ -35,7 +36,7 @@ public class GraphLayoutAction implements CommandAction {
 			graphsHolder.getInteractionsGraphViewer().disableAutoLayout();
 			break;
 		default:
-			System.out.println( GraphLayoutCommand.L.getHelpMessage() );
+			Printer.println( GraphLayoutCommand.L.getHelpMessage() );
 		}
 
 	}

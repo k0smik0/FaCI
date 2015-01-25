@@ -10,7 +10,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import net.iubris.facri.grapher.generators.AbstractGraphstreamGraphGenerator;
+import net.iubris.facri.grapher.generators.graphstream.AbstractGraphstreamGraphGenerator;
 import net.iubris.facri.grapher.generators.interactions.InteractionsGraphGenerator;
 import net.iubris.facri.grapher.generators.interactions.InteractionsWeigths;
 import net.iubris.facri.model.graph.GraphsHolder;
@@ -413,7 +413,7 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
 	}
 	
 	@Override
-	public void doneGraphGeneration() {
+	public void setGraphAsGenerated() {
 		graphsHolder.setInteractionsGraphsCreated(true);
 	}
 

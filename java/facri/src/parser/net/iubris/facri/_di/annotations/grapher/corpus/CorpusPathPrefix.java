@@ -10,4 +10,4 @@ import javax.inject.Qualifier;
 @Qualifier
 @Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD }) 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CorpusPrefix {}
+public @interface CorpusPathPrefix {}

@@ -1,16 +1,17 @@
 package net.iubris.facri.console.actions.graph.grapher;
 
-import java.util.EnumMap;
 import java.io.IOException;
+import java.util.EnumMap;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
 import net.iubris.facri.console.actions.graph.utils.cache.CacheHandler;
-import net.iubris.facri.grapher.generators.GraphstreamGraphGenerator;
 import net.iubris.facri.grapher.generators.friendships.graphstream.GraphstreamFriendshipsGraphGenerator;
+import net.iubris.facri.grapher.generators.graphstream.GraphstreamGraphGenerator;
 import net.iubris.facri.grapher.generators.interactions.graphstream.GraphstreamInteractionsGraphGenerator;
 import net.iubris.facri.model.graph.GraphsHolder;
 import net.iubris.heimdall.command.ConsoleCommand;
@@ -21,10 +22,14 @@ public class GrapherExecutor {
 	
 	private final Map<GraphType,GraphstreamGraphGenerator> graphgeneratorsMap = new EnumMap<GraphType,GraphstreamGraphGenerator>(GraphType.class);
 	
+	public static final String graph_name = "graph_name";
+	private static String myUserId = "";
+	
 	@Inject
-	public GrapherExecutor(GraphstreamFriendshipsGraphGenerator graphstreamFriendshipsGraphGenerator, GraphstreamInteractionsGraphGenerator graphstreamInteractionsGraphGenerator) {
+	public GrapherExecutor(GraphstreamFriendshipsGraphGenerator graphstreamFriendshipsGraphGenerator, GraphstreamInteractionsGraphGenerator graphstreamInteractionsGraphGenerator, @Named("my_user_id") String myUserId) {
 		graphgeneratorsMap.put(GraphType.friendships, graphstreamFriendshipsGraphGenerator);
 		graphgeneratorsMap.put(GraphType.interactions, graphstreamInteractionsGraphGenerator);
+		GrapherExecutor.myUserId = myUserId;
 	}
 	
 	public void execute(GraphType graphType, WorldType worldType, CacheHandler useCache) throws IOException, JAXBException, XMLStreamException {
@@ -80,7 +85,7 @@ public class GrapherExecutor {
 			public void makeGraph(GraphstreamGraphGenerator graphstreamGraphGenerator, CacheHandler useCache, String filenamePrefix) throws IOException, JAXBException, XMLStreamException {
 				GraphGeneratorExecutor.exec(graphstreamGraphGenerator.getGraph(),
 						graphstreamGraphGenerator::generateMeWithMyFriends,
-						graphstreamGraphGenerator::doneGraphGeneration,
+						graphstreamGraphGenerator::setGraphAsGenerated,
 						useCache,
 						WorldType.getFilename(filenamePrefix, name())
 					);
@@ -91,7 +96,7 @@ public class GrapherExecutor {
 			public void makeGraph(GraphstreamGraphGenerator graphstreamGraphGenerator, CacheHandler useCache, String filenamePrefix) throws IOException, JAXBException, XMLStreamException {
 				GraphGeneratorExecutor.exec(graphstreamGraphGenerator.getGraph(),
 						graphstreamGraphGenerator::generateMyFriends,
-						graphstreamGraphGenerator::doneGraphGeneration,
+						graphstreamGraphGenerator::setGraphAsGenerated,
 						useCache,
 						WorldType.getFilename(filenamePrefix, name())
 					);
@@ -102,7 +107,7 @@ public class GrapherExecutor {
 			public void makeGraph(GraphstreamGraphGenerator graphstreamGraphGenerator, CacheHandler useCache, String filenamePrefix) throws IOException, JAXBException, XMLStreamException {
 				GraphGeneratorExecutor.exec(graphstreamGraphGenerator.getGraph(),
 						graphstreamGraphGenerator::generateMyFriendsAndFriendOfFriends,
-						graphstreamGraphGenerator::doneGraphGeneration,
+						graphstreamGraphGenerator::setGraphAsGenerated,
 						useCache,
 						WorldType.getFilename(filenamePrefix, name())
 					);
@@ -113,7 +118,7 @@ public class GrapherExecutor {
 			public void makeGraph(GraphstreamGraphGenerator graphstreamGraphGenerator, CacheHandler useCache, String filenamePrefix) throws IOException, JAXBException, XMLStreamException {
 				GraphGeneratorExecutor.exec(graphstreamGraphGenerator.getGraph(),
 						graphstreamGraphGenerator::generateFriendOfFriends,
-						graphstreamGraphGenerator::doneGraphGeneration,
+						graphstreamGraphGenerator::setGraphAsGenerated,
 						useCache,
 						WorldType.getFilename(filenamePrefix, name())
 					);
@@ -124,7 +129,7 @@ public class GrapherExecutor {
 			public void makeGraph(GraphstreamGraphGenerator graphstreamGraphGenerator, CacheHandler useCache, String filenamePrefix) throws IOException, JAXBException, XMLStreamException {
 				GraphGeneratorExecutor.exec(graphstreamGraphGenerator.getGraph(),
 						graphstreamGraphGenerator::generateMeWithMyFriendsAndTheirFriends,
-						graphstreamGraphGenerator::doneGraphGeneration,
+						graphstreamGraphGenerator::setGraphAsGenerated,
 						useCache,
 						WorldType.getFilename( filenamePrefix, name() )
 				);
@@ -185,30 +190,20 @@ public class GrapherExecutor {
 	
 	@FunctionalInterface
 	public interface GraphGenerationFunction {
-		void exec();
+		void generate();
 	}
 	@FunctionalInterface
 	public interface GraphGenerationDoneFunction {
-		void exec();
+		void setGenerated();
 	}
 	public static class GraphGeneratorExecutor {
 		public static void exec(Graph graph, 
 				GraphGenerationFunction graphGeneratorFunction,
 				GraphGenerationDoneFunction graphGeneratorDoneFunction,
 				CacheHandler cacheHandler, String fileBasename) throws IOException, JAXBException, XMLStreamException {
+
+			graph.addAttribute(graph_name, myUserId+"_-_"+fileBasename);
 			
-//			if ( ! useCache.readIfPresent(graph, fileBasename) ) {
-//				graphGeneratorFunction.exec();
-//				graphGeneratorDoneFunction.exec();
-//			}
-			
-//			cacheHandler.readIfPresent(graph,
-//					fileBasename,
-//					graphGeneratorFunction,
-//					graphGeneratorDoneFunction)
-////					;
-////			useCache
-//			.writeIfWanted(graph, fileBasename);
 			cacheHandler.exec(graph,
 					fileBasename,
 					graphGeneratorFunction,
