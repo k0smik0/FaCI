@@ -11,6 +11,7 @@ import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor.GraphGener
 import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor.GraphGenerationFunction;
 import net.iubris.facri.console.actions.graph.utils.cache.persister.WorldPersisterService;
 import net.iubris.facri.parsers.DataParser;
+import net.iubris.facri.utils.Pauser;
 import net.iubris.facri.utils.Printer;
 import net.iubris.heimdall.command.ConsoleCommand;
 
@@ -31,14 +32,12 @@ public class CacheHandler {
 	private final DataParser dataParser;
 	
 	private final String dirTree;
-//	private final String corpusPrefix;
 	
 	private String cacheType;
 	private FileSink fileSink;
 	private String fileExtension;
 	
 	private final WorldPersisterService worldPersisterService;
-//	private final String myUserId;
 	
 	@AssistedInject
 	public CacheHandler(
@@ -99,11 +98,12 @@ public class CacheHandler {
 		.writeIfWanted(graph, fileBasename);
 	}
 	
-	public CacheHandler readIfPresent(Graph graph, String cacheFilename,GraphGenerationFunction graphGeneratorFunction,
+	public CacheHandler readIfPresent(Graph graph, String cacheFilename, GraphGenerationFunction graphGeneratorFunction,
 			GraphGenerationDoneFunction graphGeneratorDoneFunction) throws IOException, JAXBException, XMLStreamException {
 		if (readFromCache) {
 //			 TODO persister: restore populate()
 			worldPersisterService.populate();
+//			String cacheFilename = graph
 			readGraph(graph, cacheFilename+"."+getCacheFileExtension());
 		} else {
 			dataParser.parse();
@@ -114,6 +114,7 @@ public class CacheHandler {
 	}
 	
 	private void readGraph(Graph graph, String filename) throws IOException {
+//		System.out.println(graph.getAttribute(GrapherExecutor.graph_name));
 		String filenamePath = dirTree+File.separatorChar+filename;
 		FileSource fileSource =  
 //					FileSourceFactory.sourceFor(filenamePath);
@@ -124,6 +125,7 @@ public class CacheHandler {
 			fileSource.begin(filenamePath);
 			while (fileSource.nextEvents()) {
 				// Optionally some code here ...
+				Pauser.sleep(5);
 			}
 			fileSource.end();
 		} catch (IOException e) {

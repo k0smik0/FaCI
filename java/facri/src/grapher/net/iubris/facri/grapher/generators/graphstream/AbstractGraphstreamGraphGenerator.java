@@ -3,19 +3,19 @@ package net.iubris.facri.grapher.generators.graphstream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.graphstream.graph.Edge;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
-
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
-
 import net.iubris.facri.model.graph.GraphsHolder;
 import net.iubris.facri.model.users.Ego;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.User;
 import net.iubris.facri.model.world.World;
 import net.iubris.facri.utils.MemoryUtil;
+
+import org.graphstream.graph.Edge;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 
 
 public abstract class AbstractGraphstreamGraphGenerator implements GraphstreamGraphGenerator {
@@ -69,6 +69,7 @@ public abstract class AbstractGraphstreamGraphGenerator implements GraphstreamGr
 	public void generateMeWithMyFriends() {
 		this.egoNode = createMe();
 		createMyFriendsWithMe();
+//		testGraph();
 	}
 	@Override
 	public void generateMeWithMyFriendsAndTheirFriends() {
@@ -143,26 +144,25 @@ public abstract class AbstractGraphstreamGraphGenerator implements GraphstreamGr
 	protected abstract Node getOrCreateFriendNodeAndEdgesWithMe(User myFriend);
 	
 	protected Edge createEdge(Node firstNode, Node secondNode, boolean directed, float weight, String uiClass) {
-		String edgeId = firstNode.getId()+"_to_"+secondNode.getId();
+		String edgeId = buildEdgeId(firstNode, secondNode);
 		Edge createdEdge = graph.addEdge(edgeId, firstNode.getId(), secondNode.getId(), directed);
 			
 		createdEdge.setAttribute("ui.class", uiClass);
 		
 		return createdEdge;
 	}
+	protected String buildEdgeId(Node firstNode, Node secondNode) {
+		String edgeId = firstNode.getId()+"_to_"+secondNode.getId();
+		return edgeId;
+	}
 	
 	protected abstract boolean areMutualFriendsAlreadyComputed(String firstUserId, String secondUserId);
-//	{	if ( myFriendsToMutualFriendsEdgesTable.contains(firstUserId, secondUserId) && myFriendsToMutualFriendsEdgesTable.contains(secondUserId, firstUserId) ) {
-//   		return true;
-//   	}
-//		return false;
-//	}
 	
-	protected void pause(int ms) {
-		try {
-			Thread.sleep(ms);
-		} catch (InterruptedException e) {}
-	}
+//	protected void pause(int ms) {
+//		try {
+//			Thread.sleep(ms);
+//		} catch (InterruptedException e) {}
+//	}
 	
 	@Override
 	public Graph getGraph() {
@@ -170,14 +170,22 @@ public abstract class AbstractGraphstreamGraphGenerator implements GraphstreamGr
 	}
 	
 	
-	protected void testGraph() {
+	public void testGraph() {
 
 		graphNodesCountTest = graph.getNodeCount();
 		graphEdgesCountTest = graph.getEdgeCount();
+
+		System.out.println("Ego:\n"
+				+"degree: "+egoNode.getDegree()+"\n"
+				+"in-degree: "+egoNode.getInDegree()+"\n"
+				+"out-degree: "+egoNode.getOutDegree()+"\n\n"
+				);
 		
-		System.out.println( "\tmy friends:\n" 
+		System.out.println(
+				"\tme: "+egoNode.getInDegree()+","+egoNode.getOutDegree()+"\n"
+				+"\tmy friends:\n" 
 				+"\t\tnodes (map): "+ myFriendsFromWorldMap.size()+" = "+myFriendsNodesMap.size()+"\n"
-				+"\t\tedges with me (map): "+myFriendsWithMeEdgesAndViceversaTable.size()+"\n"
+				+"\t\tedges with me (map): "+myFriendsWithMeEdgesAndViceversaTable.size()+"(2*"+myFriendsWithMeEdgesAndViceversaTable.row(egoNode.getId()).values().size()+")\n"
 				+"\t\tedges to each others (map): "+myFriendsToMutualFriendsEdgesTable.values().size()+"\n"/*" graph:"+graphEdgesCount+"(friendsToMutualFriends+friendsToMe)\n"*/
 				+"\tfriends of my friends (maps):\n"
 				+"\t\tnodes (map): "+friendOfFriendFromWorldMap.size()+" = "+friendOfFriendNodeMap.size()+"\n"/*+" graph:"+undirectedGraph.getNodeCount()+"(f+fof+me)\n"*/
@@ -193,7 +201,7 @@ public abstract class AbstractGraphstreamGraphGenerator implements GraphstreamGr
 //		garbageUselessFriends();
 		
 //		reparseGraphCSS();
-		garbageUselessAll();
+		garbageUseless();
 	}
 	
 	@Override
@@ -222,7 +230,7 @@ public abstract class AbstractGraphstreamGraphGenerator implements GraphstreamGr
 //		System.out.println("released: "+(checkMemoryPre-checkMemoryAfter)+"Mb");
 	}
 	
-	protected void garbageUselessAll() {
+	public void garbageUseless() {
 		garbageUselessFriends();
 		garbageUselessFriendsOfFriends();
 

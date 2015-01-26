@@ -19,23 +19,16 @@ import net.iubris.heimdall.command.ConsoleCommand;
 
 public class GrapherAction implements CommandAction {
 	
-//	private final static String WRONG_ARGUMENTS_NUMBER = "analyzer needs two arguments; type 'h' for help\n";
-//	private final static String WRONG_ARGUMENT = "wrong arguments for analysis: type 'h' for help\n";
-	
-//	private final DataParser dataParser;
 	private final GraphsHolder graphsHolder;
 	private final GrapherExecutor grapherExecutor;
 	private final CacheHandlerFactory useCacheFactory;
 
 	@Inject
 	public GrapherAction(
-//			DataParser dataParser,
-			// missing friendships generator
 			GraphsHolder graphHolder,
 			GrapherExecutor grapherExecutor
 			, CacheHandlerFactory useCacheFactory
 			) {
-//		this.dataParser = dataParser;
 		this.graphsHolder = graphHolder;
 		this.grapherExecutor = grapherExecutor;
 		this.useCacheFactory = useCacheFactory;
@@ -59,11 +52,11 @@ public class GrapherAction implements CommandAction {
 					// graph type
 					Enum.valueOf(GraphTypeCommand.class, graphTypeParam).getGraphType().prepareGraph(graphsHolder),
 					// world type
-					Enum.valueOf(WorldTypeCommand.class, worldTypeParam).getWorldType(),
+					Enum.valueOf(WorldTypeCommand.class, worldTypeParam).getWorldType(), 
 					useCache
 				);
 				
-				fixCSS();
+//				fixCSS();
 //			} catch(IllegalArgumentException e) {
 //				console.printf(WRONG_ARGUMENT);
 //			}
@@ -118,14 +111,14 @@ public class GrapherAction implements CommandAction {
 //		}
 	}
 	
-	private void fixCSS() {
-		if (graphsHolder.isFriendshipsGraphCreated()) {
-			graphsHolder.getFriendshipsGraph().setAttribute("ui.stylesheet", "url('friendships.css')");
-		}
-		if (graphsHolder.isInteractionsGraphCreated()) {
-			graphsHolder.getInteractionsGraph().setAttribute("ui.stylesheet", "url('interactions.css')");
-		}		
-	}
+//	private void fixCSS() {
+//		if (graphsHolder.isFriendshipsGraphCreated()) {
+//			graphsHolder.getFriendshipsGraph().setAttribute("ui.stylesheet", "url('friendships.css')");
+//		}
+//		if (graphsHolder.isInteractionsGraphCreated()) {
+//			graphsHolder.getInteractionsGraph().setAttribute("ui.stylesheet", "url('interactions.css')");
+//		}
+//	}
 	public enum GrapherCommand implements ConsoleCommand {
 		G;
 		@Override

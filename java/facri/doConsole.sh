@@ -39,13 +39,19 @@ function getStaxon() {
 function getOpencsv() {
    echo $(getJars libs/opencsv)
 }
+function getCommons() {
+   echo  $(getJars libs/commons)
+}
+function getJFreeChart() {
+   echo $(getJars libs/jfreechart)
+}
 
 function getOthers() {
    echo $(find libs -type f -iname *.jar | egrep -v "guice|guava")
 }
 
 
-classpath_to_build=$(getGuice):$(getHeimdall):$(getBerkeleyPersister):$(getGrph):$(getGraphstream):$(getStaxon):$(getOpencsv)
+classpath_to_build=$(getGuice):$(getHeimdall):$(getBerkeleyPersister):$(getGrph):$(getGraphstream):$(getStaxon):$(getOpencsv):$(getCommons):$(getJFreeChart)
 #classpath_to_build=$(getGuice):$(getHeimdall):$(getGrph):$(getGraphstream):$(getStaxon):$(getOpencsv)
 classpath=$(echo $classpath_to_build| sed 's/ /:/g' | sed 's/:$//'):bin
 #echo $classpath

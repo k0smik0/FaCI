@@ -1,6 +1,7 @@
 package net.iubris.facri.grapher.generators.friendships.graphstream;
 
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -41,13 +42,14 @@ public class GraphstreamFriendshipsGraphGenerator extends AbstractGraphstreamGra
 	@Inject
 	public GraphstreamFriendshipsGraphGenerator(GraphsHolder graphsHolder, World world) {
 		super(graphsHolder, graphsHolder.getFriendshipsGraph(), world);
+		graph.setAttribute("ui.stylesheet", "url('css"+File.separatorChar+"friendships.css')");
 	}
 	
 	
 	@Override
 		public void generateMyFriends() {
 			super.generateMyFriends();
-			testGraph();
+			testGraph(); // TODO remove
 		}
 	
 	@Override

@@ -123,7 +123,6 @@ public class World implements Serializable {
 		return myUser;
 	}
 	public Optional<Ego> searchMe(String uid) {
-//		System.out.println(myUser);
 		if (uid.equals(myUser.getUid()))
 			return Optional.of(myUser);
 		return Optional.empty();
