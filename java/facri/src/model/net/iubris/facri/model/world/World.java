@@ -11,7 +11,7 @@ import java.util.function.BiConsumer;
 
 import javax.inject.Singleton;
 
-import net.iubris.facri.grapher.generators.interactions.InteractionsWeigths;
+import net.iubris.facri.grapher.generators.interactions.EdgeWeigths.Interactions;
 import net.iubris.facri.model.posts.Post;
 import net.iubris.facri.model.users.Ego;
 import net.iubris.facri.model.users.FriendOrAlike;
@@ -29,7 +29,7 @@ public class World implements Serializable {
 	private final Map<String,FriendOrAlike> myFriendsMap= new ConcurrentHashMap<>();
 	private final Map<String,FriendOrAlike> otherUsersMap = new ConcurrentHashMap<>();
 	
-	private final Set<Integer> appreciationsRange = new ConcurrentSkipListSet<Integer>();
+	private final Set<Float> appreciationsRange = new ConcurrentSkipListSet<Float>();
 	private final Set<Integer> postsCountRange = new ConcurrentSkipListSet<Integer>();
 	private final Set<Integer> interactionsRange = new ConcurrentSkipListSet<Integer>();
 	
@@ -90,7 +90,7 @@ public class World implements Serializable {
 		int updatedOwnPostsCount = user.getOwnPostsCount();
 		postsCountRange.add(updatedOwnPostsCount);
 		
-		int updatedAppreciation = user.getOwnLikedPostsCount() + InteractionsWeigths.RESHARED_OWN_POST*user.getOwnPostsResharingCount();
+		float updatedAppreciation = user.getOwnLikedPostsCount() + Interactions.RESHARED_OWN_POST*user.getOwnPostsResharingCount();
 		appreciationsRange.add(updatedAppreciation);
 		
 		int updatedInteractions = user.getUserInteractionsCount();
@@ -129,7 +129,7 @@ public class World implements Serializable {
 	}
 	
 	
-	public Set<Integer> getAppreciationsRange() {
+	public Set<Float> getAppreciationsRange() {
 		return appreciationsRange;
 	}
 	public Set<Integer> getPostsCountRange() {

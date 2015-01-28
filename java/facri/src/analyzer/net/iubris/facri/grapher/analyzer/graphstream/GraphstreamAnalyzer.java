@@ -2,7 +2,6 @@ package net.iubris.facri.grapher.analyzer.graphstream;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -17,7 +16,10 @@ import net.iubris.facri.utils.Printer;
 
 import org.graphstream.algorithm.BetweennessCentrality;
 import org.graphstream.algorithm.ConnectedComponents;
+import org.graphstream.algorithm.Kruskal;
+import org.graphstream.algorithm.TarjanStronglyConnectedComponents;
 import org.graphstream.algorithm.Toolkit;
+import org.graphstream.algorithm.flow.FordFulkersonAlgorithm;
 import org.graphstream.algorithm.measure.AbstractCentrality;
 import org.graphstream.algorithm.measure.ClosenessCentrality;
 import org.graphstream.algorithm.measure.ConnectivityMeasure.EdgeConnectivityMeasure;
@@ -26,8 +28,6 @@ import org.graphstream.algorithm.measure.DegreeMeasure;
 import org.graphstream.algorithm.measure.EigenvectorCentrality;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-
-import com.opencsv.CSVWriter;
 
 public class GraphstreamAnalyzer {
 	
@@ -39,7 +39,7 @@ public class GraphstreamAnalyzer {
 
 	private Node nodeWithMaximumDegreeExcludingEgo;
 //	private int intsetCounter;
-	private double[] clusteringCoefficients;
+	private double[] clusteringCoefficients; // array index is graph node index; array value is clustering coefficient
 	private int[] degreeDistribution;
 	private ArrayList<Node> degreeMap;
 	private double density;
@@ -79,19 +79,18 @@ public class GraphstreamAnalyzer {
 	public void clusteringCoefficient() throws IOException {
 		Printer.print("Clustering coefficients: ");
 		clusteringCoefficients = Toolkit.clusteringCoefficients(graph);
-		BufferedWriter ccbw = getBufferedWriter("clustering_coefficients");
-		ccbw.write("NODE,UID,Clustering Coefficient\n");
+		BufferedWriter ccbw = getCSVBufferedWriter("clustering_coefficients");
+		ccbw.write("NODE,Clustering Coefficient,UID\n");
 		for (int i=0;i<clusteringCoefficients.length;i++)
-			ccbw.write(i+","+graph.getNode(i).getId()+","+clusteringCoefficients[i]+"\n");
+			ccbw.write(i+","+clusteringCoefficients[i]+","+graph.getNode(i).getId()+"\n");
 		ccbw.close();
 		Printer.println("ok");
-//		return clusteringCoefficients;
 	}
 	
 	public void degree() throws IOException {
 		Printer.print("Degree distribution: ");
 		degreeDistribution = Toolkit.degreeDistribution(graph);
-		BufferedWriter ddbw = getBufferedWriter("degree_distribution");
+		BufferedWriter ddbw = getCSVBufferedWriter("degree_distribution");
 		ddbw.write("DEGREE,FREQUENCY\n");		
 		for (int i=0;i<degreeDistribution.length;i++) {
 			ddbw.write(i+","+degreeDistribution[i]+"\n");
@@ -101,7 +100,7 @@ public class GraphstreamAnalyzer {
 		
 		Printer.print("Nodes degree list: ");
 		degreeMap = Toolkit.degreeMap(graph);
-		BufferedWriter ndlbw = getBufferedWriter("nodes_degree_list");
+		BufferedWriter ndlbw = getCSVBufferedWriter("nodes_degree_list");
 		ndlbw.write("UID,DEGREE\n");
 		degreeMap.stream().forEach( n->{
 //			Printer.println("\t"+n.getId()+": "+n.getDegree())
@@ -117,22 +116,18 @@ public class GraphstreamAnalyzer {
 		nodeWithMaximumDegreeExcludingEgo = degreeMap.get(1);
 		Printer.println("Node with maximum degree (excluding ego) has degree: "+nodeWithMaximumDegreeExcludingEgo.getDegree());
 
-//		return degreeDistribution;
 	}
 	
 	public void density() {
 		Printer.print("Density: ");
 		density = Toolkit.density(graph);
 		Printer.println(density);
-//		return density;
 	}
 	
 	public void diameter(String weightAttributeName, boolean directed) {
 		Printer.print("Diameter: ");
 		diameter = Toolkit.diameter(graph, weightAttributeName, directed);
 		Printer.println(diameter);
-		
-//		return diameter;
 	}
 	
 	public void centralities() throws IOException {
@@ -154,7 +149,7 @@ public class GraphstreamAnalyzer {
 		betweennessCentrality.init(graph);
 		betweennessCentrality.compute();
 		String label = "betweenness_centrality";
-		BufferedWriter bbw = getBufferedWriter(label);
+		BufferedWriter bbw = getCSVBufferedWriter(label);
 		bbw.write("UID,"+"Betweenness Centrality".toUpperCase()+"\n");
 		Iterator<Node> iterator = graph.iterator();
 		while (iterator.hasNext()) {
@@ -172,7 +167,7 @@ public class GraphstreamAnalyzer {
 		centrality.compute();
 		centrality.copyValuesTo(attribute);
 		Iterator<Node> iterator = graph.iterator();
-		BufferedWriter cbw = getBufferedWriter(label.replace(" ", "_").toLowerCase());
+		BufferedWriter cbw = getCSVBufferedWriter(label.replace(" ", "_").toLowerCase());
 		cbw.write("UID,"+label.toUpperCase()+"\n");
 		while (iterator.hasNext()) {
 			Node node = iterator.next();
@@ -209,6 +204,26 @@ public class GraphstreamAnalyzer {
 		edgeConnectivityMeasure.terminate();
 		Printer.println(edgeConnectivity);
 //		return edgeConnectivity;
+	}
+	
+	public void MaximumFlow() {
+		FordFulkersonAlgorithm ffa = new FordFulkersonAlgorithm();
+		ffa.init(graph);
+		ffa.compute();
+		ffa.getMaximumFlow();
+	}
+	
+	public void MST() {
+//		Prim p = new Prim();
+		new Kruskal();
+		new TarjanStronglyConnectedComponents();
+	}
+	
+	public void StrongConnectedComponents() {
+		TarjanStronglyConnectedComponents tarjanStronglyConnectedComponents = new TarjanStronglyConnectedComponents();
+		tarjanStronglyConnectedComponents.setSCCIndexAttribute("ssc");
+		tarjanStronglyConnectedComponents.init(graph);
+		tarjanStronglyConnectedComponents.compute();
 	}
 	
 //	public void epidemicCommunity() {
@@ -297,6 +312,7 @@ public class GraphstreamAnalyzer {
 
 	public void connected() {
 		graph.removeNode(egoNode);
+		
 		connectedComponentsWithoutEgo = new ConnectedComponents(graph);
 		connectedComponentsWithoutEgo.compute();
 		Printer.println("Connected components without Ego: "+connectedComponentsWithoutEgo.getConnectedComponentsCount());
@@ -304,6 +320,7 @@ public class GraphstreamAnalyzer {
 		giantComponent = connectedComponentsWithoutEgo.getGiantComponent();
 		Printer.print("Giant component without Ego: "+giantComponent.size()+"\n\t");
 		giantComponent.stream().parallel().forEach( n-> {
+//			n.getAttributeKeySet().stream().forEach(a->System.out.print(a+" "));
 			String defaultUiClassAttribute = n.getAttribute("ui.class");
 			n.setAttribute("ui.class", defaultUiClassAttribute+",giantcomponent");
 //			Printer.print(n.getId()+" ");
@@ -312,8 +329,8 @@ public class GraphstreamAnalyzer {
 	}
 	
 	
-	private BufferedWriter getBufferedWriter(String suffix) throws IOException {
-		BufferedWriter bw = Files.newBufferedWriter(FileSystems.getDefault().getPath(resultsDir.getPath()+File.separatorChar+graphName+"_-_"+suffix));
+	private BufferedWriter getCSVBufferedWriter(String suffix) throws IOException {
+		BufferedWriter bw = Files.newBufferedWriter(FileSystems.getDefault().getPath(resultsDir.getPath()+File.separatorChar+graphName+"_-_"+suffix+".csv"));
 		return bw;
 	}
 	

@@ -12,8 +12,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import net.iubris.facri.grapher.generators.graphstream.AbstractGraphstreamGraphGenerator;
+import net.iubris.facri.grapher.generators.interactions.EdgeWeigths;
 import net.iubris.facri.grapher.generators.interactions.InteractionsGraphGenerator;
-import net.iubris.facri.grapher.generators.interactions.InteractionsWeigths;
 import net.iubris.facri.model.graph.GraphsHolder;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.Interactions;
@@ -24,11 +24,13 @@ import net.iubris.facri.utils.Pauser;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
 
+import com.google.common.collect.Table;
+
 @Singleton
 public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGraphGenerator implements InteractionsGraphGenerator {
 		
-	private int appreciationsMin;
-	private int appreciationsDenominator;
+	private float appreciationsMin;
+	private float appreciationsDenominator;
 	private int postsCountMin;
 	private int postsCountDenominator;
 	
@@ -48,16 +50,16 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
 		postsCountDenominator = Collections.max(postsCountRange)-postsCountMin;
 //System.out.print("["+postsCountMin+", "+postsCountDenominator+"] ");
 		
-		Set<Integer> appreciationsRange = world.getAppreciationsRange();
+		Set<Float> appreciationsRange = world.getAppreciationsRange();
 		appreciationsMin = Collections.min(appreciationsRange);
 		// it is weighted, so multiplicate for maximum weight
-		appreciationsDenominator = InteractionsWeigths.RESHARED_OWN_POST*Collections.max(appreciationsRange)-appreciationsMin;
+		appreciationsDenominator = EdgeWeigths.Interactions.RESHARED_OWN_POST*Collections.max(appreciationsRange)-appreciationsMin;
 //System.out.print("["+appreciationsMin+", "+appreciationsDenominator+"] ");
 		
 		Set<Integer> interactionsRange = world.getInteractionsRange();
 		interactionsMin = Collections.min(interactionsRange);
 		// it is weighted, so multiplicate for maximum weight
-		interactionsDenominator = InteractionsWeigths.POST_TO*Collections.max(interactionsRange)-interactionsMin;
+		interactionsDenominator = net.iubris.facri.grapher.generators.interactions.EdgeWeigths.Interactions.POST_TO_WALL*Collections.max(interactionsRange)-interactionsMin;
 //System.out.print("["+interactionsMin+", "+interactionsDenominator+"] ");
 	}
 	
@@ -103,23 +105,15 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
 		Iterator<Entry<String, FriendOrAlike>> myFriendsMapIterator = myFriendsMap.entrySet().iterator();
 		while (myFriendsMapIterator.hasNext()) {
       	Entry<String, FriendOrAlike> myFriendEntry = myFriendsMapIterator.next();
-//      	myFriendsMap.entrySet().parallelStream().forEach( new Consumer<Entry<String, FriendOrAlike>>() {
-//   			@Override
-//   			public void accept(Entry<String, FriendOrAlike> myFriendEntry) {
    			
       	String myFriendId = myFriendEntry.getKey();
       	FriendOrAlike myFriend = myFriendEntry.getValue();
 
       	// eventually, creates edges with me 
       	final Node myFriendNode = getOrCreateFriendNodeAndEventuallyEdgesWithMe(myFriend, includeMyuserNode);
-//      	myFriendNode.addAttribute("ui.class", friendNodeUiClass);
-//      	myFriendNode.addAttribute("stroke-width","10px");
 	         
          Set<String> mutualFriendsIds = myFriend.getMutualFriends();
          for (String myOtherFriendAlsoMutualWithMeId: mutualFriendsIds) {
-//         mutualFriendsIds.stream().forEach( new Consumer<String>() {
-//				@Override
-//				public void accept(String myOtherFriendAlsoMutualWithMeId) {
          	
 //         	// that is: a cell in myFriendsToMutualFriendsTable contains edges between these my friends 
          	if (areMutualFriendsAlreadyComputed(myFriendId, myOtherFriendAlsoMutualWithMeId)) {
@@ -127,32 +121,35 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
          	}
          	
          	// this below could be minimize outer while iterations
-//         	Node myOtherFriendAlsoMutualFriendNode = getOrCreateFriendNode(myOtherFriendAlsoMutualWithMeId);
-//         	if (includeMyuserNode) {
-//         		// my mutual friend to me and viceversa
-//         		FriendOrAlike myOtherFriendAlsoMutual = myFriendsMap.get(myOtherFriendAlsoMutualWithMeId);
-//         		getOrCreateFriendNodeAndEdgesWithMe(myOtherFriendAlsoMutual);
-//         	}
-//         	myOtherFriendAlsoMutualFriendNode.addAttribute("ui.class", friendNodeUiClass);
-         	
          	FriendOrAlike myOtherFriendAlsoMutual = myFriendsMap.get(myOtherFriendAlsoMutualWithMeId);
          	Node myOtherFriendAlsoMutualFriendNode = getOrCreateFriendNodeAndEventuallyEdgesWithMe(myOtherFriendAlsoMutual, includeMyuserNode);
          	
-         	
          	Interactions myFriendToMutualFriendInteractions = myFriend.getToOtherUserInteractions(myOtherFriendAlsoMutualWithMeId);
-         	float myFriendToMytualFriendInteractions = getWeightedInteractions(myFriendToMutualFriendInteractions);
-         	
-         	float myFriendToMytualFriendNormalizedInteractionsValue = normalize(myFriendToMytualFriendInteractions, interactionsMin, interactionsDenominator);
-//         	float myFriendToMytualFriendNormalizedInteractions = (myFriendToMytualFriendInteractions>0) ? s(float)myFriendToMytualFriendInteractions : 0;
-//         	System.out.println(myFriendToMytualFriendInteractions+" -> "+myFriendToMytualFriendNormalizedInteractions);
-         	Edge myFriendWithOtherMutualFriendEdge = createEdge(myFriendNode, myOtherFriendAlsoMutualFriendNode, myFriendToMytualFriendNormalizedInteractionsValue, myfriendWithMutualFriendEdgeUiClass);
-         	myFriendsToMutualFriendsEdgesTable.put(myFriendId, myOtherFriendAlsoMutualWithMeId, myFriendWithOtherMutualFriendEdge);
+         	float myFriendToMutualFriendInteractionsAsWeight = getWeightedInteractions(myFriendToMutualFriendInteractions);
+         	if (myFriendToMutualFriendInteractionsAsWeight>0) {
+	         	float myfriendToMytualFriendInteractionsAsWeightNormalized = normalize(myFriendToMutualFriendInteractionsAsWeight, interactionsMin, interactionsDenominator);
+	//         	System.out.println(myFriendToMytualFriendInteractions+" -> "+myFriendToMytualFriendNormalizedInteractions);
+	         	createEdge(myFriendNode, myOtherFriendAlsoMutualFriendNode, 
+	         			myFriendToMutualFriendInteractionsAsWeight,
+	         			myfriendToMytualFriendInteractionsAsWeightNormalized,
+	         			myfriendWithMutualFriendEdgeUiClass,
+	         			myFriendsToMutualFriendsEdgesTable, myFriendId, myOtherFriendAlsoMutualWithMeId
+	         			);
+         	}
+         	myFriendsToMutualFriendsEdgesComputedTable.put(myFriendId, myOtherFriendAlsoMutualWithMeId, true);
          	
          	Interactions mutualFriendToMyFriendInteractions = myFriendsMap.get(myOtherFriendAlsoMutualWithMeId).getToOtherUserInteractions(myFriendId);
-         	float myOtherFriendAlsoMutualWithMeToMyFriendSubjectInteractionsValue = getWeightedInteractions(mutualFriendToMyFriendInteractions);
-         	float myOtherFriendAlsoMutualWithMeToMyFriendSubjectNormalizedInteractionsValue = normalize(myOtherFriendAlsoMutualWithMeToMyFriendSubjectInteractionsValue, interactionsMin, interactionsDenominator);
-         	Edge myOtherFriendAlsoMutualWithMeToMyFriendSubjectEdge = createEdge(myOtherFriendAlsoMutualFriendNode, myFriendNode, myOtherFriendAlsoMutualWithMeToMyFriendSubjectNormalizedInteractionsValue, myfriendWithMutualFriendEdgeUiClass);
-         	myFriendsToMutualFriendsEdgesTable.put(myOtherFriendAlsoMutualWithMeId, myFriendId, myOtherFriendAlsoMutualWithMeToMyFriendSubjectEdge);
+         	float myOtherFriendAlsoMutualWithMeToMyFriendSubjectInteractionsAsWeight = getWeightedInteractions(mutualFriendToMyFriendInteractions);
+         	if (myOtherFriendAlsoMutualWithMeToMyFriendSubjectInteractionsAsWeight>0) {
+	         	float myOtherFriendAlsoMutualWithMeToMyFriendSubjectInteractionsAsWeightNormalized = normalize(myOtherFriendAlsoMutualWithMeToMyFriendSubjectInteractionsAsWeight, interactionsMin, interactionsDenominator);
+	         			createEdge(myOtherFriendAlsoMutualFriendNode, myFriendNode, 
+	         			myOtherFriendAlsoMutualWithMeToMyFriendSubjectInteractionsAsWeight,
+	         			myOtherFriendAlsoMutualWithMeToMyFriendSubjectInteractionsAsWeightNormalized,
+	         			myfriendWithMutualFriendEdgeUiClass, 
+	         			myFriendsToMutualFriendsEdgesTable, myOtherFriendAlsoMutualWithMeId, myFriendId
+	         			);
+         	}
+         	myFriendsToMutualFriendsEdgesComputedTable.put(myOtherFriendAlsoMutualWithMeId, myFriendId, true);
          	
          	
 //				// one edge, with weight as difference
@@ -164,16 +161,19 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
 //		      myFriendsWithMeEdgesAndViceversaTable.put(friendOfMyFriendId, friendOfFriendUserIdThatIsMyFriendThatIsMutualFriendId, edge);
 //		      myFriendsWithMeEdgesAndViceversaTable.put(friendOfFriendUserIdThatIsMyFriendThatIsMutualFriendId, friendOfMyFriendId, edge);
 			}
-//		});
       }
-//		});
 	}
 	
+//	private void createEdge() {
+//		
+//	}
+	
 	private float getWeightedInteractions(Interactions toOtherUserInteractions) {
-		return toOtherUserInteractions.getLikesCount()*InteractionsWeigths.POST_LIKE
-		+toOtherUserInteractions.getCommentsCount()*InteractionsWeigths.POST_COMMENT
-		+toOtherUserInteractions.getTagsCount()*InteractionsWeigths.TAG
-		+toOtherUserInteractions.getPostsCount()*InteractionsWeigths.POST_TO;
+		return 
+				toOtherUserInteractions.getLikesCount()	*EdgeWeigths.Interactions.POST_LIKE
+			  +toOtherUserInteractions.getCommentsCount()*EdgeWeigths.Interactions.POST_COMMENT
+			  +toOtherUserInteractions.getTagsCount()		*EdgeWeigths.Interactions.TAG
+			  +toOtherUserInteractions.getPostsCount()	*EdgeWeigths.Interactions.POST_TO_WALL ;
 	}
 	
 	@Override
@@ -195,20 +195,33 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
 				Node myFriendNode = getOrCreateFriendNode(mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId);
 				myFriendNode.addAttribute("ui.class", friendNodeUiClass);
 
-				// TODO normalize
+				// TODO new check
 				Interactions myfriendToHimFriendInteractions = myFriendsFromWorldMap.get(mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId).getToOtherUserInteractions(friendOfMyFriendId);
 				float myfriendToHimFriendInteractionsAsWeight = getWeightedInteractions(myfriendToHimFriendInteractions);
-//				System.out.println(myfriendToHimFriendInteractionsAsWeight);
-				float myfriendToHimFriendInteractionsAsNormalizedWeight = normalize(myfriendToHimFriendInteractionsAsWeight,interactionsMin,interactionsDenominator);
-				Edge myFriendWithHimFriendEdge = createEdge(myFriendNode, friendOfMyFriendNode, myfriendToHimFriendInteractionsAsNormalizedWeight, friendofmyfriendWithmyfriendEdgeUiClass);
-		      friendsOfFriendsWithFriendsEdgesTable.put(mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId, friendOfMyFriendId, myFriendWithHimFriendEdge);
+				if (myfriendToHimFriendInteractionsAsWeight>0) {
+	//				System.out.println(myfriendToHimFriendInteractionsAsWeight);
+					float myfriendToHimFriendInteractionsAsWeightNormalized = normalize(myfriendToHimFriendInteractionsAsWeight,interactionsMin,interactionsDenominator);
+					createEdge(myFriendNode, friendOfMyFriendNode, 
+							myfriendToHimFriendInteractionsAsWeight,
+							myfriendToHimFriendInteractionsAsWeightNormalized,
+							friendofmyfriendWithmyfriendEdgeUiClass,
+							friendsOfFriendsWithFriendsEdgesTable, mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId, friendOfMyFriendId
+							);
+				}
+				friendsOfFriendsWithFriendsEdgesComputedTable.put(mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId, friendOfMyFriendId, true);
 		      
 		      Interactions friendOfFriendUserToMyFriendInteractions = friendOfMyFriend.getToOtherUserInteractions(mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId);
-		      float friendOfMyFriendToHimFrienThatIsMutualFriendWithMeInteractionsValue = getWeightedInteractions(friendOfFriendUserToMyFriendInteractions);
-//		      System.out.println(friendOfMyFriendToHimFrienThatIsMutualFriendWithMeInteractions);
-		      float friendOfMyFriendToHimFrienThatIsMutualFriendWithMeNormalizedInteractionsValue = normalize(friendOfMyFriendToHimFrienThatIsMutualFriendWithMeInteractionsValue,interactionsMin,interactionsDenominator);
-		      Edge friendOfMyFriendToHimFrienThatIsMutualFriendEdge = createEdge(friendOfMyFriendNode,myFriendNode,friendOfMyFriendToHimFrienThatIsMutualFriendWithMeNormalizedInteractionsValue, friendofmyfriendWithmyfriendEdgeUiClass);
-				friendsOfFriendsWithFriendsEdgesTable.put(friendOfMyFriendId, mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId, friendOfMyFriendToHimFrienThatIsMutualFriendEdge);
+		      float friendOfMyfriendToHimFrienThatIsMutualFriendWithMeInteractionsAsWeight = getWeightedInteractions(friendOfFriendUserToMyFriendInteractions);
+		      if (friendOfMyfriendToHimFrienThatIsMutualFriendWithMeInteractionsAsWeight>0) {
+	//		      System.out.println(friendOfMyFriendToHimFrienThatIsMutualFriendWithMeInteractions);
+			      float friendOfMyfriendToHimFrienThatIsMutualFriendWithMeInteractionsAsWeightNormalized = normalize(friendOfMyfriendToHimFrienThatIsMutualFriendWithMeInteractionsAsWeight,interactionsMin,interactionsDenominator);
+			      		createEdge(friendOfMyFriendNode,myFriendNode, 
+			      		friendOfMyfriendToHimFrienThatIsMutualFriendWithMeInteractionsAsWeight,
+			      		friendOfMyfriendToHimFrienThatIsMutualFriendWithMeInteractionsAsWeightNormalized,
+			      		friendofmyfriendWithmyfriendEdgeUiClass,
+			      		friendsOfFriendsWithFriendsEdgesTable, friendOfMyFriendId, mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId);
+		      }
+		      friendsOfFriendsWithFriendsEdgesComputedTable.put(friendOfMyFriendId, mutualFriendWithFriendOfMyfriendThatIsMyFrienduserId, true);
 			}
 		}
 	}
@@ -221,33 +234,50 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
 			return myFriendNode;
 		else {			
 			myFriendNode = createNode(myFriend);
-	      myFriendsNodesMap.put(myFriendId, myFriendNode);  
-	      
-	      Interactions meToMyfriendInteractions = ego.getToOtherUserInteractions(myFriendId);
-	      float meToFriendInteractionsAsWeight = getWeightedInteractions(meToMyfriendInteractions);
-	      float meToMyFriendNormalizedInteractions = normalize(meToFriendInteractionsAsWeight, interactionsMin, interactionsDenominator);
-	      Edge meToMyfriendEdge = null;
-	      if (graph.getEdge( buildEdgeId(egoNode, myFriendNode))==null)
-	      	meToMyfriendEdge = createEdge(egoNode, myFriendNode, meToMyFriendNormalizedInteractions, meToMyfriendEdgeUiClass);
-//System.out.println(meToMyfriendEdge.isDirected()+": "+meToMyfriendEdge);
+	      myFriendsNodesMap.put(myFriendId, myFriendNode);
 	      
 	      String egoId = ego.getUid();
-	      Interactions myfriendToMeInteractions = myFriend.getToOtherUserInteractions(egoId);
-	      float myfriendToMeInteractionsAsWeight = getWeightedInteractions(myfriendToMeInteractions);
-	      float myFriendToMeNormalizedInteractions = normalize(myfriendToMeInteractionsAsWeight,interactionsMin,interactionsDenominator);
-	      Edge myfriendToMeEdge = null;
-	      if (graph.getEdge( buildEdgeId(myFriendNode, egoNode))==null)
-	      	myfriendToMeEdge = createEdge(myFriendNode, egoNode, myFriendToMeNormalizedInteractions, myfriendToMeEdgeUiClass);
-//System.out.println(myfriendToMeEdge);
 	      
-	      if (meToMyfriendEdge!=null && myfriendToMeEdge!=null) {
-	      	myFriendsWithMeEdgesAndViceversaTable.put(egoId, myFriendId, meToMyfriendEdge);
-	      	myFriendsWithMeEdgesAndViceversaTable.put(myFriendId, egoId, myfriendToMeEdge);
+	      if (!myFriendsWithMeEdgesAndViceversaComputedTable.contains(egoId, myFriendId)) {
+		      Interactions meToMyfriendInteractions = ego.getToOtherUserInteractions(myFriendId);
+		      float meToMyfriendInteractionsAsWeight = getWeightedInteractions(meToMyfriendInteractions);
+//		      Edge meToMyfriendEdge = null;
+		      if (meToMyfriendInteractionsAsWeight>0) {
+			      float meToMyfriendInteractionsAsWeightNormalized = normalize(meToMyfriendInteractionsAsWeight, interactionsMin, interactionsDenominator);
+//			      if (graph.getEdge(buildEdgeId(egoNode, myFriendNode))==null)
+			      	createEdge(egoNode, myFriendNode, 
+			      			meToMyfriendInteractionsAsWeight,
+			      			meToMyfriendInteractionsAsWeightNormalized,
+			      			meToMyfriendEdgeUiClass,
+			      			myFriendsWithMeEdgesAndViceversaTable, egoId, myFriendId);
+		      }
+		      myFriendsWithMeEdgesAndViceversaComputedTable.put(egoId, myFriendId, true);
 	      }
 	      
+	      if (!myFriendsWithMeEdgesAndViceversaComputedTable.contains(myFriendId, egoId)) {
+		      Interactions myfriendToMeInteractions = myFriend.getToOtherUserInteractions(egoId);
+		      float myfriendToMeInteractionsAsWeight = getWeightedInteractions(myfriendToMeInteractions);
+//		      Edge myfriendToMeEdge = null;
+		      if (myfriendToMeInteractionsAsWeight>0) {
+			      float myfriendToMeInteractionsAsWeightNormalized = normalize(myfriendToMeInteractionsAsWeight,interactionsMin,interactionsDenominator);
+//			      if (graph.getEdge(buildEdgeId(myFriendNode, egoNode))==null)
+			      	createEdge(myFriendNode, egoNode, 
+			      			myfriendToMeInteractionsAsWeight,
+			      			myfriendToMeInteractionsAsWeightNormalized,
+			      			myfriendToMeEdgeUiClass,
+			      			myFriendsWithMeEdgesAndViceversaTable, myFriendId, egoId);
+		      }
+		      myFriendsWithMeEdgesAndViceversaComputedTable.put(myFriendId, egoId, true);
+	      }
 	      
-//	      // one edge, with weight as difference
-//	      float diff = mineToMyFriendNormalizedInteractions-myFriendToMeNormalizedInteractions;
+//	      if (meToMyfriendEdge!=null && myfriendToMeEdge!=null) {
+//	      	myFriendsWithMeEdgesAndViceversaTable.put(egoId, myFriendId, meToMyfriendEdge);
+//	      	myFriendsWithMeEdgesAndViceversaTable.put(myFriendId, egoId, myfriendToMeEdge);
+//	      }
+	      
+	      
+//	      // experimental: one edge, with weight as difference	      
+//	      float diff = () meToMyFriendNormalizedInteractions - myFriendToMeNormalizedInteractions;
 //	      Edge edge = graph.addEdge(myFriendNode.getId()+"_to_"+egoNode.getId(), myFriendNode, egoNode, true);
 //	      edge.setAttribute("ui.size", 1-diff);
 //	      edge.setAttribute("ui.color", diff);
@@ -256,7 +286,7 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
 //	      myFriendsWithMeEdgesAndViceversaTable.put(myFriendId, ego.getId(), edge);
 	      
 	      return myFriendNode;
-		}		
+		}
 	}
 	
 	// implements on AbstractEtc
@@ -272,8 +302,8 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
 		// use color for posts count
 //		node.setAttribute("ui.color", normalizedSize);
 		
-		int appreciation = user.getOwnLikedPostsCount() + InteractionsWeigths.RESHARED_OWN_POST*user.getOwnPostsResharingCount();
-		float normalizedAppreciation = normalize(appreciation,appreciationsMin,appreciationsDenominator);
+		float appreciation = user.getOwnLikedPostsCount() + EdgeWeigths.Interactions.RESHARED_OWN_POST*user.getOwnPostsResharingCount();
+		float normalizedAppreciation = normalize(appreciation, appreciationsMin, appreciationsDenominator);
 		// use color for posts appreciations
 		node.setAttribute("ui.color", normalizedAppreciation);
 		// use size for posts appreciations
@@ -313,15 +343,31 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
    	return createdEdge;
 	}*/
 	
+	private Edge createEdge(Node firstNode, Node secondNode, float realWeight, float normalizedWeight, String uiClass, Table<String, String, Edge> edgesTable, String firstNodeId, String secondNodeId) {
+		Edge createdEdge = createEdge(firstNode, secondNode, realWeight, normalizedWeight, uiClass);
+		edgesTable.put(firstNodeId, secondNodeId, createdEdge);
+		return createdEdge;
+	}
 	
-	private Edge createEdge(Node firstNode, Node secondNode, float normalizedWeight, String uiClass) {
-		Edge createdEdge = super.createEdge(firstNode, secondNode, true, normalizedWeight, uiClass);
+	private Edge createEdge(Node firstNode, Node secondNode, float realWeight, float normalizedWeight, String uiClass) {
+				
+		Edge	createdEdge = super.createEdge(firstNode, secondNode, true, normalizedWeight, uiClass);
+		createdEdge.setAttribute("weight", realWeight);
+		
+		// the larger the value, the more far, so complement
 		float complementarWeight = 1-normalizedWeight;
-		createdEdge.setAttribute("ui.color", complementarWeight);
-		createdEdge.setAttribute("ui.size", /*2**/complementarWeight);
-		createdEdge.setAttribute("interactions", complementarWeight);
-//		createdEdge.setAttribute("ui.arrow-size", normalizedWeight);
-//		System.out.print(createdEdge.getId()+" ");
+		
+//		createdEdge.setAttribute("ui.color", complementarWeight);
+		createdEdge.setAttribute("ui.color", realWeight);
+//			createdEdge.setAttribute("ui.color", normalizedWeight);
+		
+//			createdEdge.setAttribute("ui.size", normalizedWeight);
+		createdEdge.setAttribute("layout.weight", complementarWeight);
+		
+		createdEdge.setAttribute("layout.weight", complementarWeight);
+//			createdEdge.setAttribute("layout.weight", normalizedWeight);
+		
+		createdEdge.addAttribute("ui.interactions", realWeight); // for mousemanager
 		
 		super.pause();
 		
@@ -340,16 +386,16 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
 
 	@Override
 	protected boolean areMutualFriendsAlreadyComputed(String firstUserId, String secondUserId) {
-		if ( myFriendsToMutualFriendsEdgesTable.contains(firstUserId, secondUserId) && myFriendsToMutualFriendsEdgesTable.contains(secondUserId, firstUserId) ) {
+		if ( 	myFriendsToMutualFriendsEdgesComputedTable.contains(firstUserId, secondUserId) 
+				&& 
+				myFriendsToMutualFriendsEdgesComputedTable.contains(secondUserId, firstUserId) 
+			) {
    		return true;
    	}
 		return false;
 	}
 	
-	private float normalize(int value, int min, int denominator) {
-		return ((float)value-min)/denominator;
-	}
-	private float normalize(float value, int min, int denominator) {
+	private float normalize(float value, float min, float denominator) {
 		return (value-min)/denominator;
 	}
 	

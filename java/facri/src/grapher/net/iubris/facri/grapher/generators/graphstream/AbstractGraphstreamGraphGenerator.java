@@ -27,11 +27,14 @@ public abstract class AbstractGraphstreamGraphGenerator implements GraphstreamGr
 	
 	protected final Map<String, FriendOrAlike> myFriendsFromWorldMap;
 	protected final Map<String, Node> myFriendsNodesMap = new ConcurrentHashMap<>();
+	protected final Table<String, String, Boolean> myFriendsWithMeEdgesAndViceversaComputedTable = HashBasedTable.create();
 	protected final Table<String, String, Edge> myFriendsWithMeEdgesAndViceversaTable = HashBasedTable.create();
+	protected final Table<String, String, Boolean> myFriendsToMutualFriendsEdgesComputedTable = HashBasedTable.create();
 	protected final Table<String, String, Edge> myFriendsToMutualFriendsEdgesTable = HashBasedTable.create();
 	
 	protected final Map<String, FriendOrAlike> friendOfFriendFromWorldMap;
 	protected final Map<String, Node> friendOfFriendNodeMap = new ConcurrentHashMap<>();
+	protected final Table<String, String, Boolean> friendsOfFriendsWithFriendsEdgesComputedTable = HashBasedTable.create();
 	protected final Table<String, String, Edge> friendsOfFriendsWithFriendsEdgesTable = HashBasedTable.create();
 	
 	protected final String egoNodeUiClass = "ego";
@@ -90,13 +93,6 @@ public abstract class AbstractGraphstreamGraphGenerator implements GraphstreamGr
 		createMyFriendsOnly();
 		createFriendsOfFriendsWithMyFriends();
 	}
-	
-//	@Override
-//	public void generateFriendOfFriends() {
-//		createFriendsOfFriendsWithMyFriends();
-//		for (Node myfriendNode: myFriendsNodesMap.values())
-//			graph.removeNode(myfriendNode);
-//	}
 	
 	protected abstract void createMyFriends(boolean includeMyuserNode);
 	protected abstract void createFriendsOfFriendsWithMyFriends();
@@ -158,17 +154,10 @@ public abstract class AbstractGraphstreamGraphGenerator implements GraphstreamGr
 	
 	protected abstract boolean areMutualFriendsAlreadyComputed(String firstUserId, String secondUserId);
 	
-//	protected void pause(int ms) {
-//		try {
-//			Thread.sleep(ms);
-//		} catch (InterruptedException e) {}
-//	}
-	
 	@Override
 	public Graph getGraph() {
 		return graph;
 	}
-	
 	
 	public void testGraph() {
 
@@ -214,6 +203,8 @@ public abstract class AbstractGraphstreamGraphGenerator implements GraphstreamGr
 	protected void garbageUselessFriendsOfFriends() {
 //		long checkMemoryPre = Memory.checkMemory();
 		friendOfFriendNodeMap.clear();
+		
+		friendsOfFriendsWithFriendsEdgesComputedTable.clear();
 		friendsOfFriendsWithFriendsEdgesTable.clear();
 //		long checkMemoryAfter = 
 				MemoryUtil.runGarbageCollector();
@@ -223,7 +214,11 @@ public abstract class AbstractGraphstreamGraphGenerator implements GraphstreamGr
 	protected void garbageUselessFriends() {
 //		long checkMemoryPre = Memory.checkMemory();
 		myFriendsNodesMap.clear();
+		
+		myFriendsToMutualFriendsEdgesComputedTable.clear();
 		myFriendsToMutualFriendsEdgesTable.clear();
+		
+		myFriendsWithMeEdgesAndViceversaComputedTable.clear();
 		myFriendsWithMeEdgesAndViceversaTable.clear();
 //		long checkMemoryAfter = 
 				MemoryUtil.runGarbageCollector();

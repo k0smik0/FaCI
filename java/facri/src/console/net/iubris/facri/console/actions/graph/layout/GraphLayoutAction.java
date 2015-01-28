@@ -1,7 +1,7 @@
 package net.iubris.facri.console.actions.graph.layout;
 
-import java.io.Console;
 
+import java.io.Console;
 import javax.inject.Inject;
 
 import net.iubris.facri.model.graph.GraphsHolder;

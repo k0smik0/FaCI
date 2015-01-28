@@ -5,13 +5,14 @@ import java.io.File;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import net.iubris.facri.model.graph.eventmanagers.InternalMouseManager.InternalMouseManagerFactory;
+import net.iubris.facri.model.graph.eventmanagers.FriendshipsMouseManager.FriendshipsMouseManagerFactory;
+import net.iubris.facri.model.graph.eventmanagers.InteractionsMouseManager.InteractionsMouseManagerFactory;
 import net.iubris.facri.utils.Pauser;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.MultiGraph;
-import org.graphstream.ui.swingViewer.View;
-import org.graphstream.ui.swingViewer.Viewer;
+import org.graphstream.ui.swingViewer.ViewPanel;
+import org.graphstream.ui.view.Viewer;
 
 @Singleton
 public class GraphsHolder {
@@ -20,7 +21,8 @@ public class GraphsHolder {
 	private final Graph interactionsGraph;
 	private final Viewer friendshipsGraphViewer;
 	private final Viewer interactionsGraphViewer;
-	private final InternalMouseManagerFactory internalMouseManagerFactory;
+	private final FriendshipsMouseManagerFactory friendshipsMouseManagerFactory;
+	private final InteractionsMouseManagerFactory interactionsMouseManagerFactory;
 	
 //	private ViewerPipe fromViewerInteractions;
 //	final World world;
@@ -58,14 +60,16 @@ public class GraphsHolder {
 	
 	// TODO: refactor constructor
 	@Inject
-	public GraphsHolder(/*World world*//*, DataParser dataParser*/InternalMouseManagerFactory internalMouseManagerFactory) {
-		this.internalMouseManagerFactory = internalMouseManagerFactory;
+	public GraphsHolder(FriendshipsMouseManagerFactory friendshipsMouseManagerFactory, 
+			InteractionsMouseManagerFactory interactionsMouseManagerFactory) {
+		this.friendshipsMouseManagerFactory = friendshipsMouseManagerFactory;
+		this.interactionsMouseManagerFactory = interactionsMouseManagerFactory;
 		//		this.world = world;
 //		this.dataParser = dataParser;
 		this.friendshipsGraph = new MultiGraph("Friendships",false,true);
-		this.friendshipsGraphViewer = prepareForDisplay(friendshipsGraph);
+		this.friendshipsGraphViewer = buildViewer(friendshipsGraph);
 		this.interactionsGraph = new MultiGraph("Interactions",false,true);
-		this.interactionsGraphViewer = prepareForDisplay(interactionsGraph);
+		this.interactionsGraphViewer = buildViewer(interactionsGraph);
 		
 //		System.out.print("[");
 		System.setProperty("sun.java2d.opengl", "True");
@@ -75,60 +79,63 @@ public class GraphsHolder {
 //		System.out.print("\n");
 	}
 	
-//	public World getWorld() {
-//		return world;
-//	}
-	
-	public void reparseCSS() {
-		if (friendshipsGraph!=null) {
-			friendshipsGraph.setAttribute("ui.stylesheet", "");
-			friendshipsGraph.setAttribute("ui.stylesheet", "url('css"+File.separatorChar+"friendships.css')");
-//			Viewer viewer = graph.display();
-//			viewer.enableAutoLayout();
-		}
-		if (interactionsGraph!=null) {
-			interactionsGraph.setAttribute("ui.stylesheet", "");
-			interactionsGraph.setAttribute("ui.stylesheet", "url('css"+File.separatorChar+"interactions.css')");
-		}
-	}
-	
-	private Viewer prepareForDisplay(Graph graph) {
+	public static Viewer buildViewer(Graph graph) {
 		graph.addAttribute("ui.quality");
 		graph.addAttribute("ui.antialias");
 //		graph.addAttribute("ui.speed");
 		
 //		System.out.println("graph: "+graph);
 		Viewer viewer = new Viewer(graph,  Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
-//		System.out.println("viewer: "+viewer);
 		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
 //		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
+//		viewer.enableAutoLayout(new LinLog(true));
+//		viewer.enableAutoLayout(new SpringBox(true));
 		viewer.enableAutoLayout();
+		viewer.enableXYZfeedback(true);
 		
 		return viewer;
 	}
 	
+	public static ViewPanel buildView(Viewer viewer) {
+		ViewPanel view = viewer.getDefaultView();
+		if (view==null) {
+			view = viewer.addDefaultView(true);
+		}
+		return view;
+//		view.setMouseManager(mFactory.create(viewer));
+	}
+	
+	@FunctionalInterface
+	public interface MFactory {
+		void create(Viewer viewer);
+	}
 	
 	public void prepareForDisplayFriendships() {
-		View view = friendshipsGraphViewer.getDefaultView();
-		if (view==null) {
-			view = friendshipsGraphViewer.addDefaultView(true);
-		}
-		view.setVisible(true);
-		
-		view.setMouseManager(internalMouseManagerFactory.create(friendshipsGraphViewer));
-//		view.setShortcutManager(new InternalShortcutManager(friendshipsGraphViewer));
+//		View view = friendshipsGraphViewer.getDefaultView();
+//		if (view==null) {
+//			view = friendshipsGraphViewer.addDefaultView(true);
+//		}
+////		view.setVisible(true);
+//		
+//		view.setMouseManager(friendshipsMouseManagerFactory.create(friendshipsGraphViewer));
+////		view.setShortcutManager(new InternalShortcutManager(friendshipsGraphViewer));
+		ViewPanel view = buildView(friendshipsGraphViewer);
+		view.setMouseManager(friendshipsMouseManagerFactory.create(friendshipsGraphViewer));
 	}
 	
 	public void prepareForDisplayInteractions() {
-		View view = interactionsGraphViewer.getDefaultView();
-		if (view==null) {
-			view = interactionsGraphViewer.addDefaultView(true);
-		}
-		view.setVisible(true);
-		
-		view.setMouseManager(internalMouseManagerFactory.create(interactionsGraphViewer));
-//		view.setShortcutManager(new InternalShortcutManager(interactionsGraphViewer));
+//		View view = interactionsGraphViewer.getDefaultView();
+//		if (view==null) {
+//			view = interactionsGraphViewer.addDefaultView(true);
+//		}
+////		view.setVisible(true);
+//		
+//		view.setMouseManager(interactionsMouseManagerFactory.create(interactionsGraphViewer));
+////		view.setShortcutManager(new InternalShortcutManager(interactionsGraphViewer));
+		ViewPanel view = buildView(interactionsGraphViewer);
+		view.setMouseManager(interactionsMouseManagerFactory.create(interactionsGraphViewer));
 	}
+	
 	
 	public Viewer getInteractionsGraphViewer() {
 		return interactionsGraphViewer;
@@ -136,7 +143,6 @@ public class GraphsHolder {
 	public Viewer getFriendshipsGraphViewer() {
 		return friendshipsGraphViewer;
 	}
-	
 	
 		
 	/*public ViewerPipe getViewerPipeInteractions(LinkedBlockingQueue<String> queue) {
@@ -165,5 +171,18 @@ public class GraphsHolder {
 	
 	public Graph getInteractionsGraph() {
 		return interactionsGraph;
+	}
+	
+	public void reparseCSS() {
+		if (friendshipsGraph!=null) {
+			friendshipsGraph.setAttribute("ui.stylesheet", "");
+			friendshipsGraph.setAttribute("ui.stylesheet", "url('css"+File.separatorChar+"friendships.css')");
+//			Viewer viewer = graph.display();
+//			viewer.enableAutoLayout();
+		}
+		if (interactionsGraph!=null) {
+			interactionsGraph.setAttribute("ui.stylesheet", "");
+			interactionsGraph.setAttribute("ui.stylesheet", "url('css"+File.separatorChar+"interactions.css')");
+		}
 	}
 }

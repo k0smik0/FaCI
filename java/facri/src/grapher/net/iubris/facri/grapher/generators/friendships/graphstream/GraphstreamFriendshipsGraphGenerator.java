@@ -12,11 +12,11 @@ import javax.inject.Singleton;
 
 import net.iubris.facri.grapher.generators.friendships.FriendshipsGraphGenerator;
 import net.iubris.facri.grapher.generators.graphstream.AbstractGraphstreamGraphGenerator;
+import net.iubris.facri.grapher.generators.interactions.EdgeWeigths;
 import net.iubris.facri.model.graph.GraphsHolder;
 import net.iubris.facri.model.users.FriendOrAlike;
 import net.iubris.facri.model.users.User;
 import net.iubris.facri.model.world.World;
-import net.iubris.facri.utils.Printer;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
@@ -88,7 +88,7 @@ public class GraphstreamFriendshipsGraphGenerator extends AbstractGraphstreamGra
          		continue;
          	}
          	
-         	// this creation below could be decrease outer while iterations ?
+         	// this creation below could be decrease outer while iterations
 //         	Node myOtherFriendAlsoMutualNode = 
 //         			createAndMaintainOrRetrieveFriendNode(myOtherFriendAlsoMutualWithMeId);
 //         			getOrCreateFriendNode(myOtherFriendAlsoMutualWithMeId);
@@ -135,7 +135,7 @@ public class GraphstreamFriendshipsGraphGenerator extends AbstractGraphstreamGra
 		
 		// TODO normalize size using friends number ?
 		float normalizedFriendsCount = normalizeFriendsCount( user.getFriendsCount() );
-		Printer.println(user.getUid()+" "+normalizedFriendsCount);
+//		Printer.println(user.getUid()+" "+normalizedFriendsCount);
 		node.setAttribute("ui.size",  normalizedFriendsCount+"gu");
 		
 		pause();
@@ -153,17 +153,6 @@ public class GraphstreamFriendshipsGraphGenerator extends AbstractGraphstreamGra
 		return n;
 	}
 	
-	/*private Node createAndMaintainOrRetrieveFriendNode(String myFriendId) {
-		Node myFriendNode = null;
-		if (myFriendsNodesMap.containsKey(myFriendId))
-			myFriendNode = myFriendsNodesMap.get(myFriendId);
-		else {			
-			myFriendNode = createNode(myFriendId);
-	      myFriendsNodesMap.put(myFriendId, myFriendNode );
-		}
-		return myFriendNode;
-	}*/
-	
 	@Override
 	protected Node getOrCreateFriendNodeAndEdgesWithMe(User myFriend) {
 		String myFriendId = myFriend.getUid();
@@ -174,21 +163,17 @@ public class GraphstreamFriendshipsGraphGenerator extends AbstractGraphstreamGra
 			myFriendNode = createNode(myFriend);
 	      myFriendsNodesMap.put(myFriendId, myFriendNode);
 	      
-	      
 	      Edge meToMyfriendEdge = createEdge(egoNode, myFriendNode, meToMyfriendEdgeUiClass);
-	      
-//	      Edge myFriendToMeEdge = createEdge(myFriendNode, egoNode, myfriendToMeEdgeUiClass);
 	      
 	      String egoId = ego.getUid();
 	      myFriendsWithMeEdgesAndViceversaTable.put(egoId, myFriendId, meToMyfriendEdge);
-//	      myFriendsWithMeEdgesAndViceversaTable.put(myFriendId, egoId, myFriendToMeEdge);
 	      
 	      return myFriendNode;
 		}
 	}
 	
 	private Edge createEdge(Node firstNode, Node secondNode, String uiClass) {
-		return super.createEdge(firstNode, secondNode, false, 0, uiClass);
+		return super.createEdge(firstNode, secondNode, false, EdgeWeigths.Friendships.FRIEND, uiClass);
 	}
 	
 	protected boolean areMutualFriendsAlreadyComputed(String firstUserId, String secondUserId) {

@@ -8,7 +8,7 @@ import java.util.function.IntConsumer;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
-import org.graphstream.ui.swingViewer.Viewer;
+import org.graphstream.ui.view.Viewer;
 
 public class TestMain {
 	protected static Map<Integer,Node> nodes= new ConcurrentSkipListMap<>();

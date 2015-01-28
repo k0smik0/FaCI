@@ -53,8 +53,16 @@ public class WorldPersisterService {
 	}
 
 	public void persist() /*throws PersisterException*/ {
-		Printer.println("\nWriting parsed data to cache: ");
 		Ego myUser = world.getMyUser();
+		
+		if (egoPersister.contains(myUser.getUid())) {
+			Printer.println("\nParsed data already present - skip.");
+			return;
+		}
+		
+		
+		Printer.println("\nWriting parsed data to cache: ");
+		
 		Printer.print("\tmy user: ");
 //		Boolean created = 
 				egoPersister.create(myUser);

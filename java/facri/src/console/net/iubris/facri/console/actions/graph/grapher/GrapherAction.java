@@ -1,16 +1,16 @@
 package net.iubris.facri.console.actions.graph.grapher;
 
-import java.io.Console;
 import java.io.IOException;
+import java.io.Console;
 
 import javax.inject.Inject;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
-import net.iubris.facri._di.guice.grapher.factories.CacheHandlerFactory;
 import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor.GraphTypeCommand;
 import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor.WorldTypeCommand;
 import net.iubris.facri.console.actions.graph.utils.cache.CacheHandler;
+import net.iubris.facri.console.actions.graph.utils.cache.CacheHandler.CacheHandlerFactory;
 import net.iubris.facri.console.actions.graph.utils.cache.CacheHandler.UseCacheArguments;
 import net.iubris.facri.model.graph.GraphsHolder;
 import net.iubris.heimdall.actions.CommandAction;

@@ -18,8 +18,8 @@ import net.iubris.heimdall.command.ConsoleCommand;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.ui.swingViewer.Viewer;
-import org.graphstream.ui.swingViewer.util.Camera;
+import org.graphstream.ui.view.Camera;
+import org.graphstream.ui.view.Viewer;
 
 public class AnalyzeAction implements CommandAction {
 	

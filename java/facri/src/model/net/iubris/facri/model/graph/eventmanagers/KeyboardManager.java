@@ -2,11 +2,11 @@ package net.iubris.facri.model.graph.eventmanagers;
 
 import java.awt.event.KeyEvent;
 
-import org.graphstream.ui.swingViewer.Viewer;
-import org.graphstream.ui.swingViewer.util.DefaultShortcutManager;
+import org.graphstream.ui.view.Viewer;
+import org.graphstream.ui.view.util.DefaultShortcutManager;
 
-class InternalShortcutManager extends DefaultShortcutManager {
-		public InternalShortcutManager(Viewer viewer) {
+class KeyboardManager extends DefaultShortcutManager {
+		public KeyboardManager(Viewer viewer) {
 		}
 		@Override
 		public void keyTyped(KeyEvent event) {

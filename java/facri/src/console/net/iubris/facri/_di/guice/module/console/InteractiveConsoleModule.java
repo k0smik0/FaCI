@@ -11,5 +11,4 @@ public class InteractiveConsoleModule extends AbstractModule {
 	protected void configure() {
 		bind(InteractiveConsole.class).toProvider(FacriInteractiveConsoleProvider.class);
 	}
-
 }

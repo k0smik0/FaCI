@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
@@ -14,35 +13,27 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import net.iubris.facri.model.world.World;
+import net.iubris.facri.utils.Pauser;
 import net.iubris.facri.utils.Printer;
 
-import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.graphicGraph.GraphicElement;
 import org.graphstream.ui.graphicGraph.GraphicNode;
-import org.graphstream.ui.swingViewer.View;
-import org.graphstream.ui.swingViewer.Viewer;
-import org.graphstream.ui.swingViewer.util.Camera;
-import org.graphstream.ui.swingViewer.util.DefaultMouseManager;
+import org.graphstream.ui.swingViewer.ViewPanel;
+import org.graphstream.ui.view.Camera;
+import org.graphstream.ui.view.Viewer;
+import org.graphstream.ui.view.util.DefaultMouseManager;
 
-import com.google.common.util.concurrent.AtomicDouble;
-import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
+public abstract class MouseManager extends DefaultMouseManager {
 
-public class InternalMouseManager extends DefaultMouseManager {
-
+	protected final String profileUrlPrefix = "https://www.facebook.com/profile.php?id=";
 	private final Viewer viewer;
 	private final World world;
-//		private double zoom;
-//		private Camera camera;
+	private final ViewPanel defaultView;
 	
-//		boolean focusOnClick = true;
-	
-	@AssistedInject
-	public InternalMouseManager(@Assisted Viewer viewer, World world) {
+	public MouseManager(Viewer viewer, World world) {
 		this.viewer = viewer;
-//			camera = viewer.getDefaultView().getCamera();
-//			zoom = viewer.getDefaultView().getCamera().getViewPercent();
+		this.defaultView = viewer.getDefaultView();
 		this.world = world;
 	}
 	
@@ -50,8 +41,14 @@ public class InternalMouseManager extends DefaultMouseManager {
 	protected void mouseButtonPress(MouseEvent mouseEvent) {
 		super.mouseButtonPress(mouseEvent);
 		if (mouseEvent.isControlDown()) {
-//				viewer.getDefaultView().repaint();
 			view.getCamera().resetView();
+		}
+		if (mouseEvent.isShiftDown()) {
+			Camera camera = view.getCamera();
+//			camera.setViewCenter(mouseEvent.getX(), mouseEvent.getY(), camera.getViewCenter().z);
+			camera.setViewPercent(0.1);
+			Pauser.sleep(50);
+			camera.setViewPercent(0.99);
 		}
 	}
 	
@@ -91,16 +88,6 @@ public class InternalMouseManager extends DefaultMouseManager {
 			
 //				element.setAttribute("ui.label",element.getId());
 			
-			/*if (!world.isParsingDone()) {
-				Printer.println("Graphs was generated from cache and there are no data for user, so parsing...");
-				try {
-					dataParser.parse();
-				} catch (JAXBException | XMLStreamException | IOException e) {
-					e.printStackTrace();
-				}
-				Printer.println("done.");
-			}*/
-			
 			String uid = element.getId();
 			
 //			Optional<Ego> searchMe = world.searchMe(uid);
@@ -117,7 +104,9 @@ public class InternalMouseManager extends DefaultMouseManager {
 			centerOnNode(element, viewer);
 			
 			String nodeId = element.getId();
-			showDialog(viewer, nodeId, view);
+			Node node = viewer.getGraphicGraph().getNode(nodeId);
+//			showDialog(nodeId, node, view); // old 1.2
+			showDialog(nodeId, node, defaultView); // nightly 1.3
 			
 			return;
 		}
@@ -128,6 +117,14 @@ public class InternalMouseManager extends DefaultMouseManager {
 			return;
 		}
 	}
+	
+	void showDialog(String nodeId, Node node, ViewPanel view) {
+		String nodeInfo = buildNodeInfo(node);
+		JEditorPane editorPane = new JEditorPane("text/html", nodeInfo);
+		buildJEditorPane(editorPane);
+		JOptionPane.showMessageDialog(view, editorPane);
+	}	
+	protected abstract String buildNodeInfo(Node node);
 	
 	private void launchUrl(String urlToLaunch) {
        try {
@@ -152,62 +149,10 @@ public class InternalMouseManager extends DefaultMouseManager {
 		double x = element.getX();
 		double y = element.getY();
 		double z = element.getZ();
-
 		Camera camera = viewer.getDefaultView().getCamera();
 		camera.setViewCenter(x, y, z);
 	}
-	void showDialog(Viewer viewer, String nodeId, View view) {
-		String profileUrl = "https://www.facebook.com/profile.php?id="+nodeId;
-		Node node = viewer.getGraphicGraph().getNode(nodeId);
-		AtomicDouble enteringInteractions = new AtomicDouble(0);
-		AtomicInteger enteringInteractionsCounter = new AtomicInteger(0); 
-//		node.getEachEnteringEdge()
-//			.forEach(e->{
-//				if (e.isDirected()) {
-//					float interactions = e.getAttribute("interactions");
-//					enteringInteractions.addAndGet(interactions);
-//					enteringInteractionsCounter.incrementAndGet();
-//				}
-//			});
-		AtomicDouble leavingInteractions = new AtomicDouble(0);
-		AtomicInteger leavingInteractionsCounter = new AtomicInteger(0);
-//		node.getEachLeavingEdge()
-//			.forEach(e->{
-//				if (e.isDirected()) {
-//					float interactions = e.getAttribute("interactions");
-//					leavingInteractions.addAndGet(interactions);
-//					leavingInteractionsCounter.incrementAndGet();
-//				}
-//			});
-		
-		Iterable<Edge> eachEdge = node.getEachEdge();
-		eachEdge.forEach(e->{
-			if (e.getSourceNode().getId().equals(nodeId)) { // leaving
-				float interactions = e.getAttribute("interactions");
-				leavingInteractions.addAndGet(interactions);
-				leavingInteractionsCounter.incrementAndGet();
-			} else if (e.getTargetNode().getId().equals(nodeId)) { // entering
-				float interactions = e.getAttribute("interactions");
-				enteringInteractions.addAndGet(interactions);
-				enteringInteractionsCounter.incrementAndGet();
-			} else {
-				System.out.println(e.getId()+" ?!");
-			}
-		});
-		
-//		Node egoNode = graph.getNode(world.getMyUser().getUid());
-//		System.out.println(egoNode.getInDegree());
-		
-		float eValue = enteringInteractions.floatValue();
-		float lValue = leavingInteractions.floatValue();
-		String nodeInfo = "in-degree: "+(node.getInDegree()*eValue)+" ("+enteringInteractionsCounter.get()+"*"+eValue+")"
-				+"<br/>out-degree: "+(node.getOutDegree()*lValue)+" ("+leavingInteractionsCounter.get()+"*"+lValue+")"
-				+"<br/>url: <a href='"+profileUrl+"'>"+profileUrl+"</a>";
-		JEditorPane editorPane = new JEditorPane("text/html", nodeInfo);
-		buildJEditorPane(editorPane);
-		JOptionPane.showMessageDialog(view, editorPane);
-	}
-	
+
 	private void buildJEditorPane(JEditorPane ep) {
 		ep.addHyperlinkListener(new HyperlinkListener() {
 			@Override
@@ -228,7 +173,7 @@ public class InternalMouseManager extends DefaultMouseManager {
 		ep.setEditable(false);
 	}
 	
-	public static interface InternalMouseManagerFactory {
-		InternalMouseManager create(Viewer viewer);
+	public static interface MouseManagerFactory<M extends MouseManager> {
+		M create(Viewer viewer);
 	}
 }

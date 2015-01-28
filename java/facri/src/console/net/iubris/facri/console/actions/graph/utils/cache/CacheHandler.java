@@ -181,4 +181,8 @@ public class CacheHandler {
 		}
 		private final String helpMessage;
 	}
+	
+	public interface CacheHandlerFactory {
+		CacheHandler create(String[] params);
+	}
 }

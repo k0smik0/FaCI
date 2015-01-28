@@ -31,7 +31,7 @@ function getGrph() {
    echo $(getJars libs/grph)
 }
 function getGraphstream() {
-   echo $(getJars libs/graphstream)
+   echo $(getJars libs/graphstream/nightly)
 }
 function getStaxon() {
    echo $(getJars libs/staxon)

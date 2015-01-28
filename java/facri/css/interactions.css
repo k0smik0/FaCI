@@ -29,6 +29,10 @@ node.maxclique {
 	stroke-width: 2px;
 	stroke-color: red;
 }
+node.ssc {
+	stroke-width: 2px;
+	stroke-color: green;
+}
 /*
 node.nottexted {
 	text-visibility-mode:hidden;	
