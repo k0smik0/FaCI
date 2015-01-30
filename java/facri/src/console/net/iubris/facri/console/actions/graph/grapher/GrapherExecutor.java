@@ -5,7 +5,6 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
@@ -22,14 +21,14 @@ public class GrapherExecutor {
 	
 	private final Map<GraphType,GraphstreamGraphGenerator> graphgeneratorsMap = new EnumMap<GraphType,GraphstreamGraphGenerator>(GraphType.class);
 	
-	public static final String graph_file_name = "graph_file_name";
-	private static String myUserId = "";
+//	public static final String graph_file_name = "graph_file_name";
+//	private static String myUserId = "";
 	
 	@Inject
-	public GrapherExecutor(GraphstreamFriendshipsGraphGenerator graphstreamFriendshipsGraphGenerator, GraphstreamInteractionsGraphGenerator graphstreamInteractionsGraphGenerator, @Named("my_user_id") String myUserId) {
+	public GrapherExecutor(GraphstreamFriendshipsGraphGenerator graphstreamFriendshipsGraphGenerator, GraphstreamInteractionsGraphGenerator graphstreamInteractionsGraphGenerator/*, @Named("my_user_id") String myUserId*/) {
 		graphgeneratorsMap.put(GraphType.friendships, graphstreamFriendshipsGraphGenerator);
 		graphgeneratorsMap.put(GraphType.interactions, graphstreamInteractionsGraphGenerator);
-		GrapherExecutor.myUserId = myUserId;
+//		GrapherExecutor.myUserId = myUserId;
 	}
 	
 	public void execute(GraphType graphType, WorldType worldType, CacheHandler useCache) throws IOException, JAXBException, XMLStreamException {
@@ -202,7 +201,7 @@ public class GrapherExecutor {
 				GraphGenerationDoneFunction graphGeneratorDoneFunction,
 				CacheHandler cacheHandler, String fileBasename) throws IOException, JAXBException, XMLStreamException {
 
-			graph.addAttribute(graph_file_name, myUserId+"_-_"+fileBasename);
+//			graph.addAttribute(graph_file_name, myUserId+"_-_"+fileBasename);
 			
 			cacheHandler.exec(graph,
 					fileBasename,

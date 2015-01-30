@@ -3,7 +3,7 @@ package net.iubris.facri._di.providers.parser.mappers;
 import javax.inject.Provider;
 import javax.xml.bind.JAXBException;
 
-import net.iubris.facri.model.comments.CommentsHolder;
+import net.iubris.facri.model.parser.comments.CommentsHolder;
 import de.odysseus.staxon.json.jaxb.JsonXMLMapper;
 
 public class CommentsHolderMapperProvider implements Provider<JsonXMLMapper<CommentsHolder>> {

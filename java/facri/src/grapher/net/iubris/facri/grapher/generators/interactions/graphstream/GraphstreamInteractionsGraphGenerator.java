@@ -12,12 +12,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import net.iubris.facri.grapher.generators.graphstream.AbstractGraphstreamGraphGenerator;
-import net.iubris.facri.grapher.generators.interactions.EdgeWeigths;
 import net.iubris.facri.grapher.generators.interactions.InteractionsGraphGenerator;
 import net.iubris.facri.model.graph.GraphsHolder;
-import net.iubris.facri.model.users.FriendOrAlike;
-import net.iubris.facri.model.users.Interactions;
-import net.iubris.facri.model.users.User;
+import net.iubris.facri.model.parser.users.FriendOrAlike;
+import net.iubris.facri.model.parser.users.Interactions;
+import net.iubris.facri.model.parser.users.User;
+import net.iubris.facri.model.world.InteractionsWeigths;
 import net.iubris.facri.model.world.World;
 import net.iubris.facri.utils.Pauser;
 
@@ -54,13 +54,13 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
 		Set<Float> appreciationsRange = world.getAppreciationsRange();
 		appreciationsMin = Collections.min(appreciationsRange);
 		// it is weighted, so multiplicate for maximum weight
-		appreciationsDenominator = EdgeWeigths.Interactions.RESHARED_OWN_POST*Collections.max(appreciationsRange)-appreciationsMin;
+		appreciationsDenominator = InteractionsWeigths.Interactions.RESHARED_OWN_POST*Collections.max(appreciationsRange)-appreciationsMin;
 //System.out.print("["+appreciationsMin+", "+appreciationsDenominator+"] ");
 		
 		Set<Integer> interactionsRange = world.getInteractionsRange();
 		interactionsMin = Collections.min(interactionsRange);
 		// it is weighted, so multiplicate for maximum weight
-		interactionsDenominator = net.iubris.facri.grapher.generators.interactions.EdgeWeigths.Interactions.POST_TO_WALL*Collections.max(interactionsRange)-interactionsMin;
+		interactionsDenominator = net.iubris.facri.model.world.InteractionsWeigths.Interactions.POST_TO_WALL*Collections.max(interactionsRange)-interactionsMin;
 //System.out.print("["+interactionsMin+", "+interactionsDenominator+"] ");
 	}
 	
@@ -171,10 +171,10 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
 	
 	private float getWeightedInteractions(Interactions toOtherUserInteractions) {
 		return 
-				toOtherUserInteractions.getLikesCount()	*EdgeWeigths.Interactions.POST_LIKE
-			  +toOtherUserInteractions.getCommentsCount()*EdgeWeigths.Interactions.POST_COMMENT
-			  +toOtherUserInteractions.getTagsCount()		*EdgeWeigths.Interactions.TAG
-			  +toOtherUserInteractions.getPostsCount()	*EdgeWeigths.Interactions.POST_TO_WALL ;
+				toOtherUserInteractions.getLikesCount()	*InteractionsWeigths.Interactions.POST_LIKE
+			  +toOtherUserInteractions.getCommentsCount()*InteractionsWeigths.Interactions.POST_COMMENT
+			  +toOtherUserInteractions.getTagsCount()		*InteractionsWeigths.Interactions.TAG
+			  +toOtherUserInteractions.getPostsCount()	*InteractionsWeigths.Interactions.POST_TO_WALL ;
 	}
 	
 	@Override
@@ -303,7 +303,7 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
 		// use color for posts count
 //		node.setAttribute("ui.color", normalizedSize);
 		
-		float appreciation = user.getOwnLikedPostsCount() + EdgeWeigths.Interactions.RESHARED_OWN_POST*user.getOwnPostsResharingCount();
+		float appreciation = user.getOwnLikedPostsCount() + InteractionsWeigths.Interactions.RESHARED_OWN_POST*user.getOwnPostsResharingCount();
 		float normalizedAppreciation = normalize(appreciation, appreciationsMin, appreciationsDenominator);
 		// use color for posts appreciations
 		node.setAttribute("ui.color", normalizedAppreciation);

@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.iubris.facri.model.users.FriendOrAlike;
+import net.iubris.facri.model.parser.users.FriendOrAlike;
 import net.iubris.facri.model.world.World;
 import net.iubris.facri.parsers.Parser;
 import net.iubris.facri.utils.Printer;

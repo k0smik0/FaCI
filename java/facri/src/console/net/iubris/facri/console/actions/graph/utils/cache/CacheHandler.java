@@ -10,6 +10,7 @@ import javax.xml.stream.XMLStreamException;
 import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor.GraphGenerationDoneFunction;
 import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor.GraphGenerationFunction;
 import net.iubris.facri.console.actions.graph.utils.cache.persister.WorldPersisterService;
+import net.iubris.facri.model.graph.GraphsHolder;
 import net.iubris.facri.parsers.DataParser;
 import net.iubris.facri.utils.Pauser;
 import net.iubris.facri.utils.Printer;
@@ -38,6 +39,7 @@ public class CacheHandler {
 	private String fileExtension;
 	
 	private final WorldPersisterService worldPersisterService;
+	private final String myUserId;
 	
 	@AssistedInject
 	public CacheHandler(
@@ -48,6 +50,7 @@ public class CacheHandler {
 			, @Assisted String[] params
 			) {
 		this.cacheType = cacheType;
+		this.myUserId = myUserId;
 //		this.myUserId = myUserId;
 //		this.corpusPrefix = meId;
 		this.worldPersisterService = worldPersisterService;
@@ -91,11 +94,13 @@ public class CacheHandler {
 			GraphGenerationFunction graphGeneratorFunction,
 			GraphGenerationDoneFunction graphGeneratorDoneFunction 
 			) throws IOException, JAXBException, XMLStreamException {
+		String filename = myUserId+"_-_"+fileBasename;
+		graph.addAttribute(GraphsHolder.graph_file_name, filename);
 		readIfPresent(graph,
-				fileBasename,
+				filename,
 				graphGeneratorFunction,
 				graphGeneratorDoneFunction)
-		.writeIfWanted(graph, fileBasename);
+		.writeIfWanted(graph, filename);
 	}
 	
 	public CacheHandler readIfPresent(Graph graph, String cacheFilename, GraphGenerationFunction graphGeneratorFunction,

@@ -12,7 +12,7 @@ import net.iubris.facri.grapher.analyzer.graphstream.GraphstreamAnalyzer.Analysi
 import net.iubris.facri.grapher.analyzer.graphstream.GraphstreamAnalyzer.AnalysisTypeShortcut.Numerical;
 import net.iubris.facri.grapher.analyzer.graphstream.GraphstreamAnalyzer.GraphstreamAnalyzerFactory;
 import net.iubris.facri.model.graph.GraphsHolder;
-import net.iubris.facri.model.users.Ego;
+import net.iubris.facri.model.parser.users.Ego;
 import net.iubris.facri.model.world.World;
 import net.iubris.facri.utils.Printer;
 import net.iubris.heimdall.actions.CommandAction;

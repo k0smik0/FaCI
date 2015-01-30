@@ -1,6 +1,7 @@
 package net.iubris.facri.persisters;
 
 import net.iubris.facri._di.guice.module.main.FacriModule;
+import net.iubris.facri.persisters.specialized.EgoPersister;
 
 import org.junit.Before;
 import org.junit.Test;

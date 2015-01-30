@@ -3,7 +3,7 @@ package net.iubris.facri._di.providers.parser.mappers;
 import javax.inject.Provider;
 import javax.xml.bind.JAXBException;
 
-import net.iubris.facri.model.posts.Posts;
+import net.iubris.facri.model.parser.posts.Posts;
 import de.odysseus.staxon.json.jaxb.JsonXMLMapper;
 
 public class PostsMapperProvider implements Provider<JsonXMLMapper<Posts>> {

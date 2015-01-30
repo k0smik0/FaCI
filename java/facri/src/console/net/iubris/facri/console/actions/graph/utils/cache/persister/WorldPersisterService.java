@@ -3,11 +3,11 @@ package net.iubris.facri.console.actions.graph.utils.cache.persister;
 
 import javax.inject.Inject;
 
-import net.iubris.facri.model.users.Ego;
+import net.iubris.facri.model.parser.users.Ego;
 import net.iubris.facri.model.world.World;
-import net.iubris.facri.persisters.EgoPersister;
-import net.iubris.facri.persisters.FriendsPersister;
-import net.iubris.facri.persisters.FriendsoffriendsPersister;
+import net.iubris.facri.persisters.specialized.EgoPersister;
+import net.iubris.facri.persisters.specialized.FriendsPersister;
+import net.iubris.facri.persisters.specialized.FriendsoffriendsPersister;
 import net.iubris.facri.utils.Printer;
 
 public class WorldPersisterService {

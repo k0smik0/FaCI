@@ -14,7 +14,7 @@ public class ConsoleMain {
 	public static Injector injector;
 //	private static final String TITLE = "FaCRI";
 	
-	public static InteractiveConsole interactiveConsole; 
+//	public static InteractiveConsole interactiveConsole; 
 
 	public static void main(String[] args) {
 		Console console = System.console();
@@ -25,9 +25,9 @@ public class ConsoleMain {
 			console.printf("loading...");
 			injector = Guice.createInjector( new FacriModule() );
 			
-			interactiveConsole = injector.getInstance(InteractiveConsole.class);
+			net.iubris.facri.console.Console.interactiveConsole = injector.getInstance(InteractiveConsole.class);
 			console.printf(" done\n");
-			interactiveConsole.execCommandLoop(console);
+			net.iubris.facri.console.Console.interactiveConsole.execCommandLoop(console);
 		}
 		else {
 			throw new RuntimeException(NO_CONSOLE);

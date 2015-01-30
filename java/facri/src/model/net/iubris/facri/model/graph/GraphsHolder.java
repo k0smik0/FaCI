@@ -1,7 +1,7 @@
 package net.iubris.facri.model.graph;
 
-import java.io.File;
 
+import java.io.File;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -26,6 +26,7 @@ public class GraphsHolder {
 	
 	private boolean interactionsGraphCreated = false;
 	private boolean friendshipsGraphCreated = false;
+	public static final String graph_file_name = "graph_file_name";
 	
 	public static Graph temp;
 	

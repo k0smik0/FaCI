@@ -11,11 +11,11 @@ import java.util.function.BiConsumer;
 
 import javax.inject.Singleton;
 
-import net.iubris.facri.grapher.generators.interactions.EdgeWeigths.Interactions;
-import net.iubris.facri.model.posts.Post;
-import net.iubris.facri.model.users.Ego;
-import net.iubris.facri.model.users.FriendOrAlike;
-import net.iubris.facri.model.users.User;
+import net.iubris.facri.model.parser.posts.Post;
+import net.iubris.facri.model.parser.users.Ego;
+import net.iubris.facri.model.parser.users.FriendOrAlike;
+import net.iubris.facri.model.parser.users.User;
+import net.iubris.facri.model.world.InteractionsWeigths.Interactions;
 import net.iubris.facri.utils.Printer;
 
 import com.sleepycat.persist.model.Entity;

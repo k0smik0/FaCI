@@ -15,8 +15,8 @@ import net.iubris.facri._di.providers.parser.filenamefilters.FeedsDirFilenameFil
 import net.iubris.facri._di.providers.parser.filenamefilters.PostsFilenameFilterProvider;
 import net.iubris.facri._di.providers.parser.mappers.CommentsHolderMapperProvider;
 import net.iubris.facri._di.providers.parser.mappers.PostsMapperProvider;
-import net.iubris.facri.model.comments.CommentsHolder;
-import net.iubris.facri.model.posts.Posts;
+import net.iubris.facri.model.parser.comments.CommentsHolder;
+import net.iubris.facri.model.parser.posts.Posts;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;

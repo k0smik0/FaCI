@@ -4,9 +4,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.iubris.facri.model.graph.GraphsHolder;
-import net.iubris.facri.model.users.Ego;
-import net.iubris.facri.model.users.FriendOrAlike;
-import net.iubris.facri.model.users.User;
+import net.iubris.facri.model.parser.users.Ego;
+import net.iubris.facri.model.parser.users.FriendOrAlike;
+import net.iubris.facri.model.parser.users.User;
 import net.iubris.facri.model.world.World;
 import net.iubris.facri.utils.MemoryUtil;
 

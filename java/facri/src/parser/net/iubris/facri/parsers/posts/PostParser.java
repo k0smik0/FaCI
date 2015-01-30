@@ -5,9 +5,9 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import net.iubris.facri.model.comments.LikesInfo;
-import net.iubris.facri.model.posts.Post;
-import net.iubris.facri.model.users.User;
+import net.iubris.facri.model.parser.comments.LikesInfo;
+import net.iubris.facri.model.parser.posts.Post;
+import net.iubris.facri.model.parser.users.User;
 import net.iubris.facri.model.world.World;
 
 public class PostParser {

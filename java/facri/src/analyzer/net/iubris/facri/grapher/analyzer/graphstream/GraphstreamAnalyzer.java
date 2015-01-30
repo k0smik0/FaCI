@@ -11,10 +11,9 @@ import java.util.List;
 import java.util.Spliterator;
 import java.util.stream.StreamSupport;
 
-import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor;
-import net.iubris.facri.console.actions.graph.nozerodegree.ClearUselessNodesAction;
-import net.iubris.facri.grapher.utils.GraphCloner;
-import net.iubris.facri.grapher.utils.GraphCloner.GraphDataHolder;
+import net.iubris.facri.model.graph.GraphsHolder;
+import net.iubris.facri.model.graph.utils.GraphCloner;
+import net.iubris.facri.model.graph.utils.GraphCloner.GraphDataHolder;
 import net.iubris.facri.utils.Printer;
 
 import org.graphstream.algorithm.BetweennessCentrality;
@@ -67,11 +66,11 @@ public class GraphstreamAnalyzer {
 				this.graph = 
 //				graph;
 						graphCopyDataHolder.getGraph();
-				int removed = ClearUselessNodesAction.removeZeroDegreeNodes(this.graph);
+				int removed = NoZeroDegree.removeZeroDegreeNodes(this.graph);
 				Printer.println("Dichotomized "+this.graph.getId()+"removing node with degree=0: removed "+removed+" nodes.");
 		this.egoNode = egoNode;
 		this.graphCloner = graphCloner;
-		this.graphName = graph.getAttribute(GrapherExecutor.graph_file_name);
+		this.graphName = graph.getAttribute(GraphsHolder.graph_file_name);
 		
 		this.myUserId = graphName.split("_-_")[0];
 		
@@ -347,7 +346,7 @@ public class GraphstreamAnalyzer {
 		GraphDataHolder graphDataHolder = graphCloner.copyWithMouseManager(graph, graph.getId()+" - strong connected components");
 		Graph graph2 = graphDataHolder.getGraph();
 		graph2.removeNode(egoNode);
-		ClearUselessNodesAction.removeZeroDegreeNodes(graph2);
+		NoZeroDegree.removeZeroDegreeNodes(graph2);
 		TarjanStronglyConnectedComponents tarjanStronglyConnectedComponents = new TarjanStronglyConnectedComponents();
 		tarjanStronglyConnectedComponents.setSCCIndexAttribute("ssc");
 		tarjanStronglyConnectedComponents.init(graph2);
@@ -361,7 +360,7 @@ public class GraphstreamAnalyzer {
 		graph2.removeNode(egoNode);
 		Dijkstra dijkstra = new Dijkstra(null,"dijkstra","weight");
 		dijkstra.init(graph2);
-		ClearUselessNodesAction.removeZeroDegreeNodes(graph2);
+		NoZeroDegree.removeZeroDegreeNodes(graph2);
 		dijkstra.setSource( degreeMap.get(degreeMap.size()-1) );
 		dijkstra.compute();
 		Node source = dijkstra.getSource();
@@ -372,7 +371,7 @@ public class GraphstreamAnalyzer {
 	public void epidemicCommunity() {
 		GraphDataHolder graphDataHolder = graphCloner.copyWithMouseManager(graph, graph.getId()+" - epidemic community");
 		Graph graph2 = graphDataHolder.getGraph();
-		ClearUselessNodesAction.removeZeroDegreeNodes(graph2);
+		NoZeroDegree.removeZeroDegreeNodes(graph2);
 		EpidemicCommunityAlgorithm epidemicCommunityAlgorithm = new EpidemicCommunityAlgorithm();
 		epidemicCommunityAlgorithm.init(graph2);
 //		epidemicCommunityAlgorithm.setMarker("epidemic");

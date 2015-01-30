@@ -13,9 +13,9 @@ import javax.xml.stream.XMLStreamException;
 import net.iubris.facri._di.annotations.parser.filenamefilters.CommentsFilenameFilter;
 import net.iubris.facri._di.guice.module.parser.FacriParserModule;
 import net.iubris.facri._di.providers.parser.mappers.CommentsHolderMapperProvider;
-import net.iubris.facri.model.comments.Comment;
-import net.iubris.facri.model.comments.CommentsHolder;
-import net.iubris.facri.model.posts.Post;
+import net.iubris.facri.model.parser.comments.Comment;
+import net.iubris.facri.model.parser.comments.CommentsHolder;
+import net.iubris.facri.model.parser.posts.Post;
 import net.iubris.facri.model.world.World;
 import net.iubris.facri.utils.Printer;
 

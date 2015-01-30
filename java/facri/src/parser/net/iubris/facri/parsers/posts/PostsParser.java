@@ -14,8 +14,8 @@ import javax.xml.stream.XMLStreamException;
 
 import net.iubris.facri._di.annotations.parser.filenamefilters.FeedsDirFilenameFilter;
 import net.iubris.facri._di.annotations.parser.filenamefilters.PostsFilenameFilter;
-import net.iubris.facri.model.posts.Post;
-import net.iubris.facri.model.posts.Posts;
+import net.iubris.facri.model.parser.posts.Post;
+import net.iubris.facri.model.parser.posts.Posts;
 import net.iubris.facri.parsers.Parser;
 import de.odysseus.staxon.json.jaxb.JsonXMLMapper;
 

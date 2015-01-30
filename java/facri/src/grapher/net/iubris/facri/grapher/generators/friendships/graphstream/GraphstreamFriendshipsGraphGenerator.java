@@ -12,10 +12,10 @@ import javax.inject.Singleton;
 
 import net.iubris.facri.grapher.generators.friendships.FriendshipsGraphGenerator;
 import net.iubris.facri.grapher.generators.graphstream.AbstractGraphstreamGraphGenerator;
-import net.iubris.facri.grapher.generators.interactions.EdgeWeigths;
 import net.iubris.facri.model.graph.GraphsHolder;
-import net.iubris.facri.model.users.FriendOrAlike;
-import net.iubris.facri.model.users.User;
+import net.iubris.facri.model.parser.users.FriendOrAlike;
+import net.iubris.facri.model.parser.users.User;
+import net.iubris.facri.model.world.InteractionsWeigths;
 import net.iubris.facri.model.world.World;
 
 import org.graphstream.graph.Edge;
@@ -173,7 +173,7 @@ public class GraphstreamFriendshipsGraphGenerator extends AbstractGraphstreamGra
 	}
 	
 	private Edge createEdge(Node firstNode, Node secondNode, String uiClass) {
-		return super.createEdge(firstNode, secondNode, false, EdgeWeigths.Friendships.FRIEND, uiClass);
+		return super.createEdge(firstNode, secondNode, false, InteractionsWeigths.Friendships.FRIEND, uiClass);
 	}
 	
 	protected boolean areMutualFriendsAlreadyComputed(String firstUserId, String secondUserId) {

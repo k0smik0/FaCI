@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="facri">
+    <property environment="env"/>
+    <property name="junit.output.dir" value="junit"/>
+    <property name="BerkeleyPersister.location" value="../../../BerkeleyPersister"/>
+    <property name="Heimdall.location" value="../../../Heimdall"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="Heimdall.classpath">
+        <pathelement location="${Heimdall.location}/bin"/>
+    </path>
+    <path id="BerkeleyPersister.classpath">
+        <pathelement location="${BerkeleyPersister.location}/bin"/>
+        <pathelement location="${BerkeleyPersister.location}/libs/berkeleydb/je-6.0.11.jar"/>
+        <pathelement location="${BerkeleyPersister.location}/libs/guice/guice-3.0.jar"/>
+        <pathelement location="${BerkeleyPersister.location}/libs/guice/javax.inject.jar"/>
+        <pathelement location="${BerkeleyPersister.location}/libs/guice/sisu-guice.jar"/>
+    </path>
+    <path id="JUnit 4.libraryclasspath">
+        <pathelement location="../../../../eclipse/eclipse-mars/plugins/org.junit_4.11.0.v201303080030/junit.jar"/>
+        <pathelement location="../../../../eclipse/eclipse-mars/plugins/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+    </path>
+    <path id="facri.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="libs/staxon/staxon-1.3.jar"/>
+        <pathelement location="libs/graphstream/nightly/gs-algo-1.3-SNAPSHOT-last.jar"/>
+        <pathelement location="libs/graphstream/nightly/gs-core-1.3-SNAPSHOT-last.jar"/>
+        <pathelement location="libs/graphstream/nightly/gs-ui-1.3-SNAPSHOT-last.jar"/>
+        <pathelement location="libs/staxon/staxon-jaxrs-1.3.jar"/>
+        <pathelement location="libs/guice/javax.inject.jar"/>
+        <pathelement location="libs/guice/aopalliance.jar"/>
+        <pathelement location="libs/guice/guice-3.0.jar"/>
+        <pathelement location="libs/guava/guava-18.0.jar"/>
+        <pathelement location="libs/opencsv/opencsv-3.1.jar"/>
+        <pathelement location="libs/guice/guice-assistedinject-3.0.jar"/>
+        <path refid="Heimdall.classpath"/>
+        <path refid="BerkeleyPersister.classpath"/>
+        <path refid="JUnit 4.libraryclasspath"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/main">
+                <exclude name="**/*.uad"/>
+                <exclude name="**/*.ucd"/>
+                <exclude name="**/*.uld"/>
+                <exclude name="**/*.upd"/>
+                <exclude name="**/*.udd"/>
+                <exclude name="**/*.uod"/>
+                <exclude name="**/*.usd"/>
+                <exclude name="**/*.utd"/>
+                <exclude name="**/*.uud"/>
+                <exclude name="**/*.odd"/>
+                <exclude name="**/*.ead"/>
+                <exclude name="**/*.ecd"/>
+                <exclude name="**/*.eld"/>
+                <exclude name="**/*.epd"/>
+                <exclude name="**/*.edd"/>
+                <exclude name="**/*.eod"/>
+                <exclude name="**/*.esd"/>
+                <exclude name="**/*.etd"/>
+                <exclude name="**/*.eud"/>
+                <exclude name="**/*.urd"/>
+                <exclude name="**/*.uml"/>
+                <exclude name="**/*.ecore"/>
+                <exclude name="**/*.java"/>
+                <exclude name="net/iubris/facri/console/actions/AnalyzeAction.java"/>
+                <exclude name="net/iubris/facri/console/actions/Analyzer.java"/>
+                <exclude name="net/iubris/facri/main/Main.java"/>
+                <exclude name="net/iubris/facri/console/actions/oldgrapher/AnalyzeAction.java"/>
+                <exclude name="net/iubris/facri/console/actions/oldgrapher/Analyzer.java"/>
+                <exclude name="net/iubris/facri/test_main/CacheUtils.java"/>
+                <exclude name="net/iubris/facri/test_main/Main.java"/>
+                <exclude name="net/iubris/facri/test_main/TestMain.java"/>
+                <exclude name="net/iubris/facri/test_main/TestParsing.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/console">
+                <exclude name="**/*.uad"/>
+                <exclude name="**/*.ucd"/>
+                <exclude name="**/*.uld"/>
+                <exclude name="**/*.upd"/>
+                <exclude name="**/*.udd"/>
+                <exclude name="**/*.uod"/>
+                <exclude name="**/*.usd"/>
+                <exclude name="**/*.utd"/>
+                <exclude name="**/*.uud"/>
+                <exclude name="**/*.odd"/>
+                <exclude name="**/*.ead"/>
+                <exclude name="**/*.ecd"/>
+                <exclude name="**/*.eld"/>
+                <exclude name="**/*.epd"/>
+                <exclude name="**/*.edd"/>
+                <exclude name="**/*.eod"/>
+                <exclude name="**/*.esd"/>
+                <exclude name="**/*.etd"/>
+                <exclude name="**/*.eud"/>
+                <exclude name="**/*.urd"/>
+                <exclude name="**/*.uml"/>
+                <exclude name="**/*.ecore"/>
+                <exclude name="**/*.java"/>
+                <exclude name="net/iubris/facri/console/actions/graph/utils/cache/persister/exception/PersisterException.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/analyzer">
+                <exclude name="**/*.uad"/>
+                <exclude name="**/*.ucd"/>
+                <exclude name="**/*.uld"/>
+                <exclude name="**/*.upd"/>
+                <exclude name="**/*.udd"/>
+                <exclude name="**/*.uod"/>
+                <exclude name="**/*.usd"/>
+                <exclude name="**/*.utd"/>
+                <exclude name="**/*.uud"/>
+                <exclude name="**/*.odd"/>
+                <exclude name="**/*.ead"/>
+                <exclude name="**/*.ecd"/>
+                <exclude name="**/*.eld"/>
+                <exclude name="**/*.epd"/>
+                <exclude name="**/*.edd"/>
+                <exclude name="**/*.eod"/>
+                <exclude name="**/*.esd"/>
+                <exclude name="**/*.etd"/>
+                <exclude name="**/*.eud"/>
+                <exclude name="**/*.urd"/>
+                <exclude name="**/*.uml"/>
+                <exclude name="**/*.ecore"/>
+                <exclude name="**/*.java"/>
+                <exclude name="net/iubris/facri/grapher/analyzer/graphstream/FunctionalAnalyzer.java"/>
+                <exclude name="net/iubris/facri/grapher/analyzer/graphstream/Printer.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/grapher">
+                <exclude name="**/*.uad"/>
+                <exclude name="**/*.ucd"/>
+                <exclude name="**/*.uld"/>
+                <exclude name="**/*.upd"/>
+                <exclude name="**/*.udd"/>
+                <exclude name="**/*.uod"/>
+                <exclude name="**/*.usd"/>
+                <exclude name="**/*.utd"/>
+                <exclude name="**/*.uud"/>
+                <exclude name="**/*.odd"/>
+                <exclude name="**/*.ead"/>
+                <exclude name="**/*.ecd"/>
+                <exclude name="**/*.eld"/>
+                <exclude name="**/*.epd"/>
+                <exclude name="**/*.edd"/>
+                <exclude name="**/*.eod"/>
+                <exclude name="**/*.esd"/>
+                <exclude name="**/*.etd"/>
+                <exclude name="**/*.eud"/>
+                <exclude name="**/*.urd"/>
+                <exclude name="**/*.uml"/>
+                <exclude name="**/*.ecore"/>
+                <exclude name="**/*.java"/>
+                <exclude name="net/iubris/facri/grapher/generators/graphstream/GraphstreamGeneratorsHolder.java"/>
+                <exclude name="net/iubris/facri/grapher/generators/interactions/graphstream/GraphstreamGeneratorsHolder.java"/>
+                <exclude name="net/iubris/facri/grapher/exporter/AbstractGraphExporter.java"/>
+                <exclude name="net/iubris/facri/grapher/exporter/GraphExporter.java"/>
+                <exclude name="net/iubris/facri/_di/guice/grapher/factories/CacheHandlerFactory.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/parser">
+                <exclude name="**/*.uad"/>
+                <exclude name="**/*.ucd"/>
+                <exclude name="**/*.uld"/>
+                <exclude name="**/*.upd"/>
+                <exclude name="**/*.udd"/>
+                <exclude name="**/*.uod"/>
+                <exclude name="**/*.usd"/>
+                <exclude name="**/*.utd"/>
+                <exclude name="**/*.uud"/>
+                <exclude name="**/*.odd"/>
+                <exclude name="**/*.ead"/>
+                <exclude name="**/*.ecd"/>
+                <exclude name="**/*.eld"/>
+                <exclude name="**/*.epd"/>
+                <exclude name="**/*.edd"/>
+                <exclude name="**/*.eod"/>
+                <exclude name="**/*.esd"/>
+                <exclude name="**/*.etd"/>
+                <exclude name="**/*.eud"/>
+                <exclude name="**/*.urd"/>
+                <exclude name="**/*.uml"/>
+                <exclude name="**/*.ecore"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/model">
+                <exclude name="**/*.uad"/>
+                <exclude name="**/*.ucd"/>
+                <exclude name="**/*.uld"/>
+                <exclude name="**/*.upd"/>
+                <exclude name="**/*.udd"/>
+                <exclude name="**/*.uod"/>
+                <exclude name="**/*.usd"/>
+                <exclude name="**/*.utd"/>
+                <exclude name="**/*.uud"/>
+                <exclude name="**/*.odd"/>
+                <exclude name="**/*.ead"/>
+                <exclude name="**/*.ecd"/>
+                <exclude name="**/*.eld"/>
+                <exclude name="**/*.epd"/>
+                <exclude name="**/*.edd"/>
+                <exclude name="**/*.eod"/>
+                <exclude name="**/*.esd"/>
+                <exclude name="**/*.etd"/>
+                <exclude name="**/*.eud"/>
+                <exclude name="**/*.urd"/>
+                <exclude name="**/*.uml"/>
+                <exclude name="**/*.ecore"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/misc">
+                <exclude name="**/*.uad"/>
+                <exclude name="**/*.ucd"/>
+                <exclude name="**/*.uld"/>
+                <exclude name="**/*.upd"/>
+                <exclude name="**/*.udd"/>
+                <exclude name="**/*.uod"/>
+                <exclude name="**/*.usd"/>
+                <exclude name="**/*.utd"/>
+                <exclude name="**/*.uud"/>
+                <exclude name="**/*.odd"/>
+                <exclude name="**/*.ead"/>
+                <exclude name="**/*.ecd"/>
+                <exclude name="**/*.eld"/>
+                <exclude name="**/*.epd"/>
+                <exclude name="**/*.edd"/>
+                <exclude name="**/*.eod"/>
+                <exclude name="**/*.esd"/>
+                <exclude name="**/*.etd"/>
+                <exclude name="**/*.eud"/>
+                <exclude name="**/*.urd"/>
+                <exclude name="**/*.uml"/>
+                <exclude name="**/*.ecore"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/gephi">
+                <exclude name="**/*.uad"/>
+                <exclude name="**/*.ucd"/>
+                <exclude name="**/*.uld"/>
+                <exclude name="**/*.upd"/>
+                <exclude name="**/*.udd"/>
+                <exclude name="**/*.uod"/>
+                <exclude name="**/*.usd"/>
+                <exclude name="**/*.utd"/>
+                <exclude name="**/*.uud"/>
+                <exclude name="**/*.odd"/>
+                <exclude name="**/*.ead"/>
+                <exclude name="**/*.ecd"/>
+                <exclude name="**/*.eld"/>
+                <exclude name="**/*.epd"/>
+                <exclude name="**/*.edd"/>
+                <exclude name="**/*.eod"/>
+                <exclude name="**/*.esd"/>
+                <exclude name="**/*.etd"/>
+                <exclude name="**/*.eud"/>
+                <exclude name="**/*.urd"/>
+                <exclude name="**/*.uml"/>
+                <exclude name="**/*.ecore"/>
+                <exclude name="**/*.java"/>
+                <exclude name="net/iubris/facri/_di/guice/module/grapher/graphgenerators/gephi/"/>
+                <exclude name="net/iubris/facri/_di/providers/grapher/graphgenerators/gephi/"/>
+                <exclude name="net/iubris/facri/grapher/exporter/gephi/"/>
+                <exclude name="net/iubris/facri/grapher/generators/gephi/"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/persister">
+                <exclude name="**/*.uad"/>
+                <exclude name="**/*.ucd"/>
+                <exclude name="**/*.uld"/>
+                <exclude name="**/*.upd"/>
+                <exclude name="**/*.udd"/>
+                <exclude name="**/*.uod"/>
+                <exclude name="**/*.usd"/>
+                <exclude name="**/*.utd"/>
+                <exclude name="**/*.uud"/>
+                <exclude name="**/*.odd"/>
+                <exclude name="**/*.ead"/>
+                <exclude name="**/*.ecd"/>
+                <exclude name="**/*.eld"/>
+                <exclude name="**/*.epd"/>
+                <exclude name="**/*.edd"/>
+                <exclude name="**/*.eod"/>
+                <exclude name="**/*.esd"/>
+                <exclude name="**/*.etd"/>
+                <exclude name="**/*.eud"/>
+                <exclude name="**/*.urd"/>
+                <exclude name="**/*.uml"/>
+                <exclude name="**/*.ecore"/>
+                <exclude name="**/*.java"/>
+                <exclude name="net/iubris/facri/persisters/base/HelpersHolder.java"/>
+                <exclude name="net/iubris/facri/persister/persisters/base/HelpersHolder.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/test">
+                <exclude name="**/*.uad"/>
+                <exclude name="**/*.ucd"/>
+                <exclude name="**/*.uld"/>
+                <exclude name="**/*.upd"/>
+                <exclude name="**/*.udd"/>
+                <exclude name="**/*.uod"/>
+                <exclude name="**/*.usd"/>
+                <exclude name="**/*.utd"/>
+                <exclude name="**/*.uud"/>
+                <exclude name="**/*.odd"/>
+                <exclude name="**/*.ead"/>
+                <exclude name="**/*.ecd"/>
+                <exclude name="**/*.eld"/>
+                <exclude name="**/*.epd"/>
+                <exclude name="**/*.edd"/>
+                <exclude name="**/*.eod"/>
+                <exclude name="**/*.esd"/>
+                <exclude name="**/*.etd"/>
+                <exclude name="**/*.eud"/>
+                <exclude name="**/*.urd"/>
+                <exclude name="**/*.uml"/>
+                <exclude name="**/*.ecore"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/no">
+                <exclude name="**/*.uad"/>
+                <exclude name="**/*.ucd"/>
+                <exclude name="**/*.uld"/>
+                <exclude name="**/*.upd"/>
+                <exclude name="**/*.udd"/>
+                <exclude name="**/*.uod"/>
+                <exclude name="**/*.usd"/>
+                <exclude name="**/*.utd"/>
+                <exclude name="**/*.uud"/>
+                <exclude name="**/*.odd"/>
+                <exclude name="**/*.ead"/>
+                <exclude name="**/*.ecd"/>
+                <exclude name="**/*.eld"/>
+                <exclude name="**/*.epd"/>
+                <exclude name="**/*.edd"/>
+                <exclude name="**/*.eod"/>
+                <exclude name="**/*.esd"/>
+                <exclude name="**/*.etd"/>
+                <exclude name="**/*.eud"/>
+                <exclude name="**/*.urd"/>
+                <exclude name="**/*.uml"/>
+                <exclude name="**/*.ecore"/>
+                <exclude name="**/*.java"/>
+                <exclude name="net/iubris/facri/console/commands/"/>
+                <exclude name="net/iubris/facri/grapher/generators/gephi/GephiInteractionsGraphGenerator.java"/>
+                <exclude name="net/iubris/facri/_di/providers/path/"/>
+                <exclude name="net/iubris/facri/config/"/>
+                <exclude name="net/iubris/facri/console/"/>
+                <exclude name="net/iubris/facri/graph/generators/graphstream/"/>
+                <exclude name="net/iubris/facri/grapher/generators/gephi/"/>
+                <exclude name="net/iubris/facri/model/"/>
+                <exclude name="restfb/FqlUser.java"/>
+                <exclude name="restfb/Main.java"/>
+                <exclude name="net/iubris/facri/main/options/AbstractOptionActionParsable.java"/>
+                <exclude name="net/iubris/facri/main/options/OptionAction.java"/>
+                <exclude name="net/iubris/facri/main/options/OptionActionFriendshipsGenerationByGephi.java"/>
+                <exclude name="net/iubris/facri/main/options/OptionActionInteractionsGenerationByGephi.java"/>
+                <exclude name="net/iubris/facri/main/options/OptionActionParse.java"/>
+                <exclude name="net/iubris/facri/main/options/OptionActionViewByGraphstream.java"/>
+                <exclude name="net/iubris/facri/main/options/OptionArgument.java"/>
+                <exclude name="net/iubris/facri/parsers/ego/UserCSVParserJCSV.java"/>
+                <exclude name="net/iubris/facri/persisters/base/proxies/"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall">
+        <ant antfile="build.xml" dir="${BerkeleyPersister.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Heimdall.location}" inheritAll="false" target="clean"/>
+    </target>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects">
+        <ant antfile="build.xml" dir="${BerkeleyPersister.location}" inheritAll="false" target="build-project"/>
+        <ant antfile="build.xml" dir="${Heimdall.location}" inheritAll="false" target="build-project"/>
+    </target>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src/main"/>
+            <src path="src/console"/>
+            <src path="src/analyzer"/>
+            <src path="src/grapher"/>
+            <src path="src/parser"/>
+            <src path="src/model"/>
+            <src path="src/misc"/>
+            <src path="src/gephi"/>
+            <src path="src/persister"/>
+            <src path="src/test"/>
+            <src path="src/no"/>
+            <exclude name="net/iubris/facri/console/actions/AnalyzeAction.java"/>
+            <exclude name="net/iubris/facri/console/actions/Analyzer.java"/>
+            <exclude name="net/iubris/facri/main/Main.java"/>
+            <exclude name="net/iubris/facri/console/actions/oldgrapher/AnalyzeAction.java"/>
+            <exclude name="net/iubris/facri/console/actions/oldgrapher/Analyzer.java"/>
+            <exclude name="net/iubris/facri/test_main/CacheUtils.java"/>
+            <exclude name="net/iubris/facri/test_main/Main.java"/>
+            <exclude name="net/iubris/facri/test_main/TestMain.java"/>
+            <exclude name="net/iubris/facri/test_main/TestParsing.java"/>
+            <exclude name="net/iubris/facri/console/actions/graph/utils/cache/persister/exception/PersisterException.java"/>
+            <exclude name="net/iubris/facri/grapher/analyzer/graphstream/FunctionalAnalyzer.java"/>
+            <exclude name="net/iubris/facri/grapher/analyzer/graphstream/Printer.java"/>
+            <exclude name="net/iubris/facri/grapher/generators/graphstream/GraphstreamGeneratorsHolder.java"/>
+            <exclude name="net/iubris/facri/grapher/generators/interactions/graphstream/GraphstreamGeneratorsHolder.java"/>
+            <exclude name="net/iubris/facri/grapher/exporter/AbstractGraphExporter.java"/>
+            <exclude name="net/iubris/facri/grapher/exporter/GraphExporter.java"/>
+            <exclude name="net/iubris/facri/_di/guice/grapher/factories/CacheHandlerFactory.java"/>
+            <exclude name="net/iubris/facri/_di/guice/module/grapher/graphgenerators/gephi/"/>
+            <exclude name="net/iubris/facri/_di/providers/grapher/graphgenerators/gephi/"/>
+            <exclude name="net/iubris/facri/grapher/exporter/gephi/"/>
+            <exclude name="net/iubris/facri/grapher/generators/gephi/"/>
+            <exclude name="net/iubris/facri/persisters/base/HelpersHolder.java"/>
+            <exclude name="net/iubris/facri/persister/persisters/base/HelpersHolder.java"/>
+            <exclude name="net/iubris/facri/console/commands/"/>
+            <exclude name="net/iubris/facri/grapher/generators/gephi/GephiInteractionsGraphGenerator.java"/>
+            <exclude name="net/iubris/facri/_di/providers/path/"/>
+            <exclude name="net/iubris/facri/config/"/>
+            <exclude name="net/iubris/facri/console/"/>
+            <exclude name="net/iubris/facri/graph/generators/graphstream/"/>
+            <exclude name="net/iubris/facri/grapher/generators/gephi/"/>
+            <exclude name="net/iubris/facri/model/"/>
+            <exclude name="restfb/FqlUser.java"/>
+            <exclude name="restfb/Main.java"/>
+            <exclude name="net/iubris/facri/main/options/AbstractOptionActionParsable.java"/>
+            <exclude name="net/iubris/facri/main/options/OptionAction.java"/>
+            <exclude name="net/iubris/facri/main/options/OptionActionFriendshipsGenerationByGephi.java"/>
+            <exclude name="net/iubris/facri/main/options/OptionActionInteractionsGenerationByGephi.java"/>
+            <exclude name="net/iubris/facri/main/options/OptionActionParse.java"/>
+            <exclude name="net/iubris/facri/main/options/OptionActionViewByGraphstream.java"/>
+            <exclude name="net/iubris/facri/main/options/OptionArgument.java"/>
+            <exclude name="net/iubris/facri/parsers/ego/UserCSVParserJCSV.java"/>
+            <exclude name="net/iubris/facri/persisters/base/proxies/"/>
+            <classpath refid="facri.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target name="GraphstreamAnalyzer">
+        <java classname="net.iubris.facri.grapher.analyzer.graphstream.GraphstreamAnalyzer" failonerror="true" fork="yes">
+            <classpath refid="facri.classpath"/>
+        </java>
+    </target>
+    <target name="ParseTestMain">
+        <java classname="net.iubris.facri.parsers.ParseTestMain" failonerror="true" fork="yes">
+            <classpath refid="facri.classpath"/>
+        </java>
+    </target>
+    <target name="DebugMain">
+        <java classname="net.iubris.facri.main.DebugMain" failonerror="true" fork="yes">
+            <classpath refid="facri.classpath"/>
+        </java>
+    </target>
+    <target name="Facri reading">
+        <java classname="net.iubris.facri.main.Main" failonerror="true" fork="yes">
+            <arg line="read world.cache"/>
+            <classpath refid="facri.classpath"/>
+        </java>
+    </target>
+    <target name="PersisterJUnitTest.test">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="net.iubris.facri.persisters.PersisterJUnitTest" todir="${junit.output.dir}"/>
+            <classpath refid="facri.classpath"/>
+        </junit>
+    </target>
+    <target name="ConsoleMain">
+        <java classname="net.iubris.facri.main.ConsoleMain" failonerror="true" fork="yes">
+            <classpath refid="facri.classpath"/>
+        </java>
+    </target>
+    <target name="CommentsParser">
+        <java classname="net.iubris.facri.parsers.posts.CommentsParser" failonerror="true" fork="yes">
+            <classpath refid="facri.classpath"/>
+        </java>
+    </target>
+    <target name="Facri saving">
+        <java classname="net.iubris.facri.main.Main" failonerror="true" fork="yes">
+            <arg line="save world.cache"/>
+            <classpath refid="facri.classpath"/>
+        </java>
+    </target>
+    <target name="TestMain">
+        <java classname="net.iubris.facri.test_main.TestMain" failonerror="true" fork="yes">
+            <classpath refid="facri.classpath"/>
+        </java>
+    </target>
+    <target name="TestParsing">
+        <java classname="net.iubris.facri.test_main.TestParsing" failonerror="true" fork="yes">
+            <classpath refid="facri.classpath"/>
+        </java>
+    </target>
+    <target name="Facri dummy">
+        <java classname="net.iubris.facri.main.Main" failonerror="true" fork="yes">
+            <arg line="dummy"/>
+            <classpath refid="facri.classpath"/>
+        </java>
+    </target>
+    <target name="T">
+        <java classname="christmas_egg.T" failonerror="true" fork="yes">
+            <classpath refid="facri.classpath"/>
+        </java>
+    </target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
+    </target>
+</project>

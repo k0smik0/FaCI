@@ -1,20 +1,16 @@
 package net.iubris.facri.console.actions.graph.nozerodegree;
 
 import java.io.Console;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import javax.inject.Inject;
 
-import net.iubris.facri.grapher.utils.GraphCloner;
-import net.iubris.facri.grapher.utils.GraphCloner.GraphDataHolder;
+import net.iubris.facri.grapher.analyzer.graphstream.NoZeroDegree;
 import net.iubris.facri.model.graph.GraphsHolder;
+import net.iubris.facri.model.graph.utils.GraphCloner;
+import net.iubris.facri.model.graph.utils.GraphCloner.GraphDataHolder;
 import net.iubris.heimdall.actions.CommandAction;
 import net.iubris.heimdall.command.ConsoleCommand;
 
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
 import org.graphstream.ui.view.Camera;
 import org.graphstream.ui.view.Viewer;
 
@@ -51,7 +47,7 @@ public class ClearUselessNodesAction implements CommandAction {
 			GraphDataHolder clonedHolder = graphCloner.copyWithMouseManager(graphHolder.getFriendshipsGraph(), "Friendships - without zero edges nodes");
 //			Graph clonedGraph = clonedHolder.getGraph();
 //			clonedGraph.setAttribute("ui.title", "Friendships - without zero edges nodes");
-			removeZeroDegreeNodes(clonedHolder.getGraph());
+			NoZeroDegree.removeZeroDegreeNodes(clonedHolder.getGraph());
 			resetView(clonedHolder.getViewer());			
 		}
 		
@@ -61,7 +57,7 @@ public class ClearUselessNodesAction implements CommandAction {
 			GraphDataHolder clonedHolder = graphCloner.copyWithMouseManager(graphHolder.getInteractionsGraph(), "Interactions - without zero edges nodes");
 //			Graph clonedGraph = clonedHolder.getGraph();
 //			clonedGraph.setAttribute("ui.title", "Interactions - without zero edges nodes");
-			removeZeroDegreeNodes(clonedHolder.getGraph());
+			NoZeroDegree.removeZeroDegreeNodes(clonedHolder.getGraph());
 			resetView(clonedHolder.getViewer());
 		}
 
@@ -98,27 +94,27 @@ public class ClearUselessNodesAction implements CommandAction {
 		Viewer viewer;
 	}*/
 	
-	public static int removeZeroDegreeNodes(Graph graph) {
-		AtomicInteger removed = new AtomicInteger(0);
-		Stream<Node> stream = StreamSupport.stream(graph.spliterator(), true);
-		stream.forEach(node -> {
-			if (node.getDegree()==0) {
-				graph.removeNode(node);
-				removed.incrementAndGet();
-			}
-		});
-		/*Iterator<Node> iterator = graph.iterator();
-		while (iterator.hasNext()) {
-			Node node = iterator.next();
-			if (node.getDegree()==0) {
-//				try {
-					iterator.remove();
-					removed.incrementAndGet();
-//				} catch(NullPointerException npe) {}
-			}
-		}*/
-		return removed.get();
-	}
+//	public static int removeZeroDegreeNodes(Graph graph) {
+//		AtomicInteger removed = new AtomicInteger(0);
+//		Stream<Node> stream = StreamSupport.stream(graph.spliterator(), true);
+//		stream.forEach(node -> {
+//			if (node.getDegree()==0) {
+//				graph.removeNode(node);
+//				removed.incrementAndGet();
+//			}
+//		});
+//		Iterator<Node> iterator = graph.iterator();
+//		while (iterator.hasNext()) {
+//			Node node = iterator.next();
+//			if (node.getDegree()==0) {
+////				try {
+//					iterator.remove();
+//					removed.incrementAndGet();
+////				} catch(NullPointerException npe) {}
+//			}
+//		}
+//		return removed.get();
+//	}
 	
 //	enum SearchArg {
 //		u, // user by id

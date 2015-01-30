@@ -7,8 +7,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.iubris.facri.model.users.Ego;
-import net.iubris.facri.model.users.UserParser;
+import net.iubris.facri.model.parser.users.Ego;
+import net.iubris.facri.model.parser.users.UserParser;
 import net.iubris.facri.model.world.World;
 import net.iubris.facri.parsers.Parser;
 import net.iubris.facri.parsers.posts.PostsParser;

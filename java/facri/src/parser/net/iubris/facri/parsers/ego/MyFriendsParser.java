@@ -11,8 +11,8 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.iubris.facri.model.users.FriendOrAlike;
-import net.iubris.facri.model.users.UserParser;
+import net.iubris.facri.model.parser.users.FriendOrAlike;
+import net.iubris.facri.model.parser.users.UserParser;
 import net.iubris.facri.parsers.Parser;
 
 public class MyFriendsParser implements Parser {
