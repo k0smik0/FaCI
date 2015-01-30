@@ -58,8 +58,7 @@ public class WorldPersisterService {
 		if (egoPersister.contains(myUser.getUid())) {
 			Printer.println("\nParsed data already present - skip.");
 			return;
-		}
-		
+		}		
 		
 		Printer.println("\nWriting parsed data to cache: ");
 		
@@ -111,5 +110,7 @@ public class WorldPersisterService {
 //		if (size>0)
 ////			throw new ExistantValueException("failed persisting friends of friends: "+size);
 //			throw new PersisterException("failed persisting friends of friends: "+size);
+		
+		
 	}
 }

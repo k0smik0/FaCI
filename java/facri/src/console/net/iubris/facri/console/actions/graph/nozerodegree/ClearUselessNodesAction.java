@@ -1,71 +1,88 @@
 package net.iubris.facri.console.actions.graph.nozerodegree;
 
 import java.io.Console;
-import java.io.File;
-import java.util.Spliterator;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import javax.inject.Inject;
 
+import net.iubris.facri.grapher.utils.GraphCloner;
+import net.iubris.facri.grapher.utils.GraphCloner.GraphDataHolder;
 import net.iubris.facri.model.graph.GraphsHolder;
-import net.iubris.facri.model.graph.eventmanagers.FriendshipsMouseManager.FriendshipsMouseManagerFactory;
-import net.iubris.facri.model.graph.eventmanagers.InteractionsMouseManager.InteractionsMouseManagerFactory;
 import net.iubris.heimdall.actions.CommandAction;
 import net.iubris.heimdall.command.ConsoleCommand;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.Graphs;
-import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.Camera;
 import org.graphstream.ui.view.Viewer;
 
 public class ClearUselessNodesAction implements CommandAction {
 	
 	private final GraphsHolder graphHolder;
-	private final FriendshipsMouseManagerFactory friendshipsMouseManagerFactory;
-	private final InteractionsMouseManagerFactory interactionsMouseManagerFactory;
+//	private final FriendshipsMouseManagerFactory friendshipsMouseManagerFactory;
+//	private final InteractionsMouseManagerFactory interactionsMouseManagerFactory;
 //	private final World world;
+	private final GraphCloner graphCloner;
 	
 //	private static String WRONG = "wrong arguments";
 
 	@Inject
 	public ClearUselessNodesAction(
-			GraphsHolder graphsHolder, 
-			FriendshipsMouseManagerFactory friendshipsMouseManagerFactory, 
-			InteractionsMouseManagerFactory interactionsMouseManagerFactory) {
+			GraphsHolder graphsHolder
+			, GraphCloner graphCloner
+//			,FriendshipsMouseManagerFactory friendshipsMouseManagerFactory, 
+//			InteractionsMouseManagerFactory interactionsMouseManagerFactory
+			) {
 		this.graphHolder = graphsHolder;
+		this.graphCloner = graphCloner;
 		
-		this.friendshipsMouseManagerFactory = friendshipsMouseManagerFactory;
-		this.interactionsMouseManagerFactory = interactionsMouseManagerFactory;
+//		this.friendshipsMouseManagerFactory = friendshipsMouseManagerFactory;
+//		this.interactionsMouseManagerFactory = interactionsMouseManagerFactory;
 	}
 	
 	@Override
 	public void exec(Console console, String... params) throws Exception {
 		
 		if (graphHolder.isFriendshipsGraphCreated()) {
-			Holder doGraph = doGraph(graphHolder.getFriendshipsGraph(), "friendships");
-			doGraph.view.setMouseManager(friendshipsMouseManagerFactory.create(doGraph.viewer));
+//			Holder doGraph = doGraph(graphHolder.getFriendshipsGraph(), "friendships");
+//			doGraph.view.setMouseManager(friendshipsMouseManagerFactory.create(doGraph.viewer));
+			GraphDataHolder clonedHolder = graphCloner.copyWithMouseManager(graphHolder.getFriendshipsGraph(), "Friendships - without zero edges nodes");
+//			Graph clonedGraph = clonedHolder.getGraph();
+//			clonedGraph.setAttribute("ui.title", "Friendships - without zero edges nodes");
+			removeZeroDegreeNodes(clonedHolder.getGraph());
+			resetView(clonedHolder.getViewer());			
 		}
 		
 		if (graphHolder.isInteractionsGraphCreated()) {
-			Holder doGraph = doGraph(graphHolder.getInteractionsGraph(), "interactions");
-			doGraph.view.setMouseManager(interactionsMouseManagerFactory.create(doGraph.viewer));
+//			Holder doGraph = doGraph(graphHolder.getInteractionsGraph(), "interactions");
+//			doGraph.view.setMouseManager(interactionsMouseManagerFactory.create(doGraph.viewer));
+			GraphDataHolder clonedHolder = graphCloner.copyWithMouseManager(graphHolder.getInteractionsGraph(), "Interactions - without zero edges nodes");
+//			Graph clonedGraph = clonedHolder.getGraph();
+//			clonedGraph.setAttribute("ui.title", "Interactions - without zero edges nodes");
+			removeZeroDegreeNodes(clonedHolder.getGraph());
+			resetView(clonedHolder.getViewer());
 		}
 
 	}
 	
-	private Holder doGraph(Graph graph/*, MouseManagerFactory<M> mouseManagerFactory*/, String css) {
-		Graph friendshipsGraph = Graphs.clone( graph );
+	private void resetView(Viewer viewer) {
+		Camera camera = viewer.getDefaultView().getCamera();
+		camera.setViewPercent(0.1);
+		camera.setViewPercent(1);
+	}
+	
+	/*private Holder doGraph(Graph graph, String css) {
+		Graph clonedGraph = Graphs.clone( graph );
 		graph.setAttribute("ui.stylesheet", "url('css"+File.separatorChar+css+".css')");
 		Holder holder = new Holder();
-		holder.viewer = GraphsHolder.buildViewer(friendshipsGraph);
+		holder.viewer = GraphsHolder.buildViewer(clonedGraph);
 //		GraphsHolder.prepareForDisplay(viewer, mouseManagerFactory);
 		holder.view = GraphsHolder.buildView(holder.viewer);
 //		view.setMouseManager(mouseManagerFactory.create(viewer));
 		
-		removeUseless(friendshipsGraph);
+		removeUseless(clonedGraph);
 		Camera camera = holder.viewer.getDefaultView().getCamera();
 		
 		camera.setViewPercent(0.1);
@@ -79,15 +96,28 @@ public class ClearUselessNodesAction implements CommandAction {
 	class Holder {
 		ViewPanel view;
 		Viewer viewer;
-	}
+	}*/
 	
-	private void removeUseless(final Graph graph) {
-		Spliterator<Node> spliterator = graph.spliterator();
-		Stream<Node> stream = StreamSupport.stream(spliterator, true);
-		stream.forEach(n->{
-			if (n.getDegree()==0)
-				graph.removeNode(n);
+	public static int removeZeroDegreeNodes(Graph graph) {
+		AtomicInteger removed = new AtomicInteger(0);
+		Stream<Node> stream = StreamSupport.stream(graph.spliterator(), true);
+		stream.forEach(node -> {
+			if (node.getDegree()==0) {
+				graph.removeNode(node);
+				removed.incrementAndGet();
+			}
 		});
+		/*Iterator<Node> iterator = graph.iterator();
+		while (iterator.hasNext()) {
+			Node node = iterator.next();
+			if (node.getDegree()==0) {
+//				try {
+					iterator.remove();
+					removed.incrementAndGet();
+//				} catch(NullPointerException npe) {}
+			}
+		}*/
+		return removed.get();
 	}
 	
 //	enum SearchArg {

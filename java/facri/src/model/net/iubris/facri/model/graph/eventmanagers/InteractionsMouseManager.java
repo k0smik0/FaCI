@@ -35,21 +35,22 @@ public class InteractionsMouseManager extends MouseManager {
 		String nodeId = node.getId();
 		Holder holder = new Holder();
 		Iterable<Edge> eachEdge = node.getEachEdge();
-		eachEdge.forEach(e->{
-			if (e.getSourceNode()
-					.getId()
-					.equals(nodeId)) { // leaving
-					float interactions = e.getAttribute("ui.interactions");
-					holder.leavingInteractions.addAndGet(interactions);
-					holder.leavingInteractionsCounter.incrementAndGet();
-			} else if (e.getTargetNode()
-					.getId()
-					.equals(nodeId)) { // entering
-					float interactions = e.getAttribute("ui.interactions");
-					holder.enteringInteractions.addAndGet(interactions);
-					holder.enteringInteractionsCounter.incrementAndGet();
-			} 
-		});
+		if (eachEdge!=null)
+			eachEdge.forEach(e->{
+				if (e.getSourceNode()
+						.getId()
+						.equals(nodeId)) { // leaving
+						float interactions = e.getAttribute("ui.interactions");
+						holder.leavingInteractions.addAndGet(interactions);
+						holder.leavingInteractionsCounter.incrementAndGet();
+				} else if (e.getTargetNode()
+						.getId()
+						.equals(nodeId)) { // entering
+						float interactions = e.getAttribute("ui.interactions");
+						holder.enteringInteractions.addAndGet(interactions);
+						holder.enteringInteractionsCounter.incrementAndGet();
+				} 
+			});
 		return holder;
 	}
 	

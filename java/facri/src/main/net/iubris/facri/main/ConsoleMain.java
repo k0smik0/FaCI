@@ -13,6 +13,8 @@ public class ConsoleMain {
 	
 	public static Injector injector;
 //	private static final String TITLE = "FaCRI";
+	
+	public static InteractiveConsole interactiveConsole; 
 
 	public static void main(String[] args) {
 		Console console = System.console();
@@ -23,7 +25,7 @@ public class ConsoleMain {
 			console.printf("loading...");
 			injector = Guice.createInjector( new FacriModule() );
 			
-			InteractiveConsole interactiveConsole = injector.getInstance(InteractiveConsole.class);
+			interactiveConsole = injector.getInstance(InteractiveConsole.class);
 			console.printf(" done\n");
 			interactiveConsole.execCommandLoop(console);
 		}

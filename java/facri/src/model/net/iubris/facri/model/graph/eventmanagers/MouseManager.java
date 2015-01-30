@@ -13,7 +13,6 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import net.iubris.facri.model.world.World;
-import net.iubris.facri.utils.Pauser;
 import net.iubris.facri.utils.Printer;
 
 import org.graphstream.graph.Node;
@@ -30,25 +29,32 @@ public abstract class MouseManager extends DefaultMouseManager {
 	private final Viewer viewer;
 	private final World world;
 	private final ViewPanel defaultView;
+	private float viewPercent;
 	
 	public MouseManager(Viewer viewer, World world) {
 		this.viewer = viewer;
 		this.defaultView = viewer.getDefaultView();
 		this.world = world;
+		
+		this.viewPercent = 0f;
 	}
 	
 	@Override
 	protected void mouseButtonPress(MouseEvent mouseEvent) {
 		super.mouseButtonPress(mouseEvent);
 		if (mouseEvent.isControlDown()) {
-			view.getCamera().resetView();
+			Camera camera = view.getCamera();
+			viewPercent = 0f;
+			camera.setViewPercent(1);
+			camera.resetView();
 		}
 		if (mouseEvent.isShiftDown()) {
 			Camera camera = view.getCamera();
 //			camera.setViewCenter(mouseEvent.getX(), mouseEvent.getY(), camera.getViewCenter().z);
-			camera.setViewPercent(0.1);
-			Pauser.sleep(50);
-			camera.setViewPercent(0.99);
+			viewPercent+=0.1;
+			camera.setViewPercent(viewPercent);
+//			Pauser.sleep(50);
+//			camera.setViewPercent(0.99);
 		}
 	}
 	
@@ -100,13 +106,17 @@ public abstract class MouseManager extends DefaultMouseManager {
 			return;
 		}
 		
-		if (event.getButton()==1 && event.isShiftDown() && /*focusOnClick &&*/ element instanceof GraphicNode) {
+		if (event.getButton()==1 && event.isShiftDown() && element instanceof GraphicNode) {
 			centerOnNode(element, viewer);
 			
 			String nodeId = element.getId();
 			Node node = viewer.getGraphicGraph().getNode(nodeId);
+			node.setAttribute("ui.marked", "marked");
+			node.addAttribute("ui.label");
 //			showDialog(nodeId, node, view); // old 1.2
 			showDialog(nodeId, node, defaultView); // nightly 1.3
+			
+			viewer.getDefaultView().getCamera().setViewPercent(0.1);
 			
 			return;
 		}

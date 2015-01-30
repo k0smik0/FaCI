@@ -8,7 +8,7 @@
 	<classpathentry excluding="net/iubris/facri/model/graph/BlockingViewerPipe.java" kind="src" path="src/model"/>
 	<classpathentry kind="src" path="src/misc"/>
 	<classpathentry excluding="net/iubris/facri/_di/guice/module/grapher/graphgenerators/gephi/|net/iubris/facri/_di/providers/grapher/graphgenerators/gephi/|net/iubris/facri/grapher/exporter/gephi/|net/iubris/facri/grapher/generators/gephi/" kind="src" path="src/gephi"/>
-	<classpathentry kind="src" path="src/persister"/>
+	<classpathentry excluding="net/iubris/facri/persisters/base/HelpersHolder.java" kind="src" path="src/persister"/>
 	<classpathentry kind="src" path="src/test"/>
 	<classpathentry exported="true" kind="lib" path="libs/staxon/staxon-1.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/graphstream/nightly/gs-algo-1.3-SNAPSHOT-last.jar">

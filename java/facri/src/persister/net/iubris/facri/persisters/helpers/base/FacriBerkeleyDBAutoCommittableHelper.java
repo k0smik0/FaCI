@@ -18,4 +18,11 @@ implements FacriBerkeleyDBHelper<U> {
 			BerkeleyDBHelperManager berkeleyDBHelperManager) {
 		super(corpusName, silo, entityModel, berkeleyDBHelperManager);
 	}
+	
+	@Override
+	public void closeStorage() {
+//		System.out.print("closing " + this.getClass().getName() + " storages ");
+		super.closeStorage();
+//		System.out.println(".");
+	}
 }

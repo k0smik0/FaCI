@@ -9,7 +9,7 @@ import net.iubris.facri.persisters.helpers.EgoFacriBerkeleyDBAutoCommittableHelp
 public class EgoPersister extends FacriPersister<Ego> {
 
 	@Inject
-	public EgoPersister(EgoFacriBerkeleyDBAutoCommittableHelper egoFacriBerkeleyDBAutoCommittableHelper) {
-		super(egoFacriBerkeleyDBAutoCommittableHelper, Ego.class);
+	public EgoPersister(EgoFacriBerkeleyDBAutoCommittableHelper egoFacriBerkeleyDBAutoCommittableHelper/*, HelpersHolder helpersHolder*/) {
+		super(egoFacriBerkeleyDBAutoCommittableHelper, Ego.class/*, helpersHolder*/);
 	}
 }

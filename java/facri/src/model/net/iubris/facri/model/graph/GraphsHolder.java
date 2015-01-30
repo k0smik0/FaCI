@@ -24,52 +24,23 @@ public class GraphsHolder {
 	private final FriendshipsMouseManagerFactory friendshipsMouseManagerFactory;
 	private final InteractionsMouseManagerFactory interactionsMouseManagerFactory;
 	
-//	private ViewerPipe fromViewerInteractions;
-//	final World world;
-//	private final DataParser dataParser;
-	
 	private boolean interactionsGraphCreated = false;
 	private boolean friendshipsGraphCreated = false;
 	
-	
-	
-	/*private class NodeViewerListener implements ViewerListener {
-		private final Graph graph;
-		private LinkedBlockingQueue<String> queue;
-//		private boolean loop = true;
-		
-		public NodeViewerListener(Graph graph, LinkedBlockingQueue<String> queue) {
-			this.graph = graph;
-			this.queue = queue;
-		}
-		@Override
-		public void viewClosed(String viewName) {
-//			loop = false;
-		}
-		@Override
-		public void buttonReleased(String id) {}
-		@Override
-		public void buttonPushed(String id) {
-			System.out.println(id+": "+graph.getNode(id).getDegree());
-			queue.add(id);
-		}
-//		public void doLoop() {
-//			loop = true;
-//		}
-	};*/
+	public static Graph temp;
 	
 	// TODO: refactor constructor
 	@Inject
 	public GraphsHolder(FriendshipsMouseManagerFactory friendshipsMouseManagerFactory, 
 			InteractionsMouseManagerFactory interactionsMouseManagerFactory) {
-		this.friendshipsMouseManagerFactory = friendshipsMouseManagerFactory;
-		this.interactionsMouseManagerFactory = interactionsMouseManagerFactory;
-		//		this.world = world;
-//		this.dataParser = dataParser;
+
 		this.friendshipsGraph = new MultiGraph("Friendships",false,true);
 		this.friendshipsGraphViewer = buildViewer(friendshipsGraph);
+		this.friendshipsMouseManagerFactory = friendshipsMouseManagerFactory;
+	
 		this.interactionsGraph = new MultiGraph("Interactions",false,true);
 		this.interactionsGraphViewer = buildViewer(interactionsGraph);
+		this.interactionsMouseManagerFactory = interactionsMouseManagerFactory;
 		
 //		System.out.print("[");
 		System.setProperty("sun.java2d.opengl", "True");
@@ -85,7 +56,9 @@ public class GraphsHolder {
 //		graph.addAttribute("ui.speed");
 		
 //		System.out.println("graph: "+graph);
-		Viewer viewer = new Viewer(graph,  Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+		Viewer viewer = new Viewer(graph,  Viewer.ThreadingModel
+				.GRAPH_IN_ANOTHER_THREAD);
+//				.GRAPH_IN_GUI_THREAD);
 		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
 //		viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
 //		viewer.enableAutoLayout(new LinLog(true));
@@ -100,38 +73,17 @@ public class GraphsHolder {
 		ViewPanel view = viewer.getDefaultView();
 		if (view==null) {
 			view = viewer.addDefaultView(true);
+			view.setEnabled(true);
 		}
 		return view;
-//		view.setMouseManager(mFactory.create(viewer));
 	}
-	
-	@FunctionalInterface
-	public interface MFactory {
-		void create(Viewer viewer);
-	}
-	
+		
 	public void prepareForDisplayFriendships() {
-//		View view = friendshipsGraphViewer.getDefaultView();
-//		if (view==null) {
-//			view = friendshipsGraphViewer.addDefaultView(true);
-//		}
-////		view.setVisible(true);
-//		
-//		view.setMouseManager(friendshipsMouseManagerFactory.create(friendshipsGraphViewer));
-////		view.setShortcutManager(new InternalShortcutManager(friendshipsGraphViewer));
 		ViewPanel view = buildView(friendshipsGraphViewer);
 		view.setMouseManager(friendshipsMouseManagerFactory.create(friendshipsGraphViewer));
 	}
 	
 	public void prepareForDisplayInteractions() {
-//		View view = interactionsGraphViewer.getDefaultView();
-//		if (view==null) {
-//			view = interactionsGraphViewer.addDefaultView(true);
-//		}
-////		view.setVisible(true);
-//		
-//		view.setMouseManager(interactionsMouseManagerFactory.create(interactionsGraphViewer));
-////		view.setShortcutManager(new InternalShortcutManager(interactionsGraphViewer));
 		ViewPanel view = buildView(interactionsGraphViewer);
 		view.setMouseManager(interactionsMouseManagerFactory.create(interactionsGraphViewer));
 	}
@@ -143,14 +95,6 @@ public class GraphsHolder {
 	public Viewer getFriendshipsGraphViewer() {
 		return friendshipsGraphViewer;
 	}
-	
-		
-	/*public ViewerPipe getViewerPipeInteractions(LinkedBlockingQueue<String> queue) {
-		fromViewerInteractions = interactionsGraphViewer.newViewerPipe();
-//		fromViewerInteractions.addViewerListener( new NodeViewerListener(interactionsGraph, queue) );
-      fromViewerInteractions.addSink(interactionsGraph);
-		return fromViewerInteractions;
-	}*/
 	
 	public void setInteractionsGraphsCreated(boolean isCreated) {
 		interactionsGraphCreated = isCreated;
@@ -168,7 +112,6 @@ public class GraphsHolder {
 	public Graph getFriendshipsGraph() {
 		return friendshipsGraph;
 	}
-	
 	public Graph getInteractionsGraph() {
 		return interactionsGraph;
 	}
@@ -185,4 +128,38 @@ public class GraphsHolder {
 			interactionsGraph.setAttribute("ui.stylesheet", "url('css"+File.separatorChar+"interactions.css')");
 		}
 	}
+	
+	
+
+	/*public ViewerPipe getViewerPipeInteractions(LinkedBlockingQueue<String> queue) {
+		fromViewerInteractions = interactionsGraphViewer.newViewerPipe();
+//		fromViewerInteractions.addViewerListener( new NodeViewerListener(interactionsGraph, queue) );
+      fromViewerInteractions.addSink(interactionsGraph);
+		return fromViewerInteractions;
+	}*/
+	
+	/*private class NodeViewerListener implements ViewerListener {
+	private final Graph graph;
+	private LinkedBlockingQueue<String> queue;
+//	private boolean loop = true;
+	
+	public NodeViewerListener(Graph graph, LinkedBlockingQueue<String> queue) {
+		this.graph = graph;
+		this.queue = queue;
+	}
+	@Override
+	public void viewClosed(String viewName) {
+//		loop = false;
+	}
+	@Override
+	public void buttonReleased(String id) {}
+	@Override
+	public void buttonPushed(String id) {
+		System.out.println(id+": "+graph.getNode(id).getDegree());
+		queue.add(id);
+	}
+//	public void doLoop() {
+//		loop = true;
+//	}
+};*/
 }

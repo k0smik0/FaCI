@@ -14,7 +14,8 @@ node {
 	 
 }
 node.marked {
-	stroke-width: 1px;
+	stroke-width: 3px;
+	stroke-color: black;
 }
 node.selected {
 	text-visibility-mode:normal;
@@ -25,6 +26,10 @@ node.giantcomponent {
 	stroke-width: 2px;
 	stroke-color: purple;
 }
+node.clique {
+	stroke-width: 2px;
+	stroke-color: yellow;
+}
 node.maxclique {
 	stroke-width: 2px;
 	stroke-color: red;
@@ -32,6 +37,18 @@ node.maxclique {
 node.ssc {
 	stroke-width: 2px;
 	stroke-color: green;
+}
+node.dijkstra {
+	stroke-width: 2px;
+	stroke-color: orange;
+}
+node.epidemic {
+	stroke-width: 2px;
+	stroke-color: blue;
+}
+node.community {
+	stroke-width: 2px;
+	stroke-color: blue;
 }
 /*
 node.nottexted {

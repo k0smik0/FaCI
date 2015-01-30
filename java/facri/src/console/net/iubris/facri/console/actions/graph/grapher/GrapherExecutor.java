@@ -22,7 +22,7 @@ public class GrapherExecutor {
 	
 	private final Map<GraphType,GraphstreamGraphGenerator> graphgeneratorsMap = new EnumMap<GraphType,GraphstreamGraphGenerator>(GraphType.class);
 	
-	public static final String graph_name = "graph_name";
+	public static final String graph_file_name = "graph_file_name";
 	private static String myUserId = "";
 	
 	@Inject
@@ -202,7 +202,7 @@ public class GrapherExecutor {
 				GraphGenerationDoneFunction graphGeneratorDoneFunction,
 				CacheHandler cacheHandler, String fileBasename) throws IOException, JAXBException, XMLStreamException {
 
-			graph.addAttribute(graph_name, myUserId+"_-_"+fileBasename);
+			graph.addAttribute(graph_file_name, myUserId+"_-_"+fileBasename);
 			
 			cacheHandler.exec(graph,
 					fileBasename,

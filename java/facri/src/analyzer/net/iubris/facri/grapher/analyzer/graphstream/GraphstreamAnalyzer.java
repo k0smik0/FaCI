@@ -12,13 +12,17 @@ import java.util.Spliterator;
 import java.util.stream.StreamSupport;
 
 import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor;
+import net.iubris.facri.console.actions.graph.nozerodegree.ClearUselessNodesAction;
+import net.iubris.facri.grapher.utils.GraphCloner;
+import net.iubris.facri.grapher.utils.GraphCloner.GraphDataHolder;
 import net.iubris.facri.utils.Printer;
 
 import org.graphstream.algorithm.BetweennessCentrality;
 import org.graphstream.algorithm.ConnectedComponents;
-import org.graphstream.algorithm.Kruskal;
+import org.graphstream.algorithm.Dijkstra;
 import org.graphstream.algorithm.TarjanStronglyConnectedComponents;
 import org.graphstream.algorithm.Toolkit;
+import org.graphstream.algorithm.community.EpidemicCommunityAlgorithm;
 import org.graphstream.algorithm.flow.FordFulkersonAlgorithm;
 import org.graphstream.algorithm.measure.AbstractCentrality;
 import org.graphstream.algorithm.measure.ClosenessCentrality;
@@ -29,9 +33,13 @@ import org.graphstream.algorithm.measure.EigenvectorCentrality;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
+
+
 public class GraphstreamAnalyzer {
 	
-	private final Graph graph;
+	private Graph graph;
 	private final String graphName;
 	private final String myUserId;
 	private final File resultsDir;
@@ -50,24 +58,33 @@ public class GraphstreamAnalyzer {
 	private ConnectedComponents connectedComponentsWithoutEgo;
 	private int edgeConnectivity;
 	
+	private final GraphCloner graphCloner;
+	private GraphDataHolder graphCopyDataHolder;	
 	
-	public GraphstreamAnalyzer(Graph graph, Node egoNode/*, @Named("my_user_id") String myUserId*/) {
-		this.graph = graph;
+	@AssistedInject
+	public GraphstreamAnalyzer(@Assisted Graph graph, @Assisted Node egoNode, GraphCloner graphCloner) {
+				graphCopyDataHolder = graphCloner.copyWithMouseManager(graph, graph.getId()+" - to analyze");
+				this.graph = 
+//				graph;
+						graphCopyDataHolder.getGraph();
+				int removed = ClearUselessNodesAction.removeZeroDegreeNodes(this.graph);
+				Printer.println("Dichotomized "+this.graph.getId()+"removing node with degree=0: removed "+removed+" nodes.");
 		this.egoNode = egoNode;
-		graphName = graph.getAttribute(GrapherExecutor.graph_name);
+		this.graphCloner = graphCloner;
+		this.graphName = graph.getAttribute(GrapherExecutor.graph_file_name);
 		
-		myUserId = graphName.split("_-_")[0];
+		this.myUserId = graphName.split("_-_")[0];
 		
-		resultsDir = new File("results"+File.separatorChar+myUserId);
+		this.resultsDir = new File("results"+File.separatorChar+myUserId);
 		if (!resultsDir.exists())
 			resultsDir.mkdirs();
-		Printer.println("(results not printed here will be available in 'results' directory)");
+		Printer.println("(results not printed here will be available in 'results' directory)");	
 	}
 	
 	/*
 	 * Numerical zone
 	 */	
-	public void numericalAnalysis(boolean isDirectedGraph, String weightAttributeName) throws IOException {
+	public void numericalAnalysis(String weightAttributeName, boolean isDirectedGraph) throws IOException {
 		clusteringCoefficient();
 		degree();
 		density();
@@ -213,44 +230,40 @@ public class GraphstreamAnalyzer {
 		ffa.getMaximumFlow();
 	}
 	
-	public void MST() {
-//		Prim p = new Prim();
-		new Kruskal();
-		new TarjanStronglyConnectedComponents();
-	}
-	
-	public void StrongConnectedComponents() {
-		TarjanStronglyConnectedComponents tarjanStronglyConnectedComponents = new TarjanStronglyConnectedComponents();
-		tarjanStronglyConnectedComponents.setSCCIndexAttribute("ssc");
-		tarjanStronglyConnectedComponents.init(graph);
-		tarjanStronglyConnectedComponents.compute();
-	}
-	
-//	public void epidemicCommunity() {
-//		EpidemicCommunityAlgorithm epidemicCommunityAlgorithm = new EpidemicCommunityAlgorithm();
-//		epidemicCommunityAlgorithm.init(graph);
-//		epidemicCommunityAlgorithm.compute();
-//		epidemicCommunityAlgorithm.
+//	public void MST() {
+////		Prim p = new Prim();
+//		new Kruskal();
+//		new TarjanStronglyConnectedComponents();
 //	}
-
 	
 	/*
 	 * Graphical zone
 	 */
-	public void graphicalAnalysis() throws IOException {
+	public void graphicalAnalysis() {
+		if (degreeMap == null)
+			degreeMap = Toolkit.degreeMap(graph);
+		
 		cliques();
-		/*try {
-			cliquer();
-		} catch (ParseException | SAXException e) {
-			e.printStackTrace();
-			return;
-		}*/
-		connected();
+//		strongConnectedComponents();
+//		dijkstra();
+//		epidemicCommunity();
+		
+		// always as last - bugged? !
+		connectedComponents();
 	}
 	
 	public ArrayList<Node> cliques() {
 //		Printer.print("Maximal Cliques: ");
-		Iterable<List<Node>> maximalCliques = Toolkit.getMaximalCliques(graph);
+		GraphDataHolder graphDataHolder = graphCloner.copyWithMouseManager(graph,graph.getId()+" - cliques");
+		Graph graph2 = graphDataHolder.getGraph();
+
+		Iterable<List<Node>> maximalCliques = Toolkit.getMaximalCliques(graph2);
+		
+//		AtomicInteger maximalCliquesCounter = new AtomicInteger(0);
+//		maximalCliques.iterator().forEachRemaining(nodesList->{
+//			maximalCliquesCounter.incrementAndGet();
+//			nodesList.forEach(node->node.setAttribute("clique"));
+//		});
 		
 		maximumClique = new ArrayList<Node>(0);
 		//naive
@@ -258,6 +271,8 @@ public class GraphstreamAnalyzer {
 			if (clique.size() > tempMaximumClique.size())
 				tempMaximumClique = clique;*/
 		
+//		Printer.println("Maximumal Cliques: "+maximalCliquesCounter.get());
+//		int removed = ClearUselessNodesAction.removeZeroDegreeNodes(graph2);
 		Printer.print("Maximum Clique: ");
 		Spliterator<List<Node>> maximalCliquesSpliterator = maximalCliques.spliterator();
 		StreamSupport.stream(maximalCliquesSpliterator, true).parallel()
@@ -274,11 +289,111 @@ public class GraphstreamAnalyzer {
 			node.addAttribute("ui.class", defaultUiClassAttribute+",maxclique");
 		});
 		Printer.println("");
+//		Printer.println("(Dichotomized with degree>0: removed "+removed+" nodes.)\n");
+		
 		
 		return maximumClique;
 	}
 	
-	// using grph
+	public void connectedComponents() {
+//		GraphDataHolder graphDataHolderBackup = 
+//				graphCloner.clone(graph);
+		
+		GraphDataHolder graphDataHolder2 = graphCloner.copyWithMouseManager(graph, graph.getId()+" - giant connected components");
+		Graph graph2 = graphDataHolder2.getGraph();
+		graph2.removeNode(egoNode);
+		
+//		int removed = ClearUselessNodesAction.removeZeroDegreeNodes(graph2);
+		connectedComponentsWithoutEgo = new ConnectedComponents();
+		connectedComponentsWithoutEgo.init(graph2);
+		try {
+			connectedComponentsWithoutEgo.compute();
+		} catch (NullPointerException npe) {}
+		Printer.println("Connected components without Ego: "+connectedComponentsWithoutEgo.getConnectedComponentsCount());
+		
+		giantComponent = connectedComponentsWithoutEgo.getGiantComponent();
+		Printer.print("Giant component without Ego: "+giantComponent.size()+"\n\t");
+		giantComponent.stream().parallel().forEach( n-> {
+//			n.getAttributeKeySet().stream().forEach(a->System.out.print(a+" "));
+			String defaultUiClassAttribute = n.getAttribute("ui.class");
+			n.setAttribute("ui.class", defaultUiClassAttribute+",giantcomponent");
+//			Printer.print(n.getId()+" ");
+			});
+//		Printer.println("Dichotomized with degree>0: removed "+removed+" nodes.");
+
+//		graphDataHolderBackup.getGraph().setAttribute("ui.title", graph.getId()+" - giant connected components");
+		
+//		GraphDataHolder graphDataHolder = 
+//		graphCloner.copyWithMouseManager(graph, graph.getId()+" - giant connected components");
+//		Graph graph2 = graphDataHolder.getGraph();
+
+//		graph.clear();
+//		Graph b = graphDataHolderBackup.getGraph();
+//		graph = GraphCloner.copy(b);
+		graph.setAttribute("ui.title", "close me");
+		graph.display().close();
+//		b = null;
+//		Pauser.sleep(5000);
+//		graphDataHolderBackup.getViewer().close();
+		
+//		graphDataHolderBackup.getViewer().close();
+//		Graphs.merge(graph, graphDataHolderBackup.getGraph());
+//		graph.setAttribute("ui.title", graphDataHolderBackup.getGraph().getId());
+		
+		Printer.println("");
+	}
+	
+	public void strongConnectedComponents() {
+		GraphDataHolder graphDataHolder = graphCloner.copyWithMouseManager(graph, graph.getId()+" - strong connected components");
+		Graph graph2 = graphDataHolder.getGraph();
+		graph2.removeNode(egoNode);
+		ClearUselessNodesAction.removeZeroDegreeNodes(graph2);
+		TarjanStronglyConnectedComponents tarjanStronglyConnectedComponents = new TarjanStronglyConnectedComponents();
+		tarjanStronglyConnectedComponents.setSCCIndexAttribute("ssc");
+		tarjanStronglyConnectedComponents.init(graph2);
+		tarjanStronglyConnectedComponents.compute();
+		Printer.println("");
+	}
+	
+	public void dijkstra() {
+		GraphDataHolder graphDataHolder = graphCloner.copyWithMouseManager(graph, graph.getId()+" - dijkstra");
+		Graph graph2 = graphDataHolder.getGraph();
+		graph2.removeNode(egoNode);
+		Dijkstra dijkstra = new Dijkstra(null,"dijkstra","weight");
+		dijkstra.init(graph2);
+		ClearUselessNodesAction.removeZeroDegreeNodes(graph2);
+		dijkstra.setSource( degreeMap.get(degreeMap.size()-1) );
+		dijkstra.compute();
+		Node source = dijkstra.getSource();
+		double treeLength = dijkstra.getTreeLength();
+		Printer.println("Dijkstra: from "+source.getId()+" count "+treeLength+"\n");
+	}
+	
+	public void epidemicCommunity() {
+		GraphDataHolder graphDataHolder = graphCloner.copyWithMouseManager(graph, graph.getId()+" - epidemic community");
+		Graph graph2 = graphDataHolder.getGraph();
+		ClearUselessNodesAction.removeZeroDegreeNodes(graph2);
+		EpidemicCommunityAlgorithm epidemicCommunityAlgorithm = new EpidemicCommunityAlgorithm();
+		epidemicCommunityAlgorithm.init(graph2);
+//		epidemicCommunityAlgorithm.setMarker("epidemic");
+		epidemicCommunityAlgorithm.compute();
+//		graph2.getNodeSet().stream().forEach(n->n.getAttributeKeySet().stream().forEach( a->System.out.println(a+" ") ));
+//		System.out.println(
+//			epidemicCommunityAlgorithm.getMarker()
+//		);
+		Printer.println("");
+	}
+	
+	private BufferedWriter getCSVBufferedWriter(String suffix) throws IOException {
+		BufferedWriter bw = Files.newBufferedWriter(FileSystems.getDefault().getPath(resultsDir.getPath()+File.separatorChar+graphName+"_-_"+suffix+".csv"));
+		return bw;
+	}
+	
+	public Node getFirstNodeWithMaximumDegreeExceptEgo() {
+		return nodeWithMaximumDegreeExcludingEgo;
+	}
+	
+// using grph
 	/*public Collection<IntSet> cliquer() throws ParseException, SAXException, IOException {
 //System.out.println(graphName);
 		String myUserId = graphName.split("_-_")[0];
@@ -309,77 +424,125 @@ public class GraphstreamAnalyzer {
 		}
 		return cliques;
 	}*/
-
-	public void connected() {
-		graph.removeNode(egoNode);
+	
+	public static interface AnalysisTypeShortcut {
+		public String getHelpMessage();
+		public void doAnalysis(GraphstreamAnalyzer graphstreamAnalyzer, Object... params) throws IOException;
 		
-		connectedComponentsWithoutEgo = new ConnectedComponents(graph);
-		connectedComponentsWithoutEgo.compute();
-		Printer.println("Connected components without Ego: "+connectedComponentsWithoutEgo.getConnectedComponentsCount());
-		
-		giantComponent = connectedComponentsWithoutEgo.getGiantComponent();
-		Printer.print("Giant component without Ego: "+giantComponent.size()+"\n\t");
-		giantComponent.stream().parallel().forEach( n-> {
-//			n.getAttributeKeySet().stream().forEach(a->System.out.print(a+" "));
-			String defaultUiClassAttribute = n.getAttribute("ui.class");
-			n.setAttribute("ui.class", defaultUiClassAttribute+",giantcomponent");
-//			Printer.print(n.getId()+" ");
-			});
-		Printer.println("");
-	}
-	
-	
-	private BufferedWriter getCSVBufferedWriter(String suffix) throws IOException {
-		BufferedWriter bw = Files.newBufferedWriter(FileSystems.getDefault().getPath(resultsDir.getPath()+File.separatorChar+graphName+"_-_"+suffix+".csv"));
-		return bw;
-	}
-	
-	
-	public Node getFirstNodeWithMaximumDegreeExceptEgo() {
-		return nodeWithMaximumDegreeExcludingEgo;
-	}
-	
-	/*public static void main(String[] args) {
-		String graphName = "836460098_-_interactions_-_me_and_my_friends";
-		String myUserId = graphName.split("_-_")[0];
-		Path dirPath = FileSystems.getDefault().getPath("cache"+File.separator+"graphs"+File.separator+myUserId);
-		Stream<Path> paths;
-		try {
-			paths = Files.list(dirPath);
-			//paths.forEach(f->System.out.println(f));
-			String graphFileBaseName =  graphName
-//					.split("_-_")[1];
-					.replace(myUserId+"_-_", "");
-	System.out.println(graphFileBaseName);
-			Optional<Path> file = paths.filter(f->f.toString().contains(graphFileBaseName)).findFirst();
-	System.out.println( file.isPresent() );
-			if (file.isPresent()) {
-				String fileName = file.get().toString();
-	//System.out.println(fileName);
-				Grph fromGraphML = Grph.fromGraphML(fileName);
-				Printer.print("Cliques (cliquer): ");
-				AtomicInteger intsetCounter= new AtomicInteger(0);
-				Collection<IntSet> cliques = fromGraphML.getCliques();
-				Printer.println( ""+cliques.size() );
-				cliques.stream().forEach( clique-> {
-					Printer.println("\t"+(intsetCounter.incrementAndGet())+": ");
-					Printer.println("\t\tgreatest: "+clique.getGreatest() );
-					Printer.println("\t\tdensity: "+clique.getDensity() );
-					clique.forEach(ic->{ Printer.println("\t\t\t"+ic.index+": "+ic.value); });
-				});
-			}
-		} catch (IOException | ParseException | SAXException e) {
-			e.printStackTrace();
+		public enum Numerical implements AnalysisTypeShortcut {
+			cc {
+				@Override
+				public String getHelpMessage() {
+					return "clustering coefficients";
+				}
+				@Override
+				public void doAnalysis(GraphstreamAnalyzer graphstreamAnalyzer, Object... params) throws IOException {
+					graphstreamAnalyzer.clusteringCoefficient();
+				}
+			},
+			dg {
+				@Override
+				public String getHelpMessage() {
+					return "degree";
+				}
+				@Override
+				public void doAnalysis(GraphstreamAnalyzer graphstreamAnalyzer, Object... params) throws IOException {
+					graphstreamAnalyzer.degree();
+				}
+			},
+			ds {
+				@Override
+				public String getHelpMessage() {
+					return "density";
+				}
+				@Override
+				public void doAnalysis(GraphstreamAnalyzer graphstreamAnalyzer, Object... params) throws IOException {
+					graphstreamAnalyzer.density();
+				}
+			},
+			di {
+				@Override
+				public String getHelpMessage() {
+					return "diameter";
+				}
+				@Override
+				public void doAnalysis(GraphstreamAnalyzer graphstreamAnalyzer, Object... params) throws IOException {
+					String weightAttributeName = (String) params[0];
+					boolean isDirectedGraph = (boolean) params[1];
+					graphstreamAnalyzer.diameter(weightAttributeName, isDirectedGraph);
+				}
+			},
+			c {
+				@Override
+				public String getHelpMessage() {
+					return "centrality";
+				}
+				@Override
+				public void doAnalysis(GraphstreamAnalyzer graphstreamAnalyzer, Object... params) throws IOException {
+					graphstreamAnalyzer.centralities();
+				}
+			},
+			e {
+				@Override
+				public String getHelpMessage() {
+					return "edge connectivity";
+				}
+				@Override
+				public void doAnalysis(GraphstreamAnalyzer graphstreamAnalyzer, Object... params) throws IOException {
+					graphstreamAnalyzer.edgeConnectivity();
+				}
+			},
+			a {
+				@Override
+				public String getHelpMessage() {
+					return "all numerical measures";
+				}
+				@Override
+				public void doAnalysis(GraphstreamAnalyzer graphstreamAnalyzer, Object... params) throws IOException {
+					String weightAttributeName = (String) params[0];
+					boolean isDirectedGraph = (boolean) params[1];
+					graphstreamAnalyzer.numericalAnalysis(weightAttributeName, isDirectedGraph);
+				}
+			};
+			public abstract String getHelpMessage();
 		}
-	}*/
-	
-	/*public static void main(String[] args) {
-		double[] doubles =  new double[]{0.1, 0.2};
-		try {
-			CSVWriter csvWriter = new CSVWriter(new FileWriter( new File("/tmp/demo.csv")));
-//			csvWriter.w
-		} catch (IOException e) {
-			e.printStackTrace();
+		public enum Graphical implements AnalysisTypeShortcut {
+			cl {
+				@Override
+				public String getHelpMessage() {
+					return "cliques";
+				}
+				@Override
+				public void doAnalysis(GraphstreamAnalyzer graphstreamAnalyzer, Object... params) throws IOException {
+					graphstreamAnalyzer.cliques();
+				}
+			},
+			cc {
+				@Override
+				public String getHelpMessage() {
+					return "connected components";
+				}
+				@Override
+				public void doAnalysis(GraphstreamAnalyzer graphstreamAnalyzer, Object... params) throws IOException {
+					graphstreamAnalyzer.connectedComponents();
+				}
+			},
+			scc {
+				@Override
+				public String getHelpMessage() {
+					return "strong connected components";
+				}
+				@Override
+				public void doAnalysis(GraphstreamAnalyzer graphstreamAnalyzer, Object... params) throws IOException {
+					graphstreamAnalyzer.strongConnectedComponents();
+				}
+			};
+			public abstract String getHelpMessage();
 		}
-	}*/
+	}
+	
+	
+	public interface GraphstreamAnalyzerFactory {
+		GraphstreamAnalyzer create(Graph graph, Node node);
+	}
 }

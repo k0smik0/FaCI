@@ -42,6 +42,7 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
 	public GraphstreamInteractionsGraphGenerator(GraphsHolder graphsHolder, World world) {
 		super(graphsHolder, graphsHolder.getInteractionsGraph(), world);
 		graph.setAttribute("ui.stylesheet", "url('css"+File.separatorChar+"interactions.css')");
+		graph.setAttribute("ui.title", "Interactions");
 	}	
 
 	private void retrieveDataForNormalizations() {

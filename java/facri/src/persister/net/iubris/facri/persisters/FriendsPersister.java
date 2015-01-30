@@ -9,7 +9,7 @@ import net.iubris.facri.persisters.helpers.FriendFacriBerkeleyDBAutoCommittableH
 public class FriendsPersister extends FacriPersister<FriendOrAlike> {
 
 	@Inject
-	public FriendsPersister(FriendFacriBerkeleyDBAutoCommittableHelper friendFacriBerkeleyDBAutoCommittableHelper) {
-		super(friendFacriBerkeleyDBAutoCommittableHelper, FriendOrAlike.class);
+	public FriendsPersister(FriendFacriBerkeleyDBAutoCommittableHelper friendFacriBerkeleyDBAutoCommittableHelper/*, HelpersHolder helpersHolder*/) {
+		super(friendFacriBerkeleyDBAutoCommittableHelper, FriendOrAlike.class/*, helpersHolder*/);
 	}
 }
