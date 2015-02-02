@@ -18,13 +18,19 @@ function getGuice() {
 
 function getHeimdall() {
 #   classes=$(getPath "../../../Heimdall/bin")
-   local c="../../../Heimdall/bin"
-   echo $c
+# using project
+#   local c="../../../Heimdall/bin"
+#   echo $c
+# using jar
+   echo $(getJars libs/heimdall)
 }
 
 function getBerkeleyPersister() {
-   local d="../../../BerkeleyPersister"
-   echo "$(getJars $d/libs/berkeleydb):$d/bin"
+   # using project
+#   local d="../../../BerkeleyPersister"
+#   echo "$(getJars $d/libs/berkeleydb):$d/bin"
+   # using jar
+   echo $(getJars libs/berkeley_persister)
 }
 
 function getGrph() {
