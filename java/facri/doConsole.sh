@@ -57,7 +57,7 @@ function getOthers() {
 }
 
 
-classpath_to_build=$(getGuice):$(getHeimdall):$(getBerkeleyPersister):$(getGrph):$(getGraphstream):$(getStaxon):$(getOpencsv):$(getCommons):$(getJFreeChart)
+classpath_to_build=$(getGuice):$(getHeimdall):$(getBerkeleyPersister):$(getGraphstream):$(getStaxon):$(getOpencsv)
 #classpath_to_build=$(getGuice):$(getHeimdall):$(getGrph):$(getGraphstream):$(getStaxon):$(getOpencsv)
 classpath=$(echo $classpath_to_build| sed 's/ /:/g' | sed 's/:$//'):bin
 #echo $classpath
