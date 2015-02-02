@@ -1,3 +1,0 @@
-NAME            FRIEND_NAME      FRIEND_UID
-Simona Daniele  Paola Daniele    592958344
-                Cinzia Lettieri  1031734142

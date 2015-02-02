@@ -1,3 +1,0 @@
-NAME               FRIEND_NAME          FRIEND_UID
-Lorenzo Santomasi  Antonio Notarangelo  1357590223
-                   Vincenzo Lomonaco    1557184819

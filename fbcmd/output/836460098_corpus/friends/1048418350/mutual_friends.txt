@@ -1,4 +1,0 @@
-NAME           FRIEND_NAME          FRIEND_UID
-Lucia Di Bari  Cristina Nanni       1613591485
-               Arianna Santachiara  100000716496024
-               Viola Violet         100001693022196

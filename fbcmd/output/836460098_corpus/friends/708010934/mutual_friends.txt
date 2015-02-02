@@ -1,3 +1,0 @@
-NAME              FRIEND_NAME        FRIEND_UID
-Beatrice Zarroli  Miriam Di Domizio  1210125203
-                  Clara Saraceni     100000452481169

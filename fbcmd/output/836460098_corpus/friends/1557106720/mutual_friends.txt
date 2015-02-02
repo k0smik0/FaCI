@@ -1,6 +1,0 @@
-NAME                FRIEND_NAME         FRIEND_UID
-Roberto Di Letizia  Martina Romanelli   692951915
-                    Luna Incantata      1204836539
-                    Roberta De Stefano  1488096153
-                    Francesca Magurno   1636804832
-                    La Novakova         100001952146734

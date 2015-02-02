@@ -1,2 +1,0 @@
-NAME                FRIEND_NAME          FRIEND_UID
-JoHnny Paternoster  Antonio Notarangelo  1357590223

@@ -1,5 +1,0 @@
-NAME            FRIEND_NAME            FRIEND_UID
-Giuseppe Cairo  Antonio Notarangelo    1357590223
-                Stefano Beccaletto     1379547150
-                Lorenzo Valerio Vinci  100000048381511
-                Tommaso Lou            100008029844848

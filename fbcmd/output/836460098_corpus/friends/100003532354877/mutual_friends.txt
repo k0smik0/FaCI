@@ -1,4 +1,0 @@
-NAME             FRIEND_NAME           FRIEND_UID
-Laura Camellini  Massimo D. Vezzelli   1120816688
-                 Rodolfo Barbieri      1456540389
-                 Retrobottega Bologna  1476666278

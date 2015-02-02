@@ -1,9 +1,0 @@
-NAME               FRIEND_NAME                  FRIEND_UID
-Ludovica Gallucci  Rocco Spagnoletta            1003742112
-                   Mariella Vignola             1060995620
-                   Davide Conte                 1075098284
-                   Margherita Ghengha Perretta  1139756507
-                   Mariangela Perone            1478113265
-                   Luca Riviello                1512397688
-                   Teresa VIgnola               1645624410
-                   Federica Riviello            100002768706225

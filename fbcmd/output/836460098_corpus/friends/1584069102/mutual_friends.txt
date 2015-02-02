@@ -1,8 +1,0 @@
-NAME            FRIEND_NAME                  FRIEND_UID
-Giulio Biagini  Gianluca Iselli              1286239002
-                Davide HumptyDumpty Berardi  1288360510
-                Duma Ron                     1659609863
-                Lorenzo Valerio Vinci        100000048381511
-                Giacomo Jack Bergami         100002269884346
-                Basyhnq Lfsxdo               100004967584302
-                Tommaso Lou                  100008029844848

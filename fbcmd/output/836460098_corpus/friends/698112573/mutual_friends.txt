@@ -1,3 +1,0 @@
-NAME           FRIEND_NAME     FRIEND_UID
-Saad Aldoseri  Leonardo Lillo  575979885
-               Viola Violet    100001693022196

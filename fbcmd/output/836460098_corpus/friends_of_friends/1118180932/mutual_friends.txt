@@ -1,2 +1,0 @@
-NAME                FRIEND_NAME          FRIEND_UID
-Marina Santarsiero  Antonio Notarangelo  1357590223

@@ -1,9 +1,0 @@
-NAME                 FRIEND_NAME            FRIEND_UID
-Gart Custom Guitars  Domenico Loparco       564772809
-                     Fil Palmer             680659726
-                     Azzardo SRock          1248077592
-                     Giardini Sonori        1337746570
-                     Officina della Musica  1536653620
-                     Cortilecafe Contatti   100000509863756
-                     MusicItaly Ritorna     100000743270013
-                     Domenico Loparco Bis   100002358934814

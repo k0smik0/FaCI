@@ -1,3 +1,0 @@
-NAME             FRIEND_NAME          FRIEND_UID
-D'Ercole Angela  Clementina Garulli   1825677330
-                 Abruzzesi A Bologna  100001871897493

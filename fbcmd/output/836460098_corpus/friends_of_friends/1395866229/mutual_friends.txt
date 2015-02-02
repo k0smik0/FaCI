@@ -1,2 +1,0 @@
-NAME                      FRIEND_NAME          FRIEND_UID
-Leonida Eretico Schifano  Antonio Notarangelo  1357590223

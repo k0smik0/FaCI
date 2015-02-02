@@ -44,7 +44,7 @@ public abstract class AbstractUser implements User, Serializable {
 	protected String significantOtherId;
 	
 	protected int ownPostsResharingCount;
-	protected int ownPostsLiking;
+	protected int ownPostsLiked;
 	
 	public AbstractUser(String uid) {
 		this.uid = uid;
@@ -121,11 +121,11 @@ public abstract class AbstractUser implements User, Serializable {
 	
 	@Override
 	public void incrementOwnLikedPosts(int likesCount) {
-		this.ownPostsLiking += likesCount;
+		this.ownPostsLiked += likesCount;
 	}
 	@Override
 	public int getOwnLikedPostsCount() {
-		return ownPostsLiking;
+		return ownPostsLiked;
 	}
 	
 	public String getName() {

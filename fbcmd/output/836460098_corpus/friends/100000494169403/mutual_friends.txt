@@ -1,2 +1,0 @@
-NAME                 FRIEND_NAME  FRIEND_UID
-Mela Zoe Avvelenata  Laura Wong   100000642576173

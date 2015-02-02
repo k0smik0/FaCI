@@ -1,2 +1,0 @@
-NAME                FRIEND_NAME          FRIEND_UID
-Gaia Ganumai Burdi  Antonio Notarangelo  1357590223

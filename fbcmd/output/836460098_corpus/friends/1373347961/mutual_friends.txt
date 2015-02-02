@@ -1,2 +1,0 @@
-NAME             FRIEND_NAME     FRIEND_UID
-Lucia Di Nobile  Andrea Faratro  1206710771

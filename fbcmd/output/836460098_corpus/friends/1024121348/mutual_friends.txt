@@ -1,3 +1,0 @@
-NAME              FRIEND_NAME           FRIEND_UID
-Salvatore Vitale  Retrobottega Bologna  1476666278
-                  Christian Quintili    100001005424972

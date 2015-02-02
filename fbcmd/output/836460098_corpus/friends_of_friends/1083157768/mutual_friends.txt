@@ -1,2 +1,0 @@
-NAME                            FRIEND_NAME          FRIEND_UID
-Pd Gravina Ninuccio Pappalardi  Antonio Notarangelo  1357590223

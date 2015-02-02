@@ -1,2 +1,0 @@
-NAME            FRIEND_NAME  FRIEND_UID
-Antica Bologna  Lab Sedici   100000487715596

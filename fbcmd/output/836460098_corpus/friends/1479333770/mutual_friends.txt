@@ -1,2 +1,0 @@
-NAME               FRIEND_NAME     FRIEND_UID
-Giorgio Mandolesi  Marco M. Lupoi  791333064

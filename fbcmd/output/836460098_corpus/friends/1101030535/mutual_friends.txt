@@ -1,2 +1,0 @@
-NAME           FRIEND_NAME      FRIEND_UID
-Mirco Ferrari  Bruno Mantovani  1555206885

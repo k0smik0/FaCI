@@ -1,2 +1,0 @@
-NAME                     FRIEND_NAME          FRIEND_UID
-Francesca 中村 Denora  Antonio Notarangelo  1357590223

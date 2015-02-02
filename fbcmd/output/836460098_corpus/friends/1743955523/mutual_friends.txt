@@ -1,2 +1,0 @@
-NAME             FRIEND_NAME  FRIEND_UID
-Ermanno Infante  Yzu Selly    1150567451

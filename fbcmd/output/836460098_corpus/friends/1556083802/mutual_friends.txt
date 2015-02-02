@@ -1,3 +1,0 @@
-NAME        FRIEND_NAME         FRIEND_UID
-Paolo Piga  Diane Bayer         100000698149607
-            Pollon dell'Olimpo  100000835554129

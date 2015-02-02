@@ -1,9 +1,0 @@
-NAME                FRIEND_NAME                 FRIEND_UID
-Monica Settembrini  Zandra Lovell               1120025226
-                    Michela Lazzarini           1169335461
-                    Angi Farrah Fowler          1375975315
-                    Teresa Claudia Gallo Wolli  1449108101
-                    Fra Poco                    1548840395
-                    Giuseppe Altamura           1558260213
-                    Flavia P'Chan               1747910245
-                    Laura Wong                  100000642576173

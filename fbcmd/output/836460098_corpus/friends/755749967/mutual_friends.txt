@@ -1,2 +1,0 @@
-NAME              FRIEND_NAME    FRIEND_UID
-Andrea Morlunghi  Guido Stromei  589236336

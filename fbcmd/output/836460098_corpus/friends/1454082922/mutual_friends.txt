@@ -1,2 +1,0 @@
-NAME                      FRIEND_NAME           FRIEND_UID
-Paolo Beve Birra Moretti  Valentina Sciarretta  1284028491

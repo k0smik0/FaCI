@@ -1,2 +1,0 @@
-NAME             FRIEND_NAME    FRIEND_UID
-Francesca Russi  Marco Gerolin  1644555731

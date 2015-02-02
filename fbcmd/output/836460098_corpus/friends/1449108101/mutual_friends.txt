@@ -1,6 +1,0 @@
-NAME                        FRIEND_NAME          FRIEND_UID
-Teresa Claudia Gallo Wolli  Monica Settembrini   1347703224
-                            Antonio Siddiolo     1547402711
-                            Fra Poco             1548840395
-                            Ilaria Dragmetohell  1745385892
-                            Marco IU Toscano     100000914628671

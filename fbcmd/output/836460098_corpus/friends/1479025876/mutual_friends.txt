@@ -1,2 +1,0 @@
-NAME            FRIEND_NAME        FRIEND_UID
-Riccardo Bocca  Isabella Ippolito  720956002

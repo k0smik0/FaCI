@@ -1,8 +1,0 @@
-NAME               FRIEND_NAME         FRIEND_UID
-Viviana Di Pietro  Laura Pasquini      862830703
-                   Antonio Passarelli  1386767517
-                   Christian Previato  1457172777
-                   Manuela Iezzi       1465267665
-                   Giuseppe Salvatore  100000121438746
-                   Giulia Seno         100001428024486
-                   Viola Violet        100001693022196

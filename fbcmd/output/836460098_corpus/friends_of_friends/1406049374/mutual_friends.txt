@@ -1,3 +1,0 @@
-NAME             FRIEND_NAME          FRIEND_UID
-Agostino Giglio  Antonio Notarangelo  1357590223
-                 Lorenzo Marchegiani  1540549221

@@ -1,4 +1,0 @@
-NAME                FRIEND_NAME          FRIEND_UID
-Valentina Ciurlino  Martina Romanelli    692951915
-                    Robertina Wednesday  695477887
-                    Daddà Daddareia     1148213848

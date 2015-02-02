@@ -1,5 +1,0 @@
-NAME                      FRIEND_NAME      FRIEND_UID
-Roby Franziska Palmisano  Lima Nera        1256518516
-                          Sophie Du Monde  1396771412
-                          Laura McLean     100000213743892
-                          Viola Violet     100001693022196

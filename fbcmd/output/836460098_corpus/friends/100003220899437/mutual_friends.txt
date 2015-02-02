@@ -1,3 +1,0 @@
-NAME            FRIEND_NAME       FRIEND_UID
-Eataly Bologna  Diamante Gallina  567278625
-                Vitruvio Bologna  100001822266982

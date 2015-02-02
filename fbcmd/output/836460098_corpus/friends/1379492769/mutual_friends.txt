@@ -1,2 +1,0 @@
-NAME              FRIEND_NAME            FRIEND_UID
-Damiano Di Carlo  Lorenzo Valerio Vinci  100000048381511

@@ -1,2 +1,0 @@
-NAME                  FRIEND_NAME   FRIEND_UID
-Valeria Squillacioti  Dario Marino  1331116607

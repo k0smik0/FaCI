@@ -1,7 +1,0 @@
-NAME             FRIEND_NAME                FRIEND_UID
-Rosy Signoretto  Fonte Silvia Meo           591419319
-                 Serena Grazzini            659499600
-                 Ri Ta                      1288324756
-                 Donatella AliCe BlackLady  1472505912
-                 Luca Greco                 1575183624
-                 Annarita Larac Fortini     100003825277168

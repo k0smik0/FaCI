@@ -1,6 +1,0 @@
-NAME            FRIEND_NAME              FRIEND_UID
-Giacomo Capone  Marco M. Lupoi           791333064
-                Andrea Pizzamiglio       1105261710
-                Yzu Selly                1150567451
-                Laura Amori              1265922058
-                Honkytonk Lardrockcafè  100001638152391

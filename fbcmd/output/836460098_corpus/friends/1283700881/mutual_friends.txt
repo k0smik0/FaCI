@@ -1,4 +1,0 @@
-NAME     FRIEND_NAME       FRIEND_UID
-Leo Nnc  Antonio Marotta   677317169
-         Giorgio De Solda  1314048809
-         Benni Settembre   1668540992

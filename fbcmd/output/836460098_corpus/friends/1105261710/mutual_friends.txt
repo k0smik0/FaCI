@@ -1,4 +1,0 @@
-NAME                FRIEND_NAME       FRIEND_UID
-Andrea Pizzamiglio  Marco M. Lupoi    791333064
-                    Giacomo Capone    1036670655
-                    Norino Stornello  1487077810

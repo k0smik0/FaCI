@@ -10,8 +10,9 @@ import net.iubris.facri.console.actions.graph.grapher.GrapherExecutor.GraphTypeC
 import net.iubris.facri.grapher.analyzer.graphstream.GraphstreamAnalyzer;
 import net.iubris.facri.grapher.analyzer.graphstream.GraphstreamAnalyzer.AnalysisTypeShortcut.Graphical;
 import net.iubris.facri.grapher.analyzer.graphstream.GraphstreamAnalyzer.AnalysisTypeShortcut.Numerical;
-import net.iubris.facri.grapher.analyzer.graphstream.GraphstreamAnalyzer.GraphstreamAnalyzerFactory;
+import net.iubris.facri.grapher.analyzer.graphstream.GraphstreamAnalyzerSuffix.GraphstreamAnalyzerSuffixFactory;
 import net.iubris.facri.model.graph.GraphsHolder;
+import net.iubris.facri.model.graph.utils.GraphCloner;
 import net.iubris.facri.model.parser.users.Ego;
 import net.iubris.facri.model.world.World;
 import net.iubris.facri.utils.Printer;
@@ -28,10 +29,11 @@ public class AnalyzeAction implements CommandAction {
 	
 	private final GraphsHolder graphsHolder;
 	private final World world;
-	private final GraphstreamAnalyzerFactory graphstreamAnalyzerFactory;
+	private final GraphstreamAnalyzerSuffixFactory graphstreamAnalyzerFactory;
+	private boolean excludingEgo = false;
 	
 	@Inject
-	public AnalyzeAction(World world, GraphsHolder graphsHolder, GraphstreamAnalyzerFactory graphstreamAnalyzerFactory) {
+	public AnalyzeAction(World world, GraphsHolder graphsHolder, GraphstreamAnalyzerSuffixFactory graphstreamAnalyzerFactory) {
 		this.world = world;
 		this.graphsHolder = graphsHolder;
 		this.graphstreamAnalyzerFactory = graphstreamAnalyzerFactory;
@@ -53,6 +55,8 @@ public class AnalyzeAction implements CommandAction {
 				return;
 			}
 			String meUid = myUser.getUid();
+			if (params.length==3)
+				this.excludingEgo  = true;
 			switch(arg) {
 				case f:
 					analyze(graphsHolder.getFriendshipsGraph(),
@@ -78,11 +82,6 @@ public class AnalyzeAction implements CommandAction {
 		}
 	}
 	
-	@FunctionalInterface
-	interface GraphExistantCheckerFunction {
-		boolean check();
-	}
-	
 	private void analyze(Graph graph, 
 			GraphExistantCheckerFunction graphExistantCheckerFunction,
 			String analyzeTypeParam,
@@ -96,16 +95,42 @@ public class AnalyzeAction implements CommandAction {
 			return;
 		}
 		Node egoNode = graph.getNode(meUid);
-		GraphstreamAnalyzer graphstreamAnalyzer = graphstreamAnalyzerFactory.create( graph, egoNode );
 		
+		if (!excludingEgo)
+			doAnalysisIncludingEgo(graph, egoNode, analyzeTypeParam, isDirected, weightAttributeName, viewer);
+		else
+			doAnalysisExcludingEgo(graph, egoNode, analyzeTypeParam, isDirected, weightAttributeName, viewer);
+	}
+
+	
+	
+	
+	// TODO improve
+	private void doAnalysisIncludingEgo(Graph graph, Node egoNode, String analyzeTypeParam, boolean isDirected, String weightAttributeName, Viewer viewer) throws IOException {
+		GraphstreamAnalyzer graphstreamAnalyzerWithEgo = graphstreamAnalyzerFactory.create( graph, egoNode, "" );
+		doAnalysis(analyzeTypeParam, isDirected, weightAttributeName, graphstreamAnalyzerWithEgo, viewer);
+	}
+	private void doAnalysisExcludingEgo(Graph graph, Node egoNode, String analyzeTypeParam, boolean isDirected, String weightAttributeName, Viewer viewer) throws IOException {
+		String suffix = "_-_without_ego";
+		Graph copy = GraphCloner.copy(graph);
+		Printer.println("Removed Ego node\n");
+		copy.removeNode(egoNode);
+		GraphstreamAnalyzer graphstreamAnalyzerWithoutEgo = graphstreamAnalyzerFactory.create( graph, egoNode, suffix );
+		doAnalysis(analyzeTypeParam, isDirected, weightAttributeName, graphstreamAnalyzerWithoutEgo, viewer);
+	}
+	
+	
+	private void doAnalysis(String analyzeTypeParam, boolean isDirected, 
+			String weightAttributeName, GraphstreamAnalyzer graphstreamAnalyzer, Viewer viewer) throws IOException {
 		try { // try numerical
 			Numerical numerical = Numerical.valueOf(analyzeTypeParam);
-			if (numerical.equals(Numerical.di))
+			if (numerical.equals(Numerical.di) || numerical.equals(Numerical.a))
 				numerical.doAnalysis(graphstreamAnalyzer, new Object[] {weightAttributeName, isDirected});
 			else
 				numerical.doAnalysis(graphstreamAnalyzer);
 		} catch (IllegalArgumentException e1) {
 			try { // try graphical
+				System.out.println(analyzeTypeParam);
 				Graphical graphical = Graphical.valueOf(analyzeTypeParam);
 				graphical.doAnalysis(graphstreamAnalyzer);
 				
@@ -115,21 +140,11 @@ public class AnalyzeAction implements CommandAction {
 				viewer.enableAutoLayout();
 				camera.resetView();
 			} catch (IllegalArgumentException e2) {
-				console.printf(analyzeTypeParam+": unknown analysis");
+				Printer.println(analyzeTypeParam+": unknown analysis");
 			}
 		}
-		
-//		graphstreamAnalyzer.numericalAnalysis(isDirected,weightAttributeName);
-//		graphstreamAnalyzer.graphicalAnalysis();
-		
-//		Camera camera = viewer.getDefaultView().getCamera();
-//		camera.setAutoFitView(true);
-//		camera.setViewPercent(1);
-//		viewer.enableAutoLayout();
-//		camera.resetView();
 	}
 	
-//	checkExistantGraph() {}
 	
 	public enum AnalyzeCommand implements ConsoleCommand {
 		A;
@@ -149,15 +164,23 @@ public class AnalyzeAction implements CommandAction {
 			for (Graphical g: Graphical.values()) {
 				helpMessageSuffix += HelpAction.tab(4)+"'"+g.name()+"': "+g.getHelpMessage()+"\n";
 			}
-			helpMessageSuffix+=HelpAction.tab(2)+"example: 'a i cl' -> search cliques within interactions graph";
+			helpMessageSuffix+=HelpAction.tab(2)+"[ee]: excluding Ego user from computations\n";
+			helpMessageSuffix+=HelpAction.tab(2)+"example: 'a i cl' -> search cliques within interactions graph\n";
+			helpMessageSuffix+=HelpAction.tab(2)+"example: 'a i cl ee' -> search cliques within interactions graph, excluding Ego";
+			
 			this.helpMessage = 
-				"analyze [graph_type] [analysis_type]\n"
+				"analyze [graph_type] [analysis_type] [ee]\n"
 			+helpMessageSuffix;
 		}
 		@Override
 		public String getHelpMessage() {
 			return helpMessage;
 		}		
+	}
+	
+	@FunctionalInterface
+	interface GraphExistantCheckerFunction {
+		boolean check();
 	}
 
 }

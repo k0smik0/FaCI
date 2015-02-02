@@ -1,2 +1,0 @@
-NAME           FRIEND_NAME  FRIEND_UID
-Mattia Burzio  Marco Prati  1353053028

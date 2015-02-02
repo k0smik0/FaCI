@@ -1,5 +1,0 @@
-NAME                FRIEND_NAME             FRIEND_UID
-Maria Grazia Rossi  Valeria Ruggi           1031049658
-                    Laura Anna Finocchiaro  1542361940
-                    Alice Ramella           1561775570
-                    Flavia P'Chan           1747910245

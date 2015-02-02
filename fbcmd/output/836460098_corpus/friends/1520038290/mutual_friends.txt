@@ -1,4 +1,0 @@
-NAME           FRIEND_NAME       FRIEND_UID
-Luigi Ritacco  Circe Cagliostro  751502974
-               PaPino Fazio      1246760058
-               Viola Violet      100001693022196

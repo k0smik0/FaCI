@@ -1,3 +1,0 @@
-NAME                    FRIEND_NAME      FRIEND_UID
-Annarita Larac Fortini  Giulia Duvese    1008807096
-                        Rosy Signoretto  1613140675

@@ -1,2 +1,0 @@
-NAME               FRIEND_NAME       FRIEND_UID
-Miriam Di Domizio  Beatrice Zarroli  708010934

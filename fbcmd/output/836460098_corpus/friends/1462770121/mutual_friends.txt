@@ -1,3 +1,0 @@
-NAME             FRIEND_NAME    FRIEND_UID
-Giorgia Tiepido  Sara Demontis  1437736755
-                 Chiara Martin  100000470980823

@@ -1,5 +1,0 @@
-NAME              FRIEND_NAME          FRIEND_UID
-Giorgio De Solda  Leo Nnc              1283700881
-                  Maria Conte          1569281950
-                  Benni Settembre      1668540992
-                  Francesco Apollonio  1802162943

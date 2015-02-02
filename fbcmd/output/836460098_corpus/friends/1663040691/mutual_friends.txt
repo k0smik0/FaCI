@@ -1,3 +1,0 @@
-NAME                     FRIEND_NAME          FRIEND_UID
-Mirko Mìnìmo Di Paolo  Francesca Api        1249174445
-                         Francesco Apollonio  1802162943

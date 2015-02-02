@@ -1,2 +1,0 @@
-NAME               FRIEND_NAME       FRIEND_UID
-Roberto Michelini  Srđan Šrepfler  520556385

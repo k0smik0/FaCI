@@ -1,4 +1,0 @@
-NAME            FRIEND_NAME         FRIEND_UID
-Carmen Alfieri  Charlotte Bichet    781138749
-                Fra Poco            1548840395
-                Alessandro Cassano  100001032716895

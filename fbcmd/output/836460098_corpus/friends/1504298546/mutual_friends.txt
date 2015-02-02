@@ -1,3 +1,0 @@
-NAME                 FRIEND_NAME         FRIEND_UID
-Viviana Llth Canale  Laura Wong          100000642576173
-                     Alessandro Cassano  100001032716895

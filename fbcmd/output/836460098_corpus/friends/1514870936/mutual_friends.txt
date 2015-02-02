@@ -1,2 +1,0 @@
-NAME            FRIEND_NAME       FRIEND_UID
-Sabrina Bossio  Carla Mortadella  628783466

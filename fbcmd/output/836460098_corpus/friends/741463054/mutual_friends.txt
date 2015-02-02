@@ -1,3 +1,0 @@
-NAME                    FRIEND_NAME      FRIEND_UID
-Riccardo Giannitrapani  Chiara Dionigi   1377861809
-                        Risata Sguaiata  100002956984769

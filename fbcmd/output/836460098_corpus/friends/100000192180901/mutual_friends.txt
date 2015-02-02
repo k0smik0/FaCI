@@ -1,6 +1,0 @@
-NAME                FRIEND_NAME         FRIEND_UID
-Giuseppe Ricciardi  Ezra M. Pryor       5817531
-                    Jonathan Ricciardi  100001459904408
-                    Viola Violet        100001693022196
-                    Walter Bosello      100004302276046
-                    Nada Frastor        100007603953907

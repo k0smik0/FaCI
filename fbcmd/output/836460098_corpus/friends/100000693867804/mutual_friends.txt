@@ -1,3 +1,0 @@
-NAME              FRIEND_NAME         FRIEND_UID
-Sushina Crowlady  Parini Mars Marzia  718708497
-                  Marzia Mars Parini  100003639653463

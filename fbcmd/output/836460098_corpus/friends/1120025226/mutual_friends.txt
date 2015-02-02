@@ -1,4 +1,0 @@
-NAME           FRIEND_NAME         FRIEND_UID
-Zandra Lovell  Giulia Duvese       1008807096
-               Monica Settembrini  1347703224
-               Fiamm Etta          100002888949752

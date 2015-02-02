@@ -1,2 +1,0 @@
-NAME                    FRIEND_NAME          FRIEND_UID
-Autoscuola Losacco Srl  Antonio Notarangelo  1357590223

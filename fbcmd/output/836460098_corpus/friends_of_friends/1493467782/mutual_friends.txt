@@ -1,4 +1,0 @@
-NAME             FRIEND_NAME          FRIEND_UID
-Margherita Duca  Antonio Notarangelo  1357590223
-                 La Tua Piadina       100002294510758
-                 Eataly Bologna       100003220899437

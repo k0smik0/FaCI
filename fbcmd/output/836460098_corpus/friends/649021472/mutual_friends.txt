@@ -1,2 +1,0 @@
-NAME                FRIEND_NAME    FRIEND_UID
-Patrizia Fumagalli  Carlo Paolino  1565629094

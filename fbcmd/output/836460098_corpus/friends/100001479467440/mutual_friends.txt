@@ -1,2 +1,0 @@
-NAME              FRIEND_NAME    FRIEND_UID
-Maura Bergamasco  Francesca Api  1249174445

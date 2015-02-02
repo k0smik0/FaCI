@@ -1,8 +1,0 @@
-NAME             FRIEND_NAME          FRIEND_UID
-Tarippo Filozzi  Carla Mortadella     628783466
-                 Robertina Wednesday  695477887
-                 Giovanni D'Onofrio   734901842
-                 Daddà Daddareia     1148213848
-                 Angi Farrah Fowler   1375975315
-                 Marcello Dal Degan   1430711411
-                 Erika Weeda Sticca   1594294965

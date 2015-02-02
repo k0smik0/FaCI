@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry excluding="net/iubris/facri/console/actions/AnalyzeAction.java|net/iubris/facri/console/actions/Analyzer.java|net/iubris/facri/main/Main.java|net/iubris/facri/console/actions/oldgrapher/AnalyzeAction.java|net/iubris/facri/console/actions/oldgrapher/Analyzer.java|net/iubris/facri/test_main/CacheUtils.java|net/iubris/facri/test_main/Main.java|net/iubris/facri/test_main/TestMain.java|net/iubris/facri/test_main/TestParsing.java" kind="src" path="src/main"/>
 	<classpathentry excluding="net/iubris/facri/console/actions/graph/utils/cache/persister/exception/PersisterException.java" kind="src" path="src/console"/>
-	<classpathentry excluding="net/iubris/facri/grapher/analyzer/graphstream/FunctionalAnalyzer.java|net/iubris/facri/grapher/analyzer/graphstream/Printer.java" kind="src" path="src/analyzer"/>
+	<classpathentry excluding="net/iubris/facri/grapher/analyzer/graphstream/FunctionalAnalyzer.java|net/iubris/facri/grapher/analyzer/graphstream/Printer.java|net/iubris/facri/grapher/analyzer/graphstream/GraphstreamAnalyzerWithEgo.java|net/iubris/facri/grapher/analyzer/graphstream/GraphstreamAnalyzerWithoutEgo.java" kind="src" path="src/analyzer"/>
 	<classpathentry excluding="net/iubris/facri/grapher/generators/graphstream/GraphstreamGeneratorsHolder.java|net/iubris/facri/grapher/generators/interactions/graphstream/GraphstreamGeneratorsHolder.java|net/iubris/facri/grapher/exporter/AbstractGraphExporter.java|net/iubris/facri/grapher/exporter/GraphExporter.java|net/iubris/facri/_di/guice/grapher/factories/CacheHandlerFactory.java" kind="src" path="src/grapher"/>
 	<classpathentry kind="src" path="src/parser"/>
 	<classpathentry kind="src" path="src/model"/>

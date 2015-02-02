@@ -1,4 +1,0 @@
-NAME                 FRIEND_NAME          FRIEND_UID
-Cucchiaiodoro D'oro  Consuelo Marchionni  1054171618
-                     Nikò Vitiello       1556264029
-                     Fienile Fluò        1628360351

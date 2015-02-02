@@ -1,5 +1,0 @@
-NAME                       FRIEND_NAME        FRIEND_UID
-Francesco Azzardo Luchena  Silvia Cereda      572102924
-                           Cristian Iannuzzi  669584808
-                           Vincenzo Caminiti  1095862165
-                           Nicola Ticca       1500995833

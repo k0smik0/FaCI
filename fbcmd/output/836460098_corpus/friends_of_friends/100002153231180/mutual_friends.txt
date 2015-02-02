@@ -1,2 +1,0 @@
-NAME               FRIEND_NAME          FRIEND_UID
-Miki De Leonardis  Antonio Notarangelo  1357590223

@@ -1,7 +1,0 @@
-NAME           FRIEND_NAME          FRIEND_UID
-Flavia P'Chan  Marianna De Maio     544919127
-               Monica Settembrini   1347703224
-               Angi Farrah Fowler   1375975315
-               Antonio Siddiolo     1547402711
-               Maria Grazia Rossi   1547469370
-               Ilaria Dragmetohell  1745385892

@@ -1,2 +1,0 @@
-NAME          FRIEND_NAME          FRIEND_UID
-Flavia Burdi  Antonio Notarangelo  1357590223

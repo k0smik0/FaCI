@@ -1,5 +1,0 @@
-NAME              FRIEND_NAME         FRIEND_UID
-Norino Stornello  Marco M. Lupoi      791333064
-                  Andrea Pizzamiglio  1105261710
-                  Giulia Seno         100001428024486
-                  Viola Violet        100001693022196

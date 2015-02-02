@@ -1,5 +1,0 @@
-NAME                 FRIEND_NAME     FRIEND_UID
-Arianna Santachiara  Lucia Di Bari   1048418350
-                     Cristina Nanni  1613591485
-                     Johnny Bonora   1701079324
-                     Viola Violet    100001693022196

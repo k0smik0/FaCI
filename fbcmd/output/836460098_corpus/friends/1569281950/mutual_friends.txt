@@ -1,8 +1,0 @@
-NAME         FRIEND_NAME         FRIEND_UID
-Maria Conte  Rosa Papagontier    511193459
-             Antonio Marotta     677317169
-             Andrea Faratro      1206710771
-             Giorgio De Solda    1314048809
-             Alessio Ridolfi     1393294075
-             Nicola Ticca        1500995833
-             Sabe Bauhaus Spiga  1557964253

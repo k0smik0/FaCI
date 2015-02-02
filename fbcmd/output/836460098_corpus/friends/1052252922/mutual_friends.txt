@@ -1,2 +1,0 @@
-NAME                      FRIEND_NAME       FRIEND_UID
-Micol Girardi Migliorisi  Giorgia Baiocchi  1008799945

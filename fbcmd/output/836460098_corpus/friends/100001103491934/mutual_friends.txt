@@ -1,3 +1,0 @@
-NAME        FRIEND_NAME     FRIEND_UID
-Casa Godot  Marco M. Lupoi  791333064
-            Marco Ziglioli  1592342186

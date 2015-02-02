@@ -1,3 +1,0 @@
-NAME            FRIEND_NAME        FRIEND_UID
-Amalia De Sena  Martina Romanelli  692951915
-                Giorgio Leone      1311855495

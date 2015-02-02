@@ -1,2 +1,0 @@
-NAME                FRIEND_NAME         FRIEND_UID
-Jonathan Ricciardi  Giuseppe Ricciardi  100000192180901

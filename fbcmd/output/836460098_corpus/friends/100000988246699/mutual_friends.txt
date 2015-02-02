@@ -1,4 +1,0 @@
-NAME                                      FRIEND_NAME        FRIEND_UID
-Frankenphotography Fotografia Autarchica  Sara Manfredi      603716019
-                                          Chiara Dionigi     1377861809
-                                          Francesco Capponi  1422401843

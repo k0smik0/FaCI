@@ -1,5 +1,0 @@
-NAME          FRIEND_NAME               FRIEND_UID
-Laura McLean  Lima Nera                 1256518516
-              Roby Franziska Palmisano  1601822613
-              Il Barattolo              100000437562594
-              Viola Violet              100001693022196

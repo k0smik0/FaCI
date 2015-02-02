@@ -1,2 +1,0 @@
-NAME             FRIEND_NAME         FRIEND_UID
-Sara Colonnello  Erika Weeda Sticca  1594294965

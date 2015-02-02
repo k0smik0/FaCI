@@ -1,8 +1,0 @@
-NAME                   FRIEND_NAME              FRIEND_UID
-Ristorante-Gran Sasso  Lab Sedici               100000487715596
-                       Bologna WhyNot           100000508970432
-                       Covo Bologna             100000740247424
-                       Universo Interculturale  100001079463242
-                       Abruzzesi A Bologna      100001871897493
-                       La Tua Piadina           100002294510758
-                       Chattanooga Bologna      100002630417624

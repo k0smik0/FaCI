@@ -1,5 +1,0 @@
-NAME         FRIEND_NAME                               FRIEND_UID
-Igor Tuveri  Antonio Notarangelo                       1357590223
-             Chiara Dionigi                            1377861809
-             Libreria Ubik Irnerio                     100000642204643
-             Frankenphotography Fotografia Autarchica  100000988246699

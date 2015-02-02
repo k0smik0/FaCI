@@ -1,4 +1,0 @@
-NAME                FRIEND_NAME        FRIEND_UID
-Federica de Santis  Yzu Selly          1150567451
-                    Chiara Dionigi     1377861809
-                    Francesco Capponi  1422401843

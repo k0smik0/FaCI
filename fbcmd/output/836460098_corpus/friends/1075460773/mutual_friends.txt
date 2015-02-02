@@ -1,2 +1,0 @@
-fbcmd [v1.1] ERROR: MUTUAL
-[102] Session key invalid or no longer valid

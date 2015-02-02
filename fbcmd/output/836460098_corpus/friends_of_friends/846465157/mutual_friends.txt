@@ -1,3 +1,0 @@
-NAME            FRIEND_NAME          FRIEND_UID
-Robert Maschio  Antonio Notarangelo  1357590223
-                Martina Facchin      100000571423613

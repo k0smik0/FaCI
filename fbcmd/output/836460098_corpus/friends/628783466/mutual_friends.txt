@@ -1,5 +1,0 @@
-NAME              FRIEND_NAME         FRIEND_UID
-Carla Mortadella  Giovanni D'Onofrio  734901842
-                  Tarippo Filozzi     1048221446
-                  Marcello Dal Degan  1430711411
-                  Sabrina Bossio      1514870936

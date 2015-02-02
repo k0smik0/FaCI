@@ -1,2 +1,0 @@
-NAME        FRIEND_NAME          FRIEND_UID
-Lisa Vampi  Ilaria Dragmetohell  1745385892

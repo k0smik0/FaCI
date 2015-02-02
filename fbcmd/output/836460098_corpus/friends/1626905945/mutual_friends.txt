@@ -1,5 +1,0 @@
-NAME                   FRIEND_NAME         FRIEND_UID
-Angela Maria Esposito  Luna Incantata      1204836539
-                       Marianna Perrotta   1558083017
-                       Francesca Magurno   1636804832
-                       Giuseppe Salvatore  100000121438746

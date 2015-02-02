@@ -1,4 +1,0 @@
-NAME      FRIEND_NAME   FRIEND_UID
-Teta Tì  Yzu Selly     1150567451
-          Laura Amori   1265922058
-          Mimmo Albano  1550065701

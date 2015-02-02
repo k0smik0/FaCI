@@ -1,7 +1,0 @@
-NAME       FRIEND_NAME              FRIEND_UID
-Mario Vox  Diamante Gallina         567278625
-           Fil Palmer               680659726
-           Marco Prati              1353053028
-           Mrnomoney Bluesband      1643448655
-           Honkytonk Lardrockcafè  100001638152391
-           Atmosphere Bologna       100003228732920

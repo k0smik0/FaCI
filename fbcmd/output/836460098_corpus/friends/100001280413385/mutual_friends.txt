@@ -1,3 +1,0 @@
-NAME             FRIEND_NAME          FRIEND_UID
-Mandovai Summer  Emanuela Pergolizzi  800226939
-                 Aurora Vitellaro     1438698037

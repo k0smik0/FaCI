@@ -1,4 +1,0 @@
-NAME              FRIEND_NAME         FRIEND_UID
-Rosita Baiamonte  Laura Ma Anche No   1428844694
-                  Aurora Vitellaro    1438698037
-                  Federica Attinelli  100000829985107

@@ -1,4 +1,0 @@
-NAME         FRIEND_NAME         FRIEND_UID
-La Novakova  Temper Tantrum      1346911280
-             Roberto Di Letizia  1557106720
-             Laura Wong          100000642576173

@@ -1,4 +1,0 @@
-NAME           FRIEND_NAME            FRIEND_UID
-Azzardo SRock  Officina della Musica  1536653620
-               Gart Custom Guitars    1692139995
-               MusicItaly Ritorna     100000743270013

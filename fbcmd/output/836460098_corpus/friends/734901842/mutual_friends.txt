@@ -1,9 +1,0 @@
-NAME                FRIEND_NAME               FRIEND_UID
-Giovanni D'Onofrio  Valentina Mancinelli      505001217
-                    Carla Mortadella          628783466
-                    Luca Sozio ヅ            780892602
-                    Tarippo Filozzi           1048221446
-                    Marina Antonucci          1216442611
-                    Ilaria Di Francesco       1352832816
-                    Lorenzo Marchegiani       1540549221
-                    Ludovica Luda D'Archivio  1577885232

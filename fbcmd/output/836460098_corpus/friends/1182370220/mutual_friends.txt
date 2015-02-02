@@ -1,3 +1,0 @@
-NAME            FRIEND_NAME        FRIEND_UID
-Eva Verdecchia  Daddà Daddareia   1148213848
-                Stefano Petraccia  1628266188

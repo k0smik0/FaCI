@@ -1,2 +1,0 @@
-NAME             FRIEND_NAME            FRIEND_UID
-Lorenzo Bianchi  Lorenzo Valerio Vinci  100000048381511

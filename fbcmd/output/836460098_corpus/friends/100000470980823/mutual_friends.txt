@@ -1,3 +1,0 @@
-NAME           FRIEND_NAME       FRIEND_UID
-Chiara Martin  Giorgia Tiepido   1462770121
-               Daniela Pulciosa  100001892187077

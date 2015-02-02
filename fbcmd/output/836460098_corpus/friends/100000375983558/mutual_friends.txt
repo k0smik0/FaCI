@@ -1,3 +1,0 @@
-NAME             FRIEND_NAME    FRIEND_UID
-Andrea Di Luzio  Francesca Api  1249174445
-                 Nancy Pelusi   1368124899

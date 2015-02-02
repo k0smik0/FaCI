@@ -1,2 +1,0 @@
-NAME               FRIEND_NAME         FRIEND_UID
-Michela Lazzarini  Monica Settembrini  1347703224

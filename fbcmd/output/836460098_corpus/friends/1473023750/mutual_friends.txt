@@ -1,2 +1,0 @@
-NAME               FRIEND_NAME         FRIEND_UID
-Margherita Di Leo  Christian Quintili  100001005424972

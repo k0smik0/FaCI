@@ -1,2 +1,0 @@
-NAME                   FRIEND_NAME          FRIEND_UID
-Laura Rachel Saracino  Antonio Notarangelo  1357590223

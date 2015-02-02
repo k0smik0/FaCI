@@ -1,7 +1,0 @@
-NAME             FRIEND_NAME               FRIEND_UID
-Alessio Ridolfi  Davide Bellettini         1187093618
-                 Carlo Maiorano            1264640018
-                 Marcelo Baumann Gonzales  1461082972
-                 Nicola Ticca              1500995833
-                 Sabe Bauhaus Spiga        1557964253
-                 Maria Conte               1569281950

@@ -1,4 +1,0 @@
-NAME        FRIEND_NAME            FRIEND_UID
-Fil Palmer  Officina della Musica  1536653620
-            Gart Custom Guitars    1692139995
-            Mario Vox              100004283822939

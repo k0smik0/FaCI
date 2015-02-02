@@ -1,5 +1,0 @@
-NAME         FRIEND_NAME         FRIEND_UID
-Diane Bayer  Sara Demontis       1437736755
-             Paolo Piga          1556083802
-             Pollon dell'Olimpo  100000835554129
-             Federica Riggi      100001652030919

@@ -1,3 +1,0 @@
-NAME                FRIEND_NAME       FRIEND_UID
-Marcello Dal Degan  Carla Mortadella  628783466
-                    Tarippo Filozzi   1048221446

@@ -1,2 +1,0 @@
-NAME                    FRIEND_NAME   FRIEND_UID
-Alessandra Nontelodico  Luca Rimondi  699749567

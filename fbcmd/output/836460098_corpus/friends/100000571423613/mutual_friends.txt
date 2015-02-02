@@ -1,2 +1,0 @@
-NAME             FRIEND_NAME       FRIEND_UID
-Martina Facchin  Marianna De Maio  544919127

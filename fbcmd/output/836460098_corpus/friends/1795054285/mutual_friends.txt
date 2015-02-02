@@ -1,4 +1,0 @@
-NAME              FRIEND_NAME    FRIEND_UID
-Fabiola Di Carlo  Giorgio Leone  1311855495
-                  Coccagna Anna  1439750394
-                  Agostina Polo  100000506081060

@@ -1,2 +1,0 @@
-NAME         FRIEND_NAME  FRIEND_UID
-Elena Olivi  Luca Greco   1575183624

@@ -1,2 +1,0 @@
-NAME          FRIEND_NAME  FRIEND_UID
-Floriana Flo  Fra Poco     1548840395

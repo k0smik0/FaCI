@@ -1,2 +1,0 @@
-NAME                   FRIEND_NAME          FRIEND_UID
-Felicetta Notarangelo  Antonio Notarangelo  1357590223

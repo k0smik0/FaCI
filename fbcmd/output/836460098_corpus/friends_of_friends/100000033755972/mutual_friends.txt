@@ -1,2 +1,0 @@
-NAME                   FRIEND_NAME          FRIEND_UID
-Marica Cocò Clemente  Antonio Notarangelo  1357590223

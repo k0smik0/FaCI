@@ -1,2 +1,0 @@
-NAME                       FRIEND_NAME          FRIEND_UID
-Nicola Detector Lacavalla  Antonio Notarangelo  1357590223

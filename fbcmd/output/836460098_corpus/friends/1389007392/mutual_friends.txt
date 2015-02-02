@@ -1,2 +1,0 @@
-NAME             FRIEND_NAME        FRIEND_UID
-Elena Talantova  Vanessa Del Rosso  100000175295512

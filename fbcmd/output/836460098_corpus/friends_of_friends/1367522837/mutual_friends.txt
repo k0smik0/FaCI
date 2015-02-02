@@ -1,3 +1,0 @@
-NAME                FRIEND_NAME          FRIEND_UID
-Raffaele Logruosso  Antonio Notarangelo  1357590223
-                    Flavia P'Chan        1747910245

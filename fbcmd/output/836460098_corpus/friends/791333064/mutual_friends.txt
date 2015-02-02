@@ -1,7 +1,0 @@
-NAME            FRIEND_NAME          FRIEND_UID
-Marco M. Lupoi  Giacomo Capone       1036670655
-                Andrea Pizzamiglio   1105261710
-                Giorgio Mandolesi    1479333770
-                Norino Stornello     1487077810
-                Giardino Del Guasto  1745483871
-                Casa Godot           100001103491934

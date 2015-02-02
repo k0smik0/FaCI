@@ -1,4 +1,0 @@
-NAME           FRIEND_NAME      FRIEND_UID
-Sara Demontis  Giorgia Tiepido  1462770121
-               Luca Greco       1575183624
-               Diane Bayer      100000698149607

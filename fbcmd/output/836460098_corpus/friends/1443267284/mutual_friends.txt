@@ -1,2 +1,0 @@
-NAME                FRIEND_NAME      FRIEND_UID
-Maria Chiara Lucci  Serena Grazzini  659499600

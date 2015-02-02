@@ -1,4 +1,0 @@
-NAME             FRIEND_NAME       FRIEND_UID
-Silvia SeeLveea  Daddà Daddareia  1148213848
-                 Marina Antonucci  1216442611
-                 Giulio Voto       1622738773

@@ -1,6 +1,6 @@
 package net.iubris.facri._di.guice.module.grapher.graphgenerators.graphstream;
 
-import net.iubris.facri.grapher.analyzer.graphstream.GraphstreamAnalyzer.GraphstreamAnalyzerFactory;
+import net.iubris.facri.grapher.analyzer.graphstream.GraphstreamAnalyzerSuffix.GraphstreamAnalyzerSuffixFactory;
 import net.iubris.facri.model.graph.eventmanagers.FriendshipsMouseManager.FriendshipsMouseManagerFactory;
 import net.iubris.facri.model.graph.eventmanagers.InteractionsMouseManager.InteractionsMouseManagerFactory;
 
@@ -14,6 +14,6 @@ public class GraphstreamModule extends AbstractModule {
 //		install(new FactoryModuleBuilder().build(CacheHandlerFactory.class));
 		install(new FactoryModuleBuilder().build(FriendshipsMouseManagerFactory.class));
 		install(new FactoryModuleBuilder().build(InteractionsMouseManagerFactory.class));
-		install(new FactoryModuleBuilder().build(GraphstreamAnalyzerFactory.class)); 
+		install(new FactoryModuleBuilder().build(GraphstreamAnalyzerSuffixFactory.class)); 
 	}
 }

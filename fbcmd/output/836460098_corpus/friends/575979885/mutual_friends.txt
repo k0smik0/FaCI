@@ -1,4 +1,0 @@
-NAME            FRIEND_NAME      FRIEND_UID
-Leonardo Lillo  Saad Aldoseri    698112573
-                Oriana Bontempo  1517133420
-                Viola Violet     100001693022196

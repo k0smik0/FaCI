@@ -1,2 +1,0 @@
-NAME                            FRIEND_NAME          FRIEND_UID
-Liceo Scientifico G. Tarantino  Antonio Notarangelo  1357590223
