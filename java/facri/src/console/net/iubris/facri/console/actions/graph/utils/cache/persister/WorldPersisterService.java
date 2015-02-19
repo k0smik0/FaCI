@@ -69,7 +69,7 @@ public class WorldPersisterService {
 		Printer.println("ok");
 	}
 
-	public void persist() /*throws PersisterException*/ {
+	public void persist() {
 		Ego myUser = world.getMyUser();
 		
 		if (egoPersister.contains(myUser.getUid())) {
@@ -80,54 +80,25 @@ public class WorldPersisterService {
 		Printer.println("\nWriting parsed data to cache: ");
 		
 		Printer.print("\tmy user: ");
-//		Boolean created = 
 				egoPersister.create(myUser);
 		Printer.println("ok");		
-//		if (!created)
-//			throw new PersisterException("Ego: "+myUser.getUid()+" already existant");
 		
-//		List<User> failedUsers = new ArrayList<>();  
 		
 		Printer.print("\tmy friends: ");
 		world.getMyFriendsMap().values().stream()
 		.parallel()
 		.forEach(u->{ 
-//			try {
 				friendsPersister.create(u);
-//			} catch (ExistantValueException e) {
-//				failedUsers.add(f);
-////				e.printStackTrace();
-//			}
-//			if (!friendsPersister.create(u).booleanValue())
-//				failedUsers.add(u);
 		});
 		Printer.println("ok");
-		
-//		int size = failedUsers.size();
-//		if (size>0)
-//			throw new PersisterException("failed persisting friends: "+size);
 		
 		Printer.print("\tfriends of my friends: ");
 		world.getOtherUsersMap().values().stream()
 		.parallel()
 		.forEach(u->{ 
-//			try {
 				friendsoffriendsPersister.create(u);
-//			} catch (ExistantValueException e) {
-//				failedUsers.add(f);
-//				e.printStackTrace();
-//			}
-//			if (!friendsoffriendsPersister.create(u).booleanValue())
-//				failedUsers.add(u);
 		});
 		Printer.println("ok");
 		Printer.println("done");
-		
-//		size = failedUsers.size();
-//		if (size>0)
-////			throw new ExistantValueException("failed persisting friends of friends: "+size);
-//			throw new PersisterException("failed persisting friends of friends: "+size);
-		
-		
 	}
 }

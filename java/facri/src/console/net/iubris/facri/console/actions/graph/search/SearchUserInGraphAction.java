@@ -23,7 +23,6 @@ import java.util.Optional;
 import javax.inject.Inject;
 
 import net.iubris.facri.model.graph.GraphsHolder;
-import net.iubris.facri.model.parser.users.FriendOrAlike;
 import net.iubris.facri.model.parser.users.User;
 import net.iubris.facri.model.world.World;
 import net.iubris.facri.utils.Printer;
@@ -55,7 +54,7 @@ public class SearchUserInGraphAction implements CommandAction {
 					if (notEnoughArgs(params, console)) break;
 					String userId = params[1];
 					
-					Optional<FriendOrAlike> user = world.searchUserById(userId);
+					Optional<? extends User> user = world.searchUserById(userId);
 					if (user.isPresent())
 						doWhenUserFound( user.get() );
 					else
@@ -80,7 +79,7 @@ public class SearchUserInGraphAction implements CommandAction {
 //					world.searchUserByName(fullName)
 //					.map( m->doWhenUserFound(m) );
 					
-					Optional<FriendOrAlike> friendOrAlikeByName = world.searchUserByName(fullName);
+					Optional<? extends User> friendOrAlikeByName = world.searchUserByName(fullName);
 					if (friendOrAlikeByName.isPresent())
 						doWhenUserFound( friendOrAlikeByName.get() );
 					else

@@ -23,7 +23,6 @@ import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 import javax.inject.Inject;
 import javax.xml.bind.JAXBException;
@@ -63,38 +62,29 @@ public class PostsParser implements Parser {
 		
 		File userDir = userDirs[0];
 		
-		File[] feedsFiles = userDir.listFiles(feedsDirFilenameFilter);
+		Arrays.asList( userDir.listFiles(feedsDirFilenameFilter) )
+		.stream()
+		.flatMap( feedDir->Arrays.asList(feedDir.listFiles(postFilesFilenameFilter)).stream() )
 		
-		if (feedsFiles.length>0) {
-			File[] listFiles = feedsFiles[0].listFiles(postFilesFilenameFilter);
-//			System.out.println(userDir+": "+listFiles.length);
-			Arrays.asList( listFiles[0] )
-			.stream()
-			.parallel() // parallel on each posts file: 1-2 sec benefit
-			.forEach( new Consumer<File>() {
-				@Override
-				public void accept(File userFeedsJsonFile) {
-					try {
-						String owningWallUserId = userDir.getName();						
-						Posts posts = postsMapper.readObject(new FileReader(userFeedsJsonFile));						
-						List<Post> postsList = posts.getPosts();
-//						System.out.println(userDir+": "+postsList.size());						
-						postsList.stream()
-						.parallel() // parallel on each post: half-time benefit
-						.forEach( new Consumer<Post>() {
-							@Override
-							public void accept(Post post) {
-								postParser.parse(post, owningWallUserId);
-								commentsParser.parse(userDir, owningWallUserId, post);
-//								System.out.println( post.getLikesInfo() );
-//								System.out.println(post.getTaggedIDs().size() );
-							}
-						});
-					} catch (FileNotFoundException | XMLStreamException | NullPointerException | JAXBException e) {
-						e.printStackTrace();
-					}
+		.parallel() // parallel on each posts file: 1-2 sec benefit
+		.forEach( 
+			userFeedsJsonFile-> {
+				try {
+					String owningWallUserId = userDir.getName();						
+					Posts posts = postsMapper.readObject(new FileReader(userFeedsJsonFile));						
+					List<Post> postsList = posts.getPosts();
+					postsList.stream()
+					.parallel() // parallel on each post: half-time benefit
+					.forEach( 
+						post -> {
+							postParser.parse(post, owningWallUserId);
+							commentsParser.parse(userDir, owningWallUserId, post);
+						}
+						);
+				} catch (FileNotFoundException | XMLStreamException | NullPointerException | JAXBException e) {
+					e.printStackTrace();
 				}
-			});
-		}
+			}
+		);
 	}
 }

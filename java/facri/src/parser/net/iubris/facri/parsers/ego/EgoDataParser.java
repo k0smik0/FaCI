@@ -66,21 +66,18 @@ Printer.print("Parsing my own feeds:");
 		List<File> dirs = ParsingUtils.getDirectories(feedsMeDataDir);
 		if (!dirs.isEmpty()) {
 			File myUserDirectory = dirs.get(0);
-//			String myUserId = myUserDirectory.getName();
-			Ego myUser = 
-//					new Ego(myUserId);
-					new UserParser<Ego>(Ego.class, meFileRelativePath).parse().get(0);
-			
-//			System.out.println("\nEgo: "+myUser);
+			Ego myUser = new UserParser<Ego>(Ego.class, meFileRelativePath).parse().get(0);
 			
 			myFriendsParser.parse( new File(friendsIdsFileRelativePath) );
 			myUser.addFriendsIds( myFriendsParser.getFriendsIds() );
 			
 			world.setMyUser(myUser);
-			myFriendsParser.getFriends().forEach(f->world.getMyFriendsMap().put(f.getUid(), f));
-//			world.setMyFriendsMap(myFriendsMap);
+			myFriendsParser.getFriends()
+			.forEach(friend-> {
+				world.getMyFriendsMap().put(friend.getUid(), friend);
+			});
 			
-			postsParser.parse(myUserDirectory/*, owningWallUserId*/);
+			postsParser.parse(myUserDirectory);
 		}
 		Printer.println(" ok");
 	}

@@ -56,7 +56,7 @@ public abstract class AbstractUser implements User, Serializable {
    
 	protected URL profileURL;
    
-	protected Sex sex;
+	protected User.Sex sex;
    
 	protected String significantOtherId;
 	
@@ -161,7 +161,7 @@ public abstract class AbstractUser implements User, Serializable {
 		return profileURL;
 	}
 	
-	public Sex getSex() {
+	public User.Sex getSex() {
 		return sex;
 	}
 	
@@ -169,12 +169,6 @@ public abstract class AbstractUser implements User, Serializable {
 		return significantOtherId;
 	}
 
-	public enum Sex {
-		male,
-		female,
-		unknown;
-	}
-	
 	@Override
 	public String toString() {
 		String toPrint = "uid: "+uid

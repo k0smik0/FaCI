@@ -22,7 +22,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.iubris.facri.model.graph.GraphsHolder;
 import net.iubris.facri.model.parser.users.Ego;
-import net.iubris.facri.model.parser.users.FriendOrAlike;
+import net.iubris.facri.model.parser.users.Friend;
+import net.iubris.facri.model.parser.users.FriendOfFriend;
 import net.iubris.facri.model.parser.users.User;
 import net.iubris.facri.model.world.World;
 import net.iubris.facri.utils.MemoryUtil;
@@ -42,14 +43,14 @@ public abstract class AbstractGraphstreamGraphGenerator implements GraphstreamGr
 	protected final Graph graph;
 	protected final World world;
 	
-	protected final Map<String, FriendOrAlike> myFriendsFromWorldMap;
+	protected final Map<String, Friend> myFriendsFromWorldMap;
 	protected final Map<String, Node> myFriendsNodesMap = new ConcurrentHashMap<>();
 	protected final Table<String, String, Boolean> myFriendsWithMeEdgesAndViceversaComputedTable = HashBasedTable.create();
 	protected final Table<String, String, Edge> myFriendsWithMeEdgesAndViceversaTable = HashBasedTable.create();
 	protected final Table<String, String, Boolean> myFriendsToMutualFriendsEdgesComputedTable = HashBasedTable.create();
 	protected final Table<String, String, Edge> myFriendsToMutualFriendsEdgesTable = HashBasedTable.create();
 	
-	protected final Map<String, FriendOrAlike> friendOfFriendFromWorldMap;
+	protected final Map<String, FriendOfFriend> friendOfFriendFromWorldMap;
 	protected final Map<String, Node> friendOfFriendNodeMap = new ConcurrentHashMap<>();
 	protected final Table<String, String, Boolean> friendsOfFriendsWithFriendsEdgesComputedTable = HashBasedTable.create();
 	protected final Table<String, String, Edge> friendsOfFriendsWithFriendsEdgesTable = HashBasedTable.create();
@@ -142,7 +143,7 @@ public abstract class AbstractGraphstreamGraphGenerator implements GraphstreamGr
 	}
 	
 	protected Node getOrCreateFriendNode(String myFriendId) {
-		FriendOrAlike myFriend = myFriendsFromWorldMap.get(myFriendId);
+		Friend myFriend = myFriendsFromWorldMap.get(myFriendId);
 		Node myFriendNode = graph.getNode(myFriendId); 
 		if (myFriendNode==null) {
 			myFriendNode = createNode(myFriend);

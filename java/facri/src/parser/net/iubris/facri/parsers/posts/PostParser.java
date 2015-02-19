@@ -37,21 +37,20 @@ public class PostParser {
 	}
 
 	public void parse(Post post, String owningWallUserId) {
-		// always owning wall user
-		world.isExistentUserOrCreateNew(owningWallUserId);
 		
 		// the actorId is the post author id
 		String actorPostId = post.getActorId();
 		
 		// we use actorId because a wall contains both posts
 		// from owner (actorId == userDir) or other users (actorId != userDir)
-		User actorUser = world.isExistentUserOrCreateNew(actorPostId);
 		// always add post to its author
+		
+		User actorUser = world.isExistentUserOrCreateNew(actorPostId);
+		
 		actorUser.addOwnPost(post);
 
 		if (actorPostId.equals(owningWallUserId)) { // post author is the same of the wall owner
 			handleAuthorUser(actorUser, post);
-//			actorUser.addOwnPost(post);
 		} else /*if (actorPostId != owningWallUserId)*/ {
 			handleTargetUser(actorUser, post, owningWallUserId);
 		}
@@ -59,8 +58,6 @@ public class PostParser {
 		handleTags(post, actorUser, post.getTaggedIDs());
 		handleTags(post, actorUser, post.getWithTaggedFriendsIDs());
 
-//		handleLikes(post.getLikesInfo().getFriendsUserIDs(), actorUser, owningWallUserId);
-//		handleLikes(post.getLikesInfo().getSamplesUserIDs(), actorUser, owningWallUserId);
 		handleLikes(post.getLikesInfo(), actorUser, owningWallUserId);
 	}
 	
@@ -101,11 +98,11 @@ public class PostParser {
 //				likingUsersIds.size();
 		Set<String> friendsUserIDs = likesInfo.getFriendsUserIDs();
 		Set<String> samplesUserIDs = likesInfo.getSamplesUserIDs();
-		Set<String> allUser = new HashSet<>();
-		allUser.addAll(friendsUserIDs);
-		allUser.addAll(samplesUserIDs);
+		Set<String> allUsers = new HashSet<>();
+		allUsers.addAll(friendsUserIDs);
+		allUsers.addAll(samplesUserIDs);
 //		if (howLikes > 0) {
-			for (String interactingUserId: allUser) {
+			for (String interactingUserId: allUsers) {
 				// create owner user if it doesn't exist
 				world.isExistentUserOrCreateNew(wallOwnerId);
 				

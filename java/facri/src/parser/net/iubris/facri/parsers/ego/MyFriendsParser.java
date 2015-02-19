@@ -28,18 +28,15 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.iubris.facri.model.parser.users.FriendOrAlike;
+import net.iubris.facri.model.parser.users.Friend;
 import net.iubris.facri.model.parser.users.UserParser;
 import net.iubris.facri.parsers.Parser;
 
 public class MyFriendsParser implements Parser {
 	
-	private final Set<String> friendsIds = 
-			new ConcurrentSkipListSet<String>();
-//			new CopyOnWriteArraySet<String>();
+	private final Set<String> friendsIds = new ConcurrentSkipListSet<String>();
 	private final String friendsFileRelativePath;
-	private List<FriendOrAlike> friends;
-//	private final String friendsIdsFileRelativePath;
+	private List<Friend> friends;
 	
 	@Inject
 	public MyFriendsParser(
@@ -56,36 +53,15 @@ public class MyFriendsParser implements Parser {
 		File friendsIdsFile = arguments[0];
 		try {
 			friendsIds.addAll( Files.readAllLines(friendsIdsFile.toPath(), Charset.defaultCharset()) );
-			
-//			CsvToBean<FriendOrAlike> csvToBean = new CsvToBean<>();
-//	      CSVReader csvReader = new CSVReader(new FileReader(friendsFileRelativePath));
-//	      
-//	      List<FriendOrAlike> friends = csvToBean.parse(setColumMapping(), csvReader);
-
-			this.friends = new UserParser<FriendOrAlike>(FriendOrAlike.class, friendsFileRelativePath).parse();
-//	      for (FriendOrAlike friend : friends) {
-//	          System.out.println(friend);
-//	      }
-
-			
+			this.friends = new UserParser<Friend>(Friend.class, friendsFileRelativePath).parse();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public List<FriendOrAlike> getFriends() {
+	public List<Friend> getFriends() {
 		return friends;
 	}
-	
-//	@SuppressWarnings({ "rawtypes", "unchecked" })
-	/*private static ColumnPositionMappingStrategy<FriendOrAlike> setColumMapping() {
-		ColumnPositionMappingStrategy<FriendOrAlike> strategy = new ColumnPositionMappingStrategy<>();
-		strategy.setType(FriendOrAlike.class);
-		// UID,NAME,FRIEND_COUNT,MUTUAL_FRIEND_COUNT,PIC_SMALL,PROFILE_URL,SEX,SIGNIFICANT_OTHER_ID
-		String[] columns = new String[] { "uid", "name", "friendCount", "mutualFriendCount","picSmall", "profileURL", "sex", "significantOtherId" };
-		strategy.setColumnMapping(columns);
-		return strategy;
-	}*/
 	
 	public Set<String> getFriendsIds() {
 		return friendsIds;

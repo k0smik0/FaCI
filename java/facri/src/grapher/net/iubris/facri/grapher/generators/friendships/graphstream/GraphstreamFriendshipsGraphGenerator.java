@@ -30,7 +30,8 @@ import javax.inject.Singleton;
 import net.iubris.facri.grapher.generators.friendships.FriendshipsGraphGenerator;
 import net.iubris.facri.grapher.generators.graphstream.AbstractGraphstreamGraphGenerator;
 import net.iubris.facri.model.graph.GraphsHolder;
-import net.iubris.facri.model.parser.users.FriendOrAlike;
+import net.iubris.facri.model.parser.users.Friend;
+import net.iubris.facri.model.parser.users.FriendOfFriend;
 import net.iubris.facri.model.parser.users.User;
 import net.iubris.facri.model.world.InteractionsWeigths;
 import net.iubris.facri.model.world.World;
@@ -77,12 +78,12 @@ public class GraphstreamFriendshipsGraphGenerator extends AbstractGraphstreamGra
 	
 	@Override
 	protected void createMyFriends(boolean includeMyUserNode) {
-		Map<String, FriendOrAlike> myFriendsMap = world.getMyFriendsMap();
-		Iterator<Entry<String, FriendOrAlike>> myFriendsMapIterator = myFriendsMap.entrySet().iterator();
+		Map<String, Friend> myFriendsMap = world.getMyFriendsMap();
+		Iterator<Entry<String, Friend>> myFriendsMapIterator = myFriendsMap.entrySet().iterator();
       while (myFriendsMapIterator.hasNext()) {
-      	Entry<String, FriendOrAlike> myFriendEntry = myFriendsMapIterator.next();
+      	Entry<String, Friend> myFriendEntry = myFriendsMapIterator.next();
       	String myFriendId = myFriendEntry.getKey();
-      	FriendOrAlike myFriend = myFriendEntry.getValue();
+      	Friend myFriend = myFriendEntry.getValue();
 
       	// include me
       	Node myFriendNode = 
@@ -95,7 +96,7 @@ public class GraphstreamFriendshipsGraphGenerator extends AbstractGraphstreamGra
 //      		myFriendNode = createAndMaintainOrRetrieveFriendNode(myFriendId); 
 //      	}
 	         
-         Set<String> mutualFriendsIds = myFriend.getMutualFriends();
+         Set<String> mutualFriendsIds = myFriend.getMutualFriendsIds();
          	
          
          for (String myOtherFriendAlsoMutualWithMeId: mutualFriendsIds) {
@@ -112,7 +113,7 @@ public class GraphstreamFriendshipsGraphGenerator extends AbstractGraphstreamGra
 //         	if (includeMyUserNode)
 //         		createAndMaintainOrRetrieveFriendEdgeWithMe(myOtherFriendAlsoMutualNode , egoNode);
 //         		getOrCreateFriendNodeAndEdgesWithMe(myFriend);
-         	FriendOrAlike myOtherFriendAlsoMutualWithMe = myFriendsMap.get(myOtherFriendAlsoMutualWithMeId);
+         	Friend myOtherFriendAlsoMutualWithMe = myFriendsMap.get(myOtherFriendAlsoMutualWithMeId);
          	Node myOtherFriendAlsoMutualNode = getOrCreateFriendNodeAndEventuallyEdgesWithMe(myOtherFriendAlsoMutualWithMe, includeMyUserNode);
          	
          	Edge myFriendWithOtherMutualFriendEdge = createEdge(myFriendNode, myOtherFriendAlsoMutualNode, myfriendWithMutualFriendEdgeUiClass);
@@ -127,12 +128,12 @@ public class GraphstreamFriendshipsGraphGenerator extends AbstractGraphstreamGra
 	}	
 //	@Override
 	private void createFriendsOfFriends() {
-		Iterator<Entry<String, FriendOrAlike>> friendsOfMyFriendsIterator = world.getOtherUsersMap().entrySet().iterator();
+		Iterator<Entry<String, FriendOfFriend>> friendsOfMyFriendsIterator = world.getOtherUsersMap().entrySet().iterator();
 		while (friendsOfMyFriendsIterator.hasNext()) {
-			Entry<String, FriendOrAlike> friendOfMyFriendEntry = friendsOfMyFriendsIterator.next();
+			Entry<String, FriendOfFriend> friendOfMyFriendEntry = friendsOfMyFriendsIterator.next();
 			String friendOfMyFriendId = friendOfMyFriendEntry.getKey();
-			FriendOrAlike friendOfMyFriend = friendOfMyFriendEntry.getValue();
-			Set<String> friendOfMyFriendMutualFriendsIdsThatIsMyFriendsIds = friendOfMyFriend.getMutualFriends();
+			FriendOfFriend friendOfMyFriend = friendOfMyFriendEntry.getValue();
+			Set<String> friendOfMyFriendMutualFriendsIdsThatIsMyFriendsIds = friendOfMyFriend.getMutualFriendsIds();
 
 			Node friendOfMyFriendNode = createNode(friendOfMyFriend);
 			friendOfFriendNodeMap.put(friendOfMyFriendId, friendOfMyFriendNode);

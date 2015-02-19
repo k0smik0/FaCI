@@ -20,18 +20,19 @@ package net.iubris.facri.parsers.friends;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.function.Consumer;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import net.iubris.facri.model.world.World;
+import net.iubris.facri.parsers.Parser;
 import net.iubris.facri.parsers.posts.PostsParser;
 import net.iubris.facri.parsers.utils.ParsingUtils;
 import net.iubris.facri.utils.Printer;
 //import net.iubris.ishtaran.gui._di.annotations.ProgressBarGlobalSize;
 import net.iubris.facri.utils.Timing;
 
-public class FriendsDataParser {
+public class FriendsDataParser implements Parser {
 	
 	private final String feedsFriendsDataDir;
 	
@@ -44,19 +45,29 @@ public class FriendsDataParser {
 	private int userCounter;
 
 	private int percentCounter;
+
+	private final UserFriendsParser userFriendsParser;
+
+	private final World world;
 	
 	@Inject
-	public FriendsDataParser(PostsParser postsParser, MutualFriendsParser mutualFriendsParser,
+	public FriendsDataParser(PostsParser postsParser, 
+			MutualFriendsParser mutualFriendsParser,
+			UserFriendsParser userFriendsParser,
+			World world,
 			@Named("data_root_dir_path") String dataRootDirPath, // "output"
 			@Named("feeds_friends_dir_relative_path") String feedsFriendsDirRelativePath // "friends"
 			) {
 		this.postsParser = postsParser;
 		this.mutualFriendsParser = mutualFriendsParser;
+		this.userFriendsParser = userFriendsParser;
+		this.world = world;
 		this.feedsFriendsDataDir = dataRootDirPath+File.separatorChar+feedsFriendsDirRelativePath;
 	}
 	
 	
-	public void parse() {
+	@Override
+	public void parse(File... dummy) {
 		List<File> friendsDirectories = ParsingUtils.getDirectories(feedsFriendsDataDir);		
 		setUsersTotal( friendsDirectories.size() );
 Printer.print("Parsing my friends feeds: ");
@@ -64,81 +75,32 @@ Printer.print("Parsing my friends feeds: ");
 	}
 	private void parseUsersDirs(List<File> usersDirs) {
 		Timing timing = new Timing();
-
-		// explicit stream
-//		usersDirs.stream()
-//		.parallel()
-////		.sequential()
-//		.forEach( new Consumer<File>() {
-//			@Override
-//			public void accept(File userDir) {				
-//				String owningWallUserId = userDir.getName();
-//				if (checkDir(userDir)) {
-//					postsParser.parse(userDir, owningWallUserId, useridToUserMap);
-//					mutualFriendsParser.parse(userDir, owningWallUserId, useridToUserMap);
-////					System.out.println("ok");
-//				} 
-//			}
-//		}); // end stream
-		
-		// directory stream
-//		Path path = FileSystems.getDefault().getPath( feedsFriendsDataDir);
-//		try {
-//			DirectoryStream<Path> directoryStream = Files.newDirectoryStream( path );
-//			directoryStream.forEach( new Consumer<Path>() {
-//				@Override
-//				public void accept(Path userDirPath) {
-//					File userDir = userDirPath.toFile();
-//					String owningWallUserId = userDir.getName();
-//					if (checkDir(userDir)) {
-//						postsParser.parse(userDir, owningWallUserId, useridToUserMap);
-//						mutualFriendsParser.parse(userDir, owningWallUserId, useridToUserMap);
-////						System.out.println("ok");
-//					} 
-//				}
-//			});
-//			directoryStream.close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-		
-		// executor
-//		Executor parseExecutor = Executors.newFixedThreadPool(1);
-//		for (File userDir : usersDirs) {
-//			Runnable parseRunnable = new Runnable() {			
-//				@Override
-//				public void run() {
-//					String owningWallUserId = userDir.getName();
-//					if (checkDir(userDir)) {
-//						postsParser.parse(userDir, owningWallUserId, useridToUserMap);
-//						mutualFriendsParser.parse(userDir, owningWallUserId, useridToUserMap);
-////						System.out.println("ok");
-//					} else
-//						System.out.println("empty");
-//				}
-//			};
-//			parseExecutor.execute(parseRunnable);
-//		}
 		
 		// lambda stream
 		userCounter = 0;
 		usersDirs.stream()
 		.parallel()
-//		.sequential()
 		.peek( 
-			s->printPercentual( incrementUserCounter() )
+			dir->printPercentual( incrementUserCounter() )
 		)
-		.filter( s->s.listFiles().length>0 /*checkDir(s)*/ )
-		.parallel() // parallel on each directory
-		.forEach( new Consumer<File>() {
-			@Override
-			public void accept(File userDir) {				
-//				String owningWallUserId = userDir.getName();
-				postsParser.parse(userDir);
-				mutualFriendsParser.parse(userDir);
-//System.out.println("ok");
-//				System.out.println("");
-			}
+		.filter( dir-> { 
+			File[] files = dir.listFiles();
+			if (files!=null && files.length>0)
+				return true;
+			return false;
+				} /*checkDir(s)*/ 
+		)
+		.parallel() // parallel on each directory ? // TODO restore
+		.forEach( userDir->{
+			// always create owning wall user	
+			String owningWallUserId = userDir.getName();
+//			FriendOrAlike friend = world.isExistentUserOrCreateNew(owningWallUserId);
+			world.isExistentFriendOrCreateNew(owningWallUserId);
+				
+			// this order below is mandatory!
+			mutualFriendsParser.parse(userDir);
+			postsParser.parse(userDir);
+			userFriendsParser.parse(userDir);
 		});
 		Printer.println(": ok");		
 		double finish = timing.getTiming();

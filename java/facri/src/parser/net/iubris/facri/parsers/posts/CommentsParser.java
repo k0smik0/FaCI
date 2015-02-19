@@ -28,17 +28,13 @@ import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
 import net.iubris.facri._di.annotations.parser.filenamefilters.CommentsFilenameFilter;
-import net.iubris.facri._di.guice.module.parser.FacriParserModule;
-import net.iubris.facri._di.providers.parser.mappers.CommentsHolderMapperProvider;
 import net.iubris.facri.model.parser.comments.Comment;
 import net.iubris.facri.model.parser.comments.CommentsHolder;
 import net.iubris.facri.model.parser.posts.Post;
+import net.iubris.facri.model.parser.users.Ego;
+import net.iubris.facri.model.parser.users.AbstractFriend;
 import net.iubris.facri.model.world.World;
 import net.iubris.facri.utils.Printer;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-
 import de.odysseus.staxon.json.jaxb.JsonXMLMapper;
 
 public class CommentsParser {
@@ -57,7 +53,7 @@ public class CommentsParser {
 	}
 
 	public void parse(File userDir, String owningWallUserId, Post post) {
-		world.isExistentUserOrCreateNew(owningWallUserId); // redundant ?
+		world.isExistentUserOrCreateNew(owningWallUserId); // TODO redundant ?
 		File[] commentsFiles = userDir.listFiles(commentFilesFilenameFilter);
 		if (commentsFiles.length>0) {
 			File commentsJsonFile = commentsFiles[0];
@@ -68,8 +64,15 @@ public class CommentsParser {
 				
 				for (Comment commentData: commentsData) {
 					String commentingUserId = commentData.getFromId();
-					world.isExistentUserOrCreateNew(commentingUserId)
-						.getToOtherUserInteractions(owningWallUserId).incrementComments();				
+					AbstractFriend genericFriend = null;
+					// if commentingUserId is Ego or Friend, the user receiving comments is obviously my friend
+					Ego myUser = world.getMyUser();
+					if (myUser.getUid().equals(commentingUserId)|| myUser.isMyFriendById(commentingUserId)) {
+						genericFriend = world.isExistentFriendOrCreateNew(commentingUserId);
+					} else {
+						genericFriend = world.isExistentFriendOfFriendOrCreateNew(commentingUserId);
+					}
+					genericFriend.getToOtherUserInteractions(owningWallUserId).incrementComments();				
 				}
 			} catch (FileNotFoundException | JAXBException | XMLStreamException e) {
 				Printer.println("error for file: "+commentsJsonFile.getName());
@@ -82,7 +85,7 @@ public class CommentsParser {
 	 * test
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		String commentsJsonFile = "../../fbcmd/output/feeds/friends/1529169343/10203765980702095_comments.json";
 		
 		Injector injector = Guice.createInjector( new FacriParserModule() );
@@ -109,5 +112,5 @@ public class CommentsParser {
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 }

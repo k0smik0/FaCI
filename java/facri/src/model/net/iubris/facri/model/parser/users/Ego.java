@@ -38,7 +38,7 @@ public class Ego extends AbstractUser {
 	
 	public Ego() {}
 	
-	public Ego(String uid, String name, int friendsCount, URL picSmall, URL profileURL, Sex sex, String significantOtherId) {
+	public Ego(String uid, String name, int friendsCount, URL picSmall, URL profileURL, User.Sex sex, String significantOtherId) {
 		this.uid = uid;
 		this.name = name;
 		this.friendsCount = friendsCount;

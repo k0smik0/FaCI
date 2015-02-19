@@ -5,7 +5,7 @@
 	<classpathentry excluding="net/iubris/facri/grapher/analyzer/graphstream/FunctionalAnalyzer.java|net/iubris/facri/grapher/analyzer/graphstream/Printer.java|net/iubris/facri/grapher/analyzer/graphstream/GraphstreamAnalyzerWithEgo.java|net/iubris/facri/grapher/analyzer/graphstream/GraphstreamAnalyzerWithoutEgo.java" kind="src" path="src/analyzer"/>
 	<classpathentry excluding="net/iubris/facri/grapher/generators/graphstream/GraphstreamGeneratorsHolder.java|net/iubris/facri/grapher/generators/interactions/graphstream/GraphstreamGeneratorsHolder.java|net/iubris/facri/grapher/exporter/AbstractGraphExporter.java|net/iubris/facri/grapher/exporter/GraphExporter.java|net/iubris/facri/_di/guice/grapher/factories/CacheHandlerFactory.java" kind="src" path="src/grapher"/>
 	<classpathentry kind="src" path="src/parser"/>
-	<classpathentry kind="src" path="src/model"/>
+	<classpathentry excluding="net/iubris/facri/model/parser/users/FriendOrAlike.java" kind="src" path="src/model"/>
 	<classpathentry kind="src" path="src/misc"/>
 	<classpathentry excluding="net/iubris/facri/_di/guice/module/grapher/graphgenerators/gephi/|net/iubris/facri/_di/providers/grapher/graphgenerators/gephi/|net/iubris/facri/grapher/exporter/gephi/|net/iubris/facri/grapher/generators/gephi/" kind="src" path="src/gephi"/>
 	<classpathentry excluding="net/iubris/facri/persisters/base/HelpersHolder.java|net/iubris/facri/persister/persisters/base/HelpersHolder.java" kind="src" path="src/persister"/>

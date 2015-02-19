@@ -55,19 +55,6 @@ private boolean parsed = false;
 			friendsDataParser.parse();
 			parsed = true;
 			world.setParsingDone(true);
-//			Ego myUser = world.getMyUser();
-//			System.out.println( 
-//				myUser.getUid()+": "
-//				+myUser.getOwnPostsCount()+" + "
-//				+myUser.getToOtherUsersInteractions().size()
-//			);
-			/*world.getMyFriendsMap().values().stream().forEach(f->{
-				System.out.println(
-						f.getUid()+": "
-						+f.getOwnPostsCount()+"+"
-						+f.getToOtherUsersInteractions().size()
-				);
-			});*/
 		}
 	}
 	

@@ -48,4 +48,11 @@ public interface User {
 	public int getOwnLikedPostsCount();
 	
 	public int getFriendsCount();
+	
+	
+	public enum Sex {
+		male,
+		female,
+		unknown;
+	}
 }

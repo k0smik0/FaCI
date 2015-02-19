@@ -31,7 +31,8 @@ import javax.inject.Singleton;
 import net.iubris.facri.grapher.generators.graphstream.AbstractGraphstreamGraphGenerator;
 import net.iubris.facri.grapher.generators.interactions.InteractionsGraphGenerator;
 import net.iubris.facri.model.graph.GraphsHolder;
-import net.iubris.facri.model.parser.users.FriendOrAlike;
+import net.iubris.facri.model.parser.users.Friend;
+import net.iubris.facri.model.parser.users.FriendOfFriend;
 import net.iubris.facri.model.parser.users.Interactions;
 import net.iubris.facri.model.parser.users.User;
 import net.iubris.facri.model.world.InteractionsWeigths;
@@ -119,18 +120,18 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
 
 	@Override
 	protected void createMyFriends(boolean includeMyuserNode) {
-		Map<String, FriendOrAlike> myFriendsMap = world.getMyFriendsMap();
-		Iterator<Entry<String, FriendOrAlike>> myFriendsMapIterator = myFriendsMap.entrySet().iterator();
+		Map<String, Friend> myFriendsMap = world.getMyFriendsMap();
+		Iterator<Entry<String, Friend>> myFriendsMapIterator = myFriendsMap.entrySet().iterator();
 		while (myFriendsMapIterator.hasNext()) {
-      	Entry<String, FriendOrAlike> myFriendEntry = myFriendsMapIterator.next();
+      	Entry<String, Friend> myFriendEntry = myFriendsMapIterator.next();
    			
       	String myFriendId = myFriendEntry.getKey();
-      	FriendOrAlike myFriend = myFriendEntry.getValue();
+      	Friend myFriend = myFriendEntry.getValue();
 
       	// eventually, creates edges with me 
       	final Node myFriendNode = getOrCreateFriendNodeAndEventuallyEdgesWithMe(myFriend, includeMyuserNode);
 	         
-         Set<String> mutualFriendsIds = myFriend.getMutualFriends();
+         Set<String> mutualFriendsIds = myFriend.getMutualFriendsIds();
          for (String myOtherFriendAlsoMutualWithMeId: mutualFriendsIds) {
          	
 //         	// that is: a cell in myFriendsToMutualFriendsTable contains edges between these my friends 
@@ -139,7 +140,7 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
          	}
          	
          	// this below could be minimize outer while iterations
-         	FriendOrAlike myOtherFriendAlsoMutual = myFriendsMap.get(myOtherFriendAlsoMutualWithMeId);
+         	Friend myOtherFriendAlsoMutual = myFriendsMap.get(myOtherFriendAlsoMutualWithMeId);
          	Node myOtherFriendAlsoMutualFriendNode = getOrCreateFriendNodeAndEventuallyEdgesWithMe(myOtherFriendAlsoMutual, includeMyuserNode);
          	
          	Interactions myFriendToMutualFriendInteractions = myFriend.getToOtherUserInteractions(myOtherFriendAlsoMutualWithMeId);
@@ -196,14 +197,14 @@ public class GraphstreamInteractionsGraphGenerator extends AbstractGraphstreamGr
 	
 	@Override
 	protected void createFriendsOfFriendsWithMyFriends() {
-		Map<String, FriendOrAlike> otherUsersMap = world.getOtherUsersMap();
-		Iterator<Entry<String, FriendOrAlike>> friendsOfMyFriendsIterator = otherUsersMap.entrySet().iterator();
+		Map<String, FriendOfFriend> otherUsersMap = world.getOtherUsersMap();
+		Iterator<Entry<String, FriendOfFriend>> friendsOfMyFriendsIterator = otherUsersMap.entrySet().iterator();
 		while (friendsOfMyFriendsIterator.hasNext()) {
-			Entry<String, FriendOrAlike> friendOfMyFriendEntry = friendsOfMyFriendsIterator.next();
+			Entry<String, FriendOfFriend> friendOfMyFriendEntry = friendsOfMyFriendsIterator.next();
 			String friendOfMyFriendId = friendOfMyFriendEntry.getKey();
 
-			FriendOrAlike friendOfMyFriend = friendOfMyFriendEntry.getValue();
-			Set<String> friendOfMyFriendMutualFriendsIdsThatIsMyFriendsIds = friendOfMyFriend.getMutualFriends();
+			FriendOfFriend friendOfMyFriend = friendOfMyFriendEntry.getValue();
+			Set<String> friendOfMyFriendMutualFriendsIdsThatIsMyFriendsIds = friendOfMyFriend.getMutualFriendsIds();
 
 			Node friendOfMyFriendNode = createNode(friendOfMyFriend);
 			friendOfMyFriendNode.addAttribute("ui.class", friendOfFriendNodeUiClass );

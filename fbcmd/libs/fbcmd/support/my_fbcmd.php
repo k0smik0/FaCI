@@ -53,6 +53,9 @@
   FbcmdIncludeAddCommand('SINGLE','Display all of your single friends');
   FbcmdIncludeAddCommand('FLSTREAM','flist~Get last 150 post from your friend wallpaper');
   FbcmdIncludeAddCommand('PCOMMENTS','postid~Get last 150 comments from specified postid');
+  FbcmdIncludeAddCommand('OINFO','[uids list]~Get finfo for user from uids list');
+  FbcmdIncludeAddCommand('OMUTUAL','[uids list]~Get friends of friends mutual friends');
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Step Five: Include (run) FBCMD
@@ -184,6 +187,103 @@
       print "error for {$fbUser}";
     }
   }
+  
+  if ($fbcmdCommand == 'OINFO') {
+//     ValidateParamCount(1,2);
+//     SetDefaultParam(1,$fbcmdPrefs['default_finfo_fields']);
+//     SetDefaultParam(2,$fbcmdPrefs['default_finfo_flist']);
+//     GetFlistIds($fbcmdParams[2]);
+    $info_fields = "uid,name,friend_count,mutual_friend_count,pic_small,profile_url,sex,significant_other_id";
+    $uid_list = $fbcmdParams[1];
+//     printf ($uid_list);
+    $fql = "SELECT ${info_fields} from user where uid in ({$uid_list}) ORDER BY last_name";
+    try {
+      $fbReturn = $fbObject->api_client->fql_query($fql);
+      TraceReturn($fbReturn);
+    } catch(Exception $e) {
+      FbcmdException($e);
+    }
+    if (!empty($fbReturn)) {
+//       $fields = explode(',',$fbcmdParams[1]);
+      $fields = explode(',',$info_fields);
+      if (in_array('uid',$fields)) {
+	$fbcmdPrefs['uid'] = 1;
+	$fbcmdPrefs['print_blanks'] = 1;
+      }
+      $headerFields = array();
+      foreach ($fields as $f) {
+//       printf($f);
+	$headerFields[] = strtoupper($f);
+      }
+      ## print headers
+      printf( implode(',', $headerFields)."\n");
+//       printf( gettype($fbReturn));
+      
+//       PrintHeader(PrintIfPref('show_id','UID'),'NAME',$headerFields);
+      foreach ($fbReturn as $user) {
+	print_r( implode(',', array_values($user) ) );
+	printf("\n");
+      
+// 	$outputFields = array();
+// 	$isEmptyRow = true;
+// 	foreach ($user as $key=>$value) {
+// 	  if ($key != 'uid') {
+// 	    $outputFields[] = DisplayField($value);
+// 	    if (!IsEmpty($value)) {
+// // 	      printf($value);
+// 	      $isEmptyRow = false;
+// 	    }
+// 	  }
+// 	}
+// 	if ((!$isEmptyRow)||($fbcmdPrefs['print_blanks'])) {
+// 	  PrintRow(PrintIfPref('show_id',$user['uid']),ProfileName($user['uid']),$outputFields);
+// 	}
+      }
+    }
+  }
+  
+  if ($fbcmdCommand == 'OMUTUAL') {
+//     ValidateParamCount(1);
+//     SetDefaultParam(1,$fbcmdPrefs['default_mutual_flist']);
+//     GetFlistIds($fbcmdParams[1]);
+//     PrintHeader(PrintIfPref('show_id','ID'),'NAME',PrintIfPref('show_id','FRIEND_ID'),'FRIEND_NAME','FRIEND_UID');
+//     do {
+//       $curChunkIds = GetNextChunkIds();
+//       if ($curChunkIds) {
+// 	$fql = "SELECT uid,name FROM user WHERE uid IN 
+// 	  ( SELECT uid1 FROM friend WHERE uid1 IN 
+// 	      (SELECT uid2 FROM friend WHERE uid1={$fbUser}) 
+// 	  AND uid2=[id] )"
+//         $results = MultiFqlById($curChunkIds,$fql);
+//         foreach ($curChunkIds as $id) {
+//           if ($results[$id]) {
+//             foreach ($results[$id] as $user) {
+// // 	      print_r ($user);
+//               PrintRow(PrintIfPref('show_id',$id),ProfileName($id),PrintIfPref('show_id',$id),$user['name'],$user['uid']);
+//             }
+//           }
+//         }
+//       }
+//     } while ($curChunkIds);
+    try {
+//       print ($fbcmdParams[1])."\n");
+      $uids = $fbcmdParams[1];
+      $fql = "SELECT uid,name FROM user WHERE uid IN ( SELECT uid1 FROM friend WHERE uid1 IN ( $uids ) )";
+      $fbReturn = $fbObject->api_client->fql_query($fql);
+    } catch(Exception $e) {
+      FbcmdException($e);
+    }
+    if (!empty($fbReturn)) {
+      print("UID,NAME\n");
+      foreach ($fbReturn as $user) {
+	print_r( implode(',', array_values($user) ) );
+	printf("\n");
+      }
+    }
+  }
+
+
+
 
   function getDateNow() {
       $date = getdate();

@@ -412,6 +412,7 @@ public abstract class AbstractGraphstreamAnalyzer implements GraphstreamAnalyzer
 		Printer.println("\nConnected components without Ego: "+connectedComponentsWithoutEgo.getConnectedComponentsCount());
 		
 		giantComponent = connectedComponentsWithoutEgo.getGiantComponent();
+		try {
 		Printer.print("Giant component without Ego: "+giantComponent.size()+"\n\t");
 		giantComponent.stream().parallel().forEach( n-> {
 //			n.getAttributeKeySet().stream().forEach(a->System.out.print(a+" "));
@@ -439,6 +440,9 @@ public abstract class AbstractGraphstreamAnalyzer implements GraphstreamAnalyzer
 //		graphDataHolderBackup.getViewer().close();
 //		Graphs.merge(graph, graphDataHolderBackup.getGraph());
 //		graph.setAttribute("ui.title", graphDataHolderBackup.getGraph().getId());
+		} catch (NullPointerException e) {
+			
+		}
 		
 		Printer.println("(sorry, I know there is something to fix [too much windows opened, above all]; but it works, for now)");
 		

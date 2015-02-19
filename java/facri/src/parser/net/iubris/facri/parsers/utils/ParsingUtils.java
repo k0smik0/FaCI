@@ -25,7 +25,8 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import net.iubris.facri.model.parser.users.Ego;
-import net.iubris.facri.model.parser.users.FriendOrAlike;
+import net.iubris.facri.model.parser.users.Friend;
+import net.iubris.facri.model.parser.users.FriendOfFriend;
 import net.iubris.facri.model.parser.users.User;
 import net.iubris.facri.model.world.World;
 import net.iubris.facri.utils.Printer;
@@ -44,26 +45,25 @@ public class ParsingUtils {
 		if (myUser.getUid().equals(userId))
 			return myUser;
 		
-		FriendOrAlike user = null;
 		if (myUser.isMyFriendById(userId)) {
-			Map<String, FriendOrAlike> myFriendsMap = world.getMyFriendsMap();
+			Map<String, Friend> myFriendsMap = world.getMyFriendsMap();
 			if (myFriendsMap.containsKey(userId)) {
-				user = myFriendsMap.get(userId);
+				return myFriendsMap.get(userId);
 			} else {
-				user = new FriendOrAlike(userId);
+				Friend user = new Friend(userId);
 				myFriendsMap.put(userId, user);
+				return user;
 			}
 		} else {
-			Map<String, FriendOrAlike> otherUsersMap = world.getOtherUsersMap();
+			Map<String, FriendOfFriend> otherUsersMap = world.getOtherUsersMap();
 			if (otherUsersMap.containsKey(userId)) {
-				user = otherUsersMap.get(userId);
+				return otherUsersMap.get(userId);
 			} else {
-				user = new FriendOrAlike(userId);
+				FriendOfFriend user = new FriendOfFriend(userId);
 				otherUsersMap.put(userId, user);
+				return user;
 			}
 		}
-		
-		return user;
 	}
 	
 	public static List<File> getDirectories(String dirName) {

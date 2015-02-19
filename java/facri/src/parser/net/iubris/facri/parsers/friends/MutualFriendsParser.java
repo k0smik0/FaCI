@@ -24,14 +24,12 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.iubris.facri.model.parser.users.FriendOrAlike;
+import net.iubris.facri.model.parser.users.Friend;
 import net.iubris.facri.model.world.World;
 import net.iubris.facri.parsers.Parser;
 import net.iubris.facri.utils.Printer;
@@ -71,28 +69,61 @@ public class MutualFriendsParser implements Parser {
 		// java 8 way
 		try {
 			Files.list( FileSystems.getDefault().getPath(userDir.getPath() ) )
-				.filter(f->f.getFileName().toString().equals(mutualFriendsFilename))
-				.forEach(
-						f->parse(f.toFile(), userDir.getName())
+				.filter(mutualFriendsFilenamePath->mutualFriendsFilenamePath.getFileName().toString().equals(mutualFriendsFilename))
+//				.forEach(
+				.findFirst()
+				.ifPresent(
+						mutualFriendsFilePathEach -> {
+//							System.out.println("parsing: "+mutualFriendsFilePathEach.getFileName()); // TODO remove
+							parseMutualFriendsFile(mutualFriendsFilePathEach.toFile(), userDir.getName()); 
+						}
 					);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void parse(File mutualFriendsFile, String owningWallUserId) {
+	private void parseMutualFriendsFile(File mutualFriendsFile, String owningWallFriendId) {
 		try {
 			Path mutualFriendsFilePath = mutualFriendsFile.toPath();
 			List<String> mutualFriendsLines = Files.readAllLines(mutualFriendsFilePath, StandardCharsets.UTF_8);
 			if (mutualFriendsLines.size() < 2)
 				return;
 			
-			FriendOrAlike user = (FriendOrAlike) world.isExistentUserOrCreateNew(owningWallUserId);
-			
-			mutualFriendsLines
-				.stream()
-				.parallel()
-				.forEach(
+			Friend friend = world.getMyFriendsMap().get(owningWallFriendId);
+
+			// TODO eventually restore old working
+//			user.addMutualFriends(
+					mutualFriendsLines
+					.stream()
+					.parallel()
+					// new 2
+					.map(line->pattern.matcher(line))
+//					.map(matcher->matcher.find()? matcher.group(0): "")
+//					.filter(word->!word.isEmpty())
+//					.collect(Collectors.toSet())
+//					)// end add from collector
+					.forEach(matcher->{
+						if (matcher.find()) {
+							String id = matcher.group(0);
+//							System.out.println(id);
+							friend.addMutualFriendId(id);
+						}
+					})
+				// end new 2
+				// new
+//				.flatMap(line-> {
+//					System.out.println("LINE "+line);
+//					return pattern.splitAsStream(line);
+//					})
+//				.forEach(word->{
+//					System.out.println("WORD: "+word);
+//					user.addMutualFriend(word);
+//				})
+				// end new
+				
+				// old working
+				/*.forEach(
 						new Consumer<String>() {
 							@Override
 							public void accept(String t) {
@@ -101,7 +132,8 @@ public class MutualFriendsParser implements Parser {
 									user.addMutualFriend(matcher.group(0));
 							}
 						}
-					);
+					)*/
+				;
 		} catch (IOException e) {
 			Printer.println("errors on "+mutualFriendsFile.getName());
 			e.printStackTrace();

@@ -1,16 +1,35 @@
 [ -f etc/facri.conf ] && source etc/facri.conf
 
-function getFriends() {
-  local out_file=${FACRI_OUTPUT}/friends_ids.txt
+
+function getFriendsInfo() {
+  local out_file=${FACRI_OUTPUT}/friends.txt
+  
+  #FINFO uid,name,friend_count,mutual_friend_count,pic_small,profile_url,sex,significant_other_id| sed 's/[[:space:]]\+/,/g'
+  
+  #local friends
+  if [ ! -f ${out_file} ]
+  then
+    $FBCMD FINFO uid,name,friend_count,mutual_friend_count,pic_small,profile_url,sex,significant_other_id | sed 's/[[:space:]]\+/,/g' > $out_file
+  fi
+}
+
+function getFriendsIds() {
+  local out_file=${FACRI_OUTPUT}/friends_-_ids.txt
 
   local friends_ids
   if [ -f ${out_file} ]
   then
     friends_ids=$(cat ${out_file}) 
   else
-    friends_ids=$($FBCMD friends | awk '{print $1}' | grep -v ID | sort -n)
-    echo $friends_ids > ${out_file}
+#    friends_ids=$($FBCMD friends | awk '{print $1}' | grep -v ID | sort -n)    
+#    echo $friends_ids > ${out_file}
+    cat ${FACRI_OUTPUT}/friends.txt | awk -F"," '{print $1}' | grep -v ID | sort -n) > $out_file
   fi
 
   echo ${friends_ids}
+}
+
+function getFriends() {
+  getFriendsInfo();
+  getFriendsIds();
 }

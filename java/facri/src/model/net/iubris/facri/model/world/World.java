@@ -30,7 +30,9 @@ import javax.inject.Singleton;
 
 import net.iubris.facri.model.parser.posts.Post;
 import net.iubris.facri.model.parser.users.Ego;
-import net.iubris.facri.model.parser.users.FriendOrAlike;
+import net.iubris.facri.model.parser.users.Friend;
+import net.iubris.facri.model.parser.users.FriendOfFriend;
+import net.iubris.facri.model.parser.users.AbstractFriend;
 import net.iubris.facri.model.parser.users.User;
 import net.iubris.facri.model.world.InteractionsWeigths.Interactions;
 import net.iubris.facri.utils.Printer;
@@ -43,8 +45,8 @@ public class World implements Serializable {
 
 	private static final long serialVersionUID = -7112902990753202438L;
 	
-	private final Map<String,FriendOrAlike> myFriendsMap= new ConcurrentHashMap<>();
-	private final Map<String,FriendOrAlike> otherUsersMap = new ConcurrentHashMap<>();
+	private final Map<String,Friend> myFriendsMap= new ConcurrentHashMap<>();
+	private final Map<String,FriendOfFriend> otherUsersMap = new ConcurrentHashMap<>();
 	
 	private final Set<Float> appreciationsRange = new ConcurrentSkipListSet<Float>();
 	private final Set<Integer> postsCountRange = new ConcurrentSkipListSet<Integer>();
@@ -61,17 +63,17 @@ public class World implements Serializable {
 		this.myUser = myUser;
 	}
 	
-	public void populateMyFriendsMap(Map<String, FriendOrAlike> myFriendsMap) {
+	public void populateMyFriendsMap(Map<String, Friend> myFriendsMap) {
 		this.myFriendsMap.putAll(myFriendsMap);
 	}
-	public Map<String, FriendOrAlike> getMyFriendsMap() {
+	public Map<String, Friend> getMyFriendsMap() {
 		return myFriendsMap;
 	}
 	
-	public void populateOtherUsersMap(Map<String, FriendOrAlike> otherUsersMap) {
+	public void populateOtherUsersMap(Map<String, FriendOfFriend> otherUsersMap) {
 		this.otherUsersMap.putAll(otherUsersMap);
 	}
-	public Map<String, FriendOrAlike> getOtherUsersMap() {
+	public Map<String, FriendOfFriend> getOtherUsersMap() {
 		return otherUsersMap;
 	}
 	
@@ -87,21 +89,20 @@ public class World implements Serializable {
 		if (myUser.getUid().equals(userId))
 			return myUser;
 		
-		FriendOrAlike user = null;
 		if (myUser.isMyFriendById(userId)) {
-			if (myFriendsMap.containsKey(userId)) {
-				user = myFriendsMap.get(userId);
-			} else {
-				user = new FriendOrAlike(userId);
-				myFriendsMap.put(userId, user);
-			}
+			return isExistentFriendOrCreateNew(userId);
+		}
+		
+		return isExistentFriendOfFriendOrCreateNew(userId);
+	}
+	
+	public FriendOfFriend isExistentFriendOfFriendOrCreateNew(String userId) {
+		FriendOfFriend user = null;
+		if (otherUsersMap.containsKey(userId)) {
+			user = otherUsersMap.get(userId);
 		} else {
-			if (otherUsersMap.containsKey(userId)) {
-				user = otherUsersMap.get(userId);
-			} else {
-				user = new FriendOrAlike(userId);
-				otherUsersMap.put(userId, user);
-			}
+			user = new FriendOfFriend(userId);
+			otherUsersMap.put(userId, user);
 		}
 		
 		int updatedOwnPostsCount = user.getOwnPostsCount();
@@ -116,23 +117,53 @@ public class World implements Serializable {
 		return user;
 	}
 	
-	public Optional<FriendOrAlike> searchUserByName(String name) {
-		Optional<FriendOrAlike> friend = myFriendsMap.values().parallelStream().filter(f->f.getName().equals(name)).findFirst();
+	public Friend isExistentFriendOrCreateNew(String friendId) {		
+		Friend friend = null;
+		if (myUser.isMyFriendById(friendId)) {
+			if (myFriendsMap.containsKey(friendId)) {
+				friend = myFriendsMap.get(friendId);
+			} else {
+				friend = new Friend(friendId);
+				myFriendsMap.put(friendId, friend);
+			}
+		}
+		
+		int updatedOwnPostsCount = friend.getOwnPostsCount();
+		postsCountRange.add(updatedOwnPostsCount);
+		
+		float updatedAppreciation = friend.getOwnLikedPostsCount() + Interactions.RESHARED_OWN_POST*friend.getOwnPostsResharingCount();
+		appreciationsRange.add(updatedAppreciation);
+		
+		int updatedInteractions = friend.getUserInteractionsCount();
+		interactionsRange.add(updatedInteractions);
+		
+		return friend;
+	}
+	
+	
+	public Optional<? extends User> searchUserByName(String name) {
+		Optional<Friend> friend = myFriendsMap
+				.values()
+				.stream()
+				.parallel()
+				.filter(f->f.getName().equals(name)).findFirst();
 		if (friend.isPresent())
 			return friend;
 		else 
-			return otherUsersMap.values().parallelStream().filter(f->f.getName().equals(name)).findFirst();
+			return otherUsersMap
+					.values()
+					.stream()
+					.parallel()
+					.filter(f->f.getName().equals(name)).findFirst();
 	}
-	public Optional<FriendOrAlike> searchUserById(String uid) {
+	public Optional<? extends User> searchUserById(String uid) {
 		if (myFriendsMap.containsKey(uid)) {
-			FriendOrAlike friendOrAlike = myFriendsMap.get(uid);
-//			System.out.println(friendOrAlike);
-			return Optional.of( friendOrAlike );
+			Friend friend = myFriendsMap.get(uid);
+			return Optional.of( friend );
 		}
 		if (otherUsersMap.containsKey(uid)) {
-			FriendOrAlike friendOrAlike = otherUsersMap.get(uid);
-//			System.out.println(friendOrAlike);
-			return Optional.of( friendOrAlike );
+			FriendOfFriend friendOfFriend = otherUsersMap.get(uid);
+			return Optional.of( friendOfFriend );
 		}
 		return Optional.empty();
 	}
@@ -172,8 +203,6 @@ public class World implements Serializable {
 }
 
 class DataTester {
-//	private int friendsCounter;
-//	private int friendsoffriendsCounter;
 	
 	private final World world;
 	
@@ -206,18 +235,15 @@ class DataTester {
 		userCounter = 0;
 	}
 	
-	private final BiConsumer<String, FriendOrAlike> friendoralikeConsumer = new BiConsumer<String, FriendOrAlike>() {
-//		private int userCounter = 0;
+	private final BiConsumer<String, AbstractFriend> friendoralikeConsumer = new BiConsumer<String, AbstractFriend>() {
 		@Override
-		public void accept(String t, FriendOrAlike foa) {
-//			if (foa.getMutualFriends().size() >0) {
+		public void accept(String t, AbstractFriend foa) {
 				String uid = foa.getUid();
 				Printer.println( "["+userCounter+"] "+uid+( ego.isMyFriendById(uid)? " (friend): ":" (friend of friend):") 
-					+"\n\tmutual friends: "+foa.getMutualFriends().size()
+					+"\n\tmutual friends: "+foa.getMutualFriendsIds().size()
 					);
 				printSomeUserInformations(foa);
 				userCounter++;
-//			}
 		}
 	};
 	

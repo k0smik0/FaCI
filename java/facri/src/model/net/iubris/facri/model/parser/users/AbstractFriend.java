@@ -23,25 +23,25 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.sleepycat.persist.model.Entity;
+import com.sleepycat.persist.model.Persistent;
 
-@Entity
-public class FriendOrAlike extends AbstractUser {
+@Persistent
+public abstract class AbstractFriend extends AbstractUser {
 
-	private static final long serialVersionUID = 6593382542268675220L;
+	private static final long serialVersionUID = 6534268317862330404L;
 
-	final private Set<String> mutualFriends = new HashSet<>();
-	private final Set<String> friendsOfFriendsIds = new HashSet<>();
+	protected final Set<String> mutualFriendsIds = new HashSet<>();
+	protected final Set<String> friendsOfFriendsIds = new HashSet<>();
 	
-	private int mutualFriendsCount;
+	protected int mutualFriendsCount;
+
+	public AbstractFriend() {}
 	
-	public FriendOrAlike(String uid) {
+	public AbstractFriend(String uid) {
 		super(uid);
 	}
 	
-	public FriendOrAlike() {}
-	
-	public FriendOrAlike(String uid, String name, int friendsCount, int mutualFriendsCount, URL picSmall, URL profileURL, Sex sex, String significantOtherId) {
+	public AbstractFriend(String uid, String name, int friendsCount, int mutualFriendsCount, URL picSmall, URL profileURL, User.Sex sex, String significantOtherId) {
 		this.uid = uid;
 		this.name = name;
 		this.friendsCount = friendsCount;
@@ -52,31 +52,40 @@ public class FriendOrAlike extends AbstractUser {
 		this.significantOtherId = significantOtherId;
 	}
 
-	public void addMutualFriend(String friendId) {
-		mutualFriends.add(friendId);		
+	public void addMutualFriendId(String friendId) {
+		mutualFriendsIds.add(friendId);		
 	}
-	public void addMutualFriends(Collection<String> friendsIds) {
-		mutualFriends.addAll(friendsIds);		
+	public void addMutualFriendsIds(Collection<String> friendsIds) {
+		mutualFriendsIds.addAll(friendsIds);		
 	}
-	public Set<String> getMutualFriends(){
-		return mutualFriends;
+	public Set<String> getMutualFriendsIds(){
+		return mutualFriendsIds;
 	}
 	public boolean isMutualFriend(String userId) {
-		return mutualFriends.contains(userId);
+		return mutualFriendsIds.contains(userId);
 	}
-	
-//	public void setMutualFriendsCount(int mutualFriendsCount) {
-//		this.mutualFriendsCount = mutualFriendsCount;
-//	}
 	public int getMutualFriendsCount() {
 		return mutualFriendsCount;
+	}
+	
+	public Set<String> getFriendsOfFriendsIds() {
+		return friendsOfFriendsIds;
+	}
+	public void addFriendsOfFriendsId(String friendOfFriendId) {
+		friendsOfFriendsIds.add(friendOfFriendId);
+	}
+	public void addFriendsOfFriendsIds(Set<String> friendsOfFriendsIds) {
+		friendsOfFriendsIds.addAll(friendsOfFriendsIds);
+	}
+	public boolean isFriendOfFriend(String userId) {
+		return friendsOfFriendsIds.contains(userId);
 	}
 	
 	@Override
 	public String toString() {
 		return "---\n"+super.toString()
 				+"\nfriends count: "+friendsCount
-				+"\nmutual friends count: "+mutualFriendsCount+"|"+mutualFriends.size()
+				+"\nmutual friends count: "+mutualFriendsCount+"|"+mutualFriendsIds.size()
 				+"\n---";
 	}
 

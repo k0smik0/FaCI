@@ -19,14 +19,14 @@ package net.iubris.facri.persisters.specialized;
 
 import javax.inject.Inject;
 
-import net.iubris.facri.model.parser.users.FriendOrAlike;
+import net.iubris.facri.model.parser.users.FriendOfFriend;
 import net.iubris.facri.persister.helpers.FriendoffriendFacriBerkeleyDBAutoCommittableHelper;
 import net.iubris.facri.persister.persisters.base.FacriPersister;
 
-public class FriendsoffriendsPersister extends FacriPersister<FriendOrAlike> {
+public class FriendsoffriendsPersister extends FacriPersister<FriendOfFriend> {
 
 	@Inject
 	public FriendsoffriendsPersister(FriendoffriendFacriBerkeleyDBAutoCommittableHelper friendoffriendFacriBerkeleyDBAutoCommittableHelper/*, HelpersHolder helpersHolder*/) {
-		super(friendoffriendFacriBerkeleyDBAutoCommittableHelper, FriendOrAlike.class/*, helpersHolder*/);
+		super(friendoffriendFacriBerkeleyDBAutoCommittableHelper, FriendOfFriend.class/*, helpersHolder*/);
 	}
 }
