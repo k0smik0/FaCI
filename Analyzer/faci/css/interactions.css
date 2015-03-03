@@ -1,0 +1,103 @@
+node {
+  size-mode: dyn-size;
+  /*size: 50px;*/
+  
+  fill-mode: dyn-plain;
+	    
+  stroke-mode: plain;
+  stroke-color: black;
+  stroke-width: 1px;
+  
+  /*z-index: 0;*/
+  /*text-visibility-mode:hidden;*/
+  /*text-mode:hidden;*/
+}
+node.ego {
+  fill-color: #ffddcc, #880000;
+   /*size-mode: normal;
+   size: 200px;*/
+}
+/* friends are in green range #ddffac */
+node.friend { 
+/*	fill-color: #ddffaa, #008800;*/
+   /*fill-color: #ddeeaa, #008800;*/
+  fill-color: #ddffcc, #008800;   
+}
+node.friend_of_friend {
+  fill-color: #ccddff, #000088;
+}
+node.marked {
+  stroke-width: 1px;
+  stroke-color: #bbbbbb;
+  text-size:20px;
+}
+node.selected {
+  text-visibility-mode:normal;
+  /*text-mode:normal;*/
+  text-size:50px;
+}
+node.giant_component {
+  stroke-width: 2px;
+  stroke-color: purple;
+}
+node.clique {
+  stroke-width: 2px;
+  stroke-color: yellow;
+}
+node.max_clique {
+  stroke-width: 2px;
+  stroke-color: red;
+}
+node.ssc {
+  stroke-width: 2px;
+  stroke-color: green;
+}
+node.dijkstra {
+  stroke-width: 2px;
+  stroke-color: orange;
+}
+node.epidemic {
+  stroke-width: 2px;
+  stroke-color: blue;
+}
+node.community {
+  stroke-width: 2px;
+  stroke-color: blue;
+}
+node.giant_component {
+  fill-color: #888888, black;
+}
+
+edge {
+  shape: line;
+  fill-mode: dyn-plain;
+  size-mode: dyn-size;
+  arrow-size: 1px;
+}
+/* light red to dark red */
+edge.me_to_my_friend {
+/*	fill-color: #ffeebb, #FF0000; */
+  /*fill-color: #ffddcc, #bb0000;*/
+  arrow-size: 0px;
+  fill-color: #bb0000bb, #bb0000ff;
+}
+/* light yellow to dark */
+edge.my_friend_to_me {
+ /*fill-color: #ffee00, #FF2200;*/
+ /*fill-color: #ffbbee33, #FFbb00ff;*/
+ /*fill-color: #ffffcc, #FFcc00ff;*/
+ arrow-size: 0px;
+ fill-color: #ffcc00bb, #FFcc00ff;
+}
+/* light green to dark */
+edge.my_friend_to_mutual_friend {
+ /* yellow-green range */
+	/*fill-color: #white, #FFFFDD, #FFFF99, #FFFF00, #FFCC00, #FF9900;*/
+	/*fill-color: #F7E98E, #DFFF00, #A7FC00, #00FF00;*/
+  /* fill-color: #ddffcc, #99dd99ff; */
+  fill-color: #99dd99bb, #99dd99ff;
+}
+/* light pink */
+edge.friend_of_my_friend_to_my_friend {
+   fill-color: #ECCEF577, #ECCEF5ff;
+}

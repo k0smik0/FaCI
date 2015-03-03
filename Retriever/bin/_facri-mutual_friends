@@ -1,0 +1,17 @@
+[ -f etc/facri.conf ] && source etc/facri.conf
+
+source bin/_facri-friends
+
+function getMutualFriends() {
+  local user=$1
+  target_dir=${FACRI_OUTPUT}/friends/${user}
+  [ -d $target_dir ] || mkdir $target_dir
+  echo -n -e "\t${user}'s mutual friends: "
+  local target=$target_dir/mutual_friends.txt
+  if [ -f $target ]; then 
+    echo "found, skipping"
+  else
+    $FBCMD mutual $user > $target ;
+    [ $(ls -s $target | cut -d" " -f1) -gt 0 ] && echo "ok" || echo "empty"
+  fi
+}

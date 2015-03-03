@@ -1,0 +1,19 @@
+function getPosts() {
+  local user=$1
+  local target_dir=${FACRI_OUTPUT}/friends/$user/feeds
+  [ -d ${target_dir} ] || mkdir -p ${target_dir}
+  cd $target_dir
+  echo -n -e "\t${user}'s posts: "
+  if [ ! -z "$(ls posts*json 2>/dev/null)" ]; then
+    echo "found, skipping"
+  else
+    [ -f .posts_error ] && [ "${FACRI_POSTS_RETRY}" == "false" ] && echo "no retry for old posts error" && return
+    $FBCMD FLSTREAM $user 150 >/dev/null
+    if [ $(find . -type f -iname "posts*.json" | wc -l) -gt 0 ];then
+      echo "ok"
+    else
+      echo "error"
+      touch .posts_error
+    fi
+  fi
+}

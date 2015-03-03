@@ -1,0 +1,69 @@
+node {
+  size-mode: dyn-size;
+  /*size: 50px;*/
+  
+  fill-mode: dyn-plain;
+	    
+  stroke-mode: plain;
+  stroke-color: black;
+  stroke-width: 1px;
+  
+  /*z-index: 0;*/
+  /*text-visibility-mode:hidden;*/
+  /*text-mode:hidden;*/
+	 
+}
+/* ego is in red */
+node.ego {
+  fill-color: #ffddcc, #880000;
+}
+/* friends are in green range #ddffac */
+node.friend { 
+/*	fill-color: #ddffaa, #008800;*/
+   /*fill-color: #ddeeaa, #008800;*/
+  fill-color: #ddffcc, #008800;   
+}
+/* friends of friends are in blue */
+node.friend_of_friend {
+  /*fill-color: #3355ff, #000088;*/
+  fill-color: #ccddff, #000088;
+}
+node.marked {
+  stroke-width: 1px;
+  stroke-color: #bbbbbb;
+}
+node.selected {
+  text-visibility-mode:normal;
+  text-mode:normal;
+  text-size:50px;
+}
+node.giant_component {
+  stroke-width: 1px;
+  stroke-color: red;
+  fill-color: #888888, black;
+}
+node.max_clique {
+  stroke-width: 2px;
+  stroke-color: blue;
+}
+
+edge {
+  shape: line;
+  fill-mode: dyn-plain;
+  arrow-size: 1px;
+  size-mode: dyn-size;
+}
+/* light red to dark red */
+edge.me_with_my_friend {
+/*	fill-color: #ffeebb, #FF0000; */
+  /*fill-color: #bb000022, #bb0000ff;*/
+  fill-color: #ffaa0077, #ffaa00ff;
+}
+edge.my_friend_with_mutual_friend {
+  /*fill-color: #88ee66, #ccddaaff;*/
+  fill-color: #99dd99bb, #99dd99ff;
+}
+/* pink */
+edge.friend_of_my_friend_with_my_friend {
+  fill-color: #ECCEF577, #ECCEF5ff;
+}

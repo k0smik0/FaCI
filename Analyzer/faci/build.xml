@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="Faci(book)_-_FAcebook_Cliques_Interactions_-_Analyzer">
+    <property environment="env"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="Faci(book)_-_FAcebook_Cliques_Interactions_-_Analyzer.classpath">
+        <pathelement location="bin"/>
+    				<pathelement location="libs/heimdall/heimdall.jar"/>
+    				<pathelement location="libs/jbbp/je-6.0.11.jar"/>
+    				<pathelement location="libs/jbbp/jbbp.jar"/>
+        <pathelement location="libs/staxon/staxon-1.3.jar"/>
+        <pathelement location="libs/graphstream/nightly/gs-algo-1.3-SNAPSHOT-last.jar"/>
+        <pathelement location="libs/graphstream/nightly/gs-core-1.3-SNAPSHOT-last.jar"/>
+        <pathelement location="libs/graphstream/nightly/gs-ui-1.3-SNAPSHOT-last.jar"/>
+        <pathelement location="libs/staxon/staxon-jaxrs-1.3.jar"/>
+        <pathelement location="libs/guice/javax.inject.jar"/>
+        <pathelement location="libs/guice/aopalliance.jar"/>
+        <pathelement location="libs/guice/guice-3.0.jar"/>
+        <pathelement location="libs/guava/guava-18.0.jar"/>
+        <pathelement location="libs/opencsv/opencsv-3.1.jar"/>
+        <pathelement location="libs/guice/guice-assistedinject-3.0.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="init" name="build">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src/main"/>
+            <src path="src/console"/>
+            <src path="src/analyzer"/>
+            <src path="src/grapher"/>
+            <src path="src/parser"/>
+            <src path="src/world"/>
+            <src path="src/cache"/>
+            <src path="src/persister"/>
+            <src path="src/utils"/>
+            <classpath refid="Faci(book)_-_FAcebook_Cliques_Interactions_-_Analyzer.classpath"/>
+        </javac>
+    </target>
+    <target name="ParseTestMain">
+        <java classname="net.iubris.faci.parser.parsers.ParseTestMain" failonerror="true" fork="yes">
+            <classpath refid="Faci(book)_-_FAcebook_Cliques_Interactions_-_Analyzer.classpath"/>
+        </java>
+    </target>
+    <target name="ConsoleMain">
+        <java classname="net.iubris.faci.main.ConsoleMain" failonerror="true" fork="yes">
+            <classpath refid="Faci(book)_-_FAcebook_Cliques_Interactions_-_Analyzer.classpath"/>
+        </java>
+    </target>
+    <target name="T">
+        <java classname="christmas_egg.T" failonerror="true" fork="yes">
+            <classpath refid="Faci(book)_-_FAcebook_Cliques_Interactions_-_Analyzer.classpath"/>
+        </java>
+    </target>
+</project>

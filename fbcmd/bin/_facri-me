@@ -1,6 +1,0 @@
-function getMe() {
-  local id_file=${FACRI_OUTPUT}/me_id.txt
-  local me_id
-  [ -f $id_file ] && me_id=$(cat $id_file) || me_id=$($FBCMD whoami | awk '{print $1}')
-  echo $me_id
-}
