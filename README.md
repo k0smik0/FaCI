@@ -54,7 +54,7 @@ ps (2):
 for people interested to core code, hic sunt leones:
 
 * graph generators  
-[GrapherAction]([https://github.com/k0smik0/FaCI/blob/master/Analyzer/faci/src/console/net/iubris/faci/console/actions/graph/grapher/GrapherAction.java){:target="_blank"}  
+[GrapherAction]([https://github.com/k0smik0/FaCI/blob/master/Analyzer/faci/src/console/net/iubris/faci/console/actions/graph/grapher/GrapherAction.java)  
 [AbstractGraphstreamGraphGenerator](https://github.com/k0smik0/FaCI/blob/master/Analyzer/faci/src/grapher/net/iubris/faci/grapher/generators/base/graphstream/AbstractGraphstreamGraphGenerator.java)  
 [GraphstreamFriendshipsGraphGenerator](https://github.com/k0smik0/FaCI/blob/master/Analyzer/faci/src/grapher/net/iubris/faci/grapher/generators/specialized/friendships/graphstream/GraphstreamFriendshipsGraphGenerator.java)  
 [GraphstreamInteractionsGraphGenerator](https://github.com/k0smik0/FaCI/blob/master/Analyzer/faci/src/grapher/net/iubris/faci/grapher/generators/specialized/interactions/graphstream/GraphstreamInteractionsGraphGenerator.java)
