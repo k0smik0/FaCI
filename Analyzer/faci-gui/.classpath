@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="net/iubris/facri/_ishtaran/FacriCommandActionEventsHandlerProviderByReflection.java" kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Ishtaran"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Faci(book)_-_FAcebook_Cliques_Interactions_-_Analyzer"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
