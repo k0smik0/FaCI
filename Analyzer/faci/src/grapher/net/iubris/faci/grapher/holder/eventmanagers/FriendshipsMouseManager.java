@@ -17,13 +17,13 @@
  ******************************************************************************/
 package net.iubris.faci.grapher.holder.eventmanagers;
 
-import net.iubris.faci.model.world.World;
-
 import org.graphstream.graph.Node;
 import org.graphstream.ui.view.Viewer;
 
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
+
+import net.iubris.faci.model.world.World;
 
 public class FriendshipsMouseManager extends MouseManager {
 
@@ -35,7 +35,8 @@ public class FriendshipsMouseManager extends MouseManager {
 	@Override
 	protected String buildNodeInfo(Node node) {
 		String nodeId = node.getId();
-		String profileUrl = profileUrlPrefix+nodeId;
+		String randomForPrivacy = get3Random();
+		String profileUrl = profileUrlPrefix+nodeId+randomForPrivacy;
 		String nodeInfo = 
 				"degree: "+node.getDegree()
 				+"<br/>url: <a href='"+profileUrl+"'>"+profileUrl+"</a>";

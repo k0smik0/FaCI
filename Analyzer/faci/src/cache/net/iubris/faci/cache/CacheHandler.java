@@ -162,13 +162,14 @@ public class CacheHandler {
 	}
 	
 	public void writeIfWanted(Graph graph, String filenameBasename) throws IOException {
+		if (writeOnlyGraph ) { 
+			// write graphs
+			writeGraphs(graph, filenameBasename);
+			return;
+		}
 		if (write) {
 			// write parsed data
 			worldPersisterService.persist();
-		}
-		if (writeOnlyGraph || write) { // useless, to fix TODO
-			// write graphs
-			writeGraphs(graph, filenameBasename);
 		}
 	}
 	private void writeGraphs(Graph graph, String filenameBasename) throws IOException {

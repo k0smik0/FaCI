@@ -1,15 +1,15 @@
-# FACRI
+# FACI
 
-Facri is Facebook Cliques Real Interactions  
+Faci is Facebook Cliques Interactions  
 
 
-Facri is a Java tool allowing to analyze your facebook friendlist, and discover if people really interacts with each others, when they're in same groups - or if they are only "friends".
+Faci is a Java tool allowing to analyze your facebook friendlist, and discover if people really interacts with each others, while theyare in same groups - or if they are only "friends".
 
 
 Be careful with that data, Eugene! They are your friends private data!
 
 * Phase 1:
-You need to download your friends (and yours) facebook posts from walls, using Retriever (it uses a patched version of fbcmd, included inside)
+You need to download your friends (and yours) facebook posts from walls, using Retriever (a patched version of fbcmd, included inside)
 
 `
 cd Retriever; ./bin/facri-get_all_data.sh
@@ -35,19 +35,25 @@ The interactive console includes an help, of course ;)
 Enjoy it!
 
 
+---
+some interesting numbers:
+* corpus data used are ~60000 json objects (~400 people [my friends] * 150 own posts): processing this corpus (= translate json structure to java hierarchy) takes ~9sec first time; then, it uses a key-value db (Berkeley) as a cache, and this phase reduces to <3sec
+* graphs generation is also reasonable fast, taking ~2sec each graph: it is not only the graph file (graphml) creation, but also the gui parts (view frame and animations - and opengl capable hardware is recommended)
 
-
-
+-----
 
 ps:
+a presentation (in italian) is available [here](../report.pdf) : it describes the analysis using data from my facebook, of course (;D); also, in italian, you could easily notice figures showing generated graphs and histograms produced by algorithms outputs [here](../images/); finally, a movie with some demo is available [here](https://www.youtube.com/watch?v=YdH9RCgZdH8)
+
+ps (2):
 for people interested to core code, hic sunt leones:
 
 * graph generators  
-[GrapherAction](https://github.com/k0smik0/FaCRI/blob/master/java/facri/src/console/net/iubris/facri/console/actions/graph/grapher/GrapherAction.java)  
-[AbstractGraphstreamGraphGenerator](https://github.com/k0smik0/FaCRI/blob/master/java/facri/src/grapher/net/iubris/facri/grapher/generators/graphstream/AbstractGraphstreamGraphGenerator.java)  
-[GraphstreamFriendshipsGraphGenerator](https://github.com/k0smik0/FaCRI/blob/master/java/facri/src/grapher/net/iubris/facri/grapher/generators/friendships/graphstream/GraphstreamFriendshipsGraphGenerator.java)  
-[GraphstreamInteractionsGraphGenerator](https://github.com/k0smik0/FaCRI/blob/master/java/facri/src/grapher/net/iubris/facri/grapher/generators/interactions/graphstream/GraphstreamInteractionsGraphGenerator.java)
+[GrapherAction](https://github.com/k0smik0/FaCI/blob/master/java/faci/src/console/net/iubris/facri/console/actions/graph/grapher/GrapherAction.java)  
+[AbstractGraphstreamGraphGenerator](https://github.com/k0smik0/FaCI/blob/master/java/faci/src/grapher/net/iubris/facri/grapher/generators/graphstream/AbstractGraphstreamGraphGenerator.java)  
+[GraphstreamFriendshipsGraphGenerator](https://github.com/k0smik0/FaCI/blob/master/java/faci/src/grapher/net/iubris/facri/grapher/generators/friendships/graphstream/GraphstreamFriendshipsGraphGenerator.java)  
+[GraphstreamInteractionsGraphGenerator](https://github.com/k0smik0/FaCI/blob/master/java/faci/src/grapher/net/iubris/facri/grapher/generators/interactions/graphstream/GraphstreamInteractionsGraphGenerator.java)
 
 * analyzer:  
-[AnalyzeAction](https://github.com/k0smik0/FaCRI/blob/master/java/facri/src/console/net/iubris/facri/console/actions/graph/analyzer/AnalyzeAction.java)  
-[AbstractGraphstreamAnalyzer](https://github.com/k0smik0/FaCRI/blob/master/java/facri/src/analyzer/net/iubris/facri/grapher/analyzer/graphstream/AbstractGraphstreamAnalyzer.java)
+[AnalyzeAction](https://github.com/k0smik0/FaCI/blob/master/java/faci/src/console/net/iubris/facri/console/actions/graph/analyzer/AnalyzeAction.java)  
+[AbstractGraphstreamAnalyzer](https://github.com/k0smik0/FaCI/blob/master/java/faci/src/analyzer/net/iubris/facri/grapher/analyzer/graphstream/AbstractGraphstreamAnalyzer.java)

@@ -130,7 +130,7 @@ public class GrapherExecutor {
 					);
 			}
 		}
-		,friends_of_my_friends {
+		/*,friends_of_my_friends {
 			@Override
 			public void makeGraph(GraphstreamGraphGenerator graphstreamGraphGenerator, CacheHandler useCache, String filenamePrefix) throws IOException, JAXBException, XMLStreamException {
 				GraphGeneratorExecutor.exec(graphstreamGraphGenerator.getGraph(),
@@ -140,7 +140,7 @@ public class GrapherExecutor {
 						WorldType.getFilename(filenamePrefix, name())
 					);
 			}
-		}
+		}*/
 		,me_and_my_friends_and_friends_of_my_friends {
 			@Override
 			public void makeGraph(GraphstreamGraphGenerator graphstreamGraphGenerator, CacheHandler useCache, String filenamePrefix) throws IOException, JAXBException, XMLStreamException {
@@ -179,12 +179,12 @@ public class GrapherExecutor {
 				return WorldType.my_friends_with_their_friends;
 			}
 		}
-		,t("friends of my friends") {
+		/*,t("friends of my friends") {
 			@Override
 			public WorldType getWorldType() {
 				return WorldType.friends_of_my_friends;
 			}
-		}
+		}*/
 		,mft("me, my friends, their friends") {
 			@Override
 			public WorldType getWorldType() {

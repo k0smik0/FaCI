@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -168,6 +169,7 @@ public class GraphstreamFriendshipsGraphGenerator extends AbstractGraphstreamGra
 	      myFriendsNodesMap.put(myFriendId, myFriendNode);
 	      
 	      Edge meToMyfriendEdge = createEdge(egoNode, myFriendNode, mewithmyfriendEdgeUiClass);
+//	      System.out.println(meToMyfriendEdge.getAttributeKeySet().stream().collect(Collectors.joining(", ")));
 	      
 	      String egoId = ego.getUid();
 	      myFriendsWithMeEdgesAndViceversaTable.put(egoId, myFriendId, meToMyfriendEdge);

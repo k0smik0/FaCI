@@ -41,7 +41,8 @@ public class InteractionsMouseManager extends MouseManager {
 		Holder holder = getDegreeValues(node);
 		float eValue = holder.enteringInteractions.floatValue();
 		float lValue = holder.leavingInteractions.floatValue();
-		String profileUrl = profileUrlPrefix+node.getId();
+		String randomForPrivacy = get3Random();
+		String profileUrl = profileUrlPrefix+node.getId()+randomForPrivacy;
 		String nodeInfo = "in-degree: "+(node.getInDegree()*eValue)+" ("+holder.enteringInteractionsCounter.get()+"*"+eValue+")"
 				+"<br/>out-degree: "+(node.getOutDegree()*lValue)+" ("+holder.leavingInteractionsCounter.get()+"*"+lValue+")"
 				+"<br/>url: <a href='"+profileUrl+"'>"+profileUrl+"</a>";
@@ -54,19 +55,24 @@ public class InteractionsMouseManager extends MouseManager {
 		Iterable<Edge> eachEdge = node.getEachEdge();
 		if (eachEdge!=null)
 			eachEdge.forEach(e->{
-				if (e.getSourceNode()
-						.getId()
-						.equals(nodeId)) { // leaving
-						float interactions = e.getAttribute("ui.interactions");
-						holder.leavingInteractions.addAndGet(interactions);
-						holder.leavingInteractionsCounter.incrementAndGet();
-				} else if (e.getTargetNode()
-						.getId()
-						.equals(nodeId)) { // entering
-						float interactions = e.getAttribute("ui.interactions");
-						holder.enteringInteractions.addAndGet(interactions);
-						holder.enteringInteractionsCounter.incrementAndGet();
-				} 
+				try {
+					if (e.getSourceNode()
+							.getId()
+							.equals(nodeId)) { // leaving
+							float interactions = e.getAttribute("ui.interactions");
+							holder.leavingInteractions.addAndGet(interactions);
+							holder.leavingInteractionsCounter.incrementAndGet();
+					} else if (e.getTargetNode()
+							.getId()
+							.equals(nodeId)) { // entering
+							float interactions = e.getAttribute("ui.interactions");
+							holder.enteringInteractions.addAndGet(interactions);
+							holder.enteringInteractionsCounter.incrementAndGet();
+					}
+				} catch(NullPointerException npe) {
+					// TODO improve
+					// it catch e.getAttribute possibly null if acts on friends of friends nodes
+				}
 			});
 		return holder;
 	}

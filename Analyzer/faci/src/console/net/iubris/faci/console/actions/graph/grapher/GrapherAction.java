@@ -139,7 +139,7 @@ public class GrapherAction implements CommandAction {
 			+GrapherExecutor.WorldTypeCommand.mf.getHelpMessage()
 			+GrapherExecutor.WorldTypeCommand.f.getHelpMessage()
 			+GrapherExecutor.WorldTypeCommand.ft.getHelpMessage()
-			+GrapherExecutor.WorldTypeCommand.t.getHelpMessage()
+//			+GrapherExecutor.WorldTypeCommand.t.getHelpMessage()
 			+GrapherExecutor.WorldTypeCommand.mft.getHelpMessage()
 			+HelpAction.tab(2)+"third argument uses cache for reading or writing generated graph:"+"\n"
 			+UseCacheArguments.cr.getHelpMessage()

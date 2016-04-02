@@ -84,7 +84,7 @@ public class FriendsDirTreeParser implements Parser {
 				} /*checkDir(s)*/ 
 		)
 		.parallel() // parallel on each directory ? // TODO restore
-		.forEach( friendDir->{
+		.forEach( friendDir-> {
 			// always create owning wall user	
 			String owningWallUserId = friendDir.getName();
 //			FriendOrAlike friend = world.isExistentUserOrCreateNew(owningWallUserId);

@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
@@ -41,6 +42,15 @@ import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.util.DefaultMouseManager;
 
 public abstract class MouseManager extends DefaultMouseManager {
+	
+	protected static Random randomGenerator;
+	static {
+		randomGenerator = new Random();
+	}
+	protected String get3Random() {
+		int nextInt = randomGenerator.nextInt(1000);
+		return String.format("%03d", nextInt);
+	}
 
 	protected final String profileUrlPrefix = "https://www.facebook.com/profile.php?id=";
 	private final Viewer viewer;
