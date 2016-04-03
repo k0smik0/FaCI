@@ -63,3 +63,34 @@ for people interested to core code, hic sunt leones:
 [AnalyzeAction](https://github.com/k0smik0/FaCI/blob/master/Analyzer/faci/src/console/net/iubris/faci/console/actions/graph/analyzer/AnalyzeAction.java)  
 [AbstractGraphstreamAnalyzer](https://github.com/k0smik0/FaCI/blob/master/Analyzer/faci/src/analyzer/net/iubris/faci/analyzer/graphstream/AbstractGraphstreamAnalyzer.java)
     
+
+
+----
+some nice images of generated graphs:
+<table>
+<th>friendships</th>
+<tr>
+<td><a href="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_friendships_with_ego.png">with ego<br/><img src="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_friendships_with_ego.png" height=300></a></td>
+<td><a href="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_friendships_without_ego.png">without ego<br/><img src="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_friendships_without_ego.png" height=300></a></td>
+</tr>
+<tr>
+<td><a href="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_friendships_without_ego__giant_connected_components.png">without ego: giant connected components<br/><img src="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_friendships_without_ego__giant_connected_components.png" height=300></a></td>
+<td><a href="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_friendships_without_ego__cliques.png">without ego: cliques<br/><img src="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_friendships_without_ego__cliques.png" height=300></a></td>
+</tr>
+<th><br/>interactions</th>
+<tr>
+<td><a href="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_interactions_with_ego.png">with ego<br/><img src="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_interactions_with_ego.png" height=300></a></td>
+<td><a href="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_interactions_with_ego__cliques.png">with ego: cliques<br/><img src="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_interactions_with_ego__cliques.png" height=300></a></td>
+</tr>
+<tr>
+<td><a href="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_interactions_without_ego.png">without ego<br/><img src="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_interactions_without_ego.png" height=300></a></td>
+<td><a href="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_interactions_without_ego__cliques.png">without ego: cliques<br/><img src="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_interactions_without_ego__cliques.png" height=300></a></td>
+</tr>
+<tr>
+<td><a href="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_interactions_without_ego__giant_component_connected.png">without ego: giant component connected<br/><img src="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_interactions_without_ego__giant_component_connected.png" height=300></a></td>
+<td><a href="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_interactions_without_ego_no_zero_degree_edges.png">without ego: no zero degree edges<br/><img src="https://raw.githubusercontent.com/k0smik0/FaCI/master/images/graphs/graph_interactions_without_ego_no_zero_degree_edges.png" height=300></a></td>
+</tr>
+
+<th><br/>and:</th>
+<tr><td>metric charts images: <a href="https://github.com/k0smik0/FaCI/tree/master/images/chart">here</a></td></tr>
+</table>
